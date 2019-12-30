@@ -45,7 +45,7 @@ function getDate() {
     return today;
 }
 
-// center element on screen by id and size
+// center element by id and size
 function centerElement(elementID, elementWidth, elementHeight) {
     "use strict";
     
@@ -56,7 +56,7 @@ function centerElement(elementID, elementWidth, elementHeight) {
     document.getElementById(elementID).style.top = Ypos + "px";
 }
 
-// center element by id and size
+// resize elements if window size changes
 function resize() {
     "use strict";
     
@@ -78,19 +78,96 @@ function hideElement(elementID) {
 }
 
 // ******************************************************************
+// disclaimer functions
+// ******************************************************************
+function showLogin() {
+    "use strict";
+    
+    hideElement("disclaimer");
+    showElement("login");
+}
+
+function showExit() {
+    "use strict";
+    
+    hideElement("disclaimer");
+    showElement("exit");
+}
+
+function showDisclaimer() {
+    "use strict";
+    
+    hideElement("exit");
+    showElement("disclaimer");
+}
+
+// ******************************************************************
 // login functions
 // ******************************************************************
+function showMenu() {
+    "use strict";
+    
+    hideElement("login");
+    hideElement("scores");
+    hideElement("question");
+    hideElement("game");
+    showElement("menu");
+}
 
+function register() {
+    "use strict";
+    
+    hideElement("login");
+    showElement("menu");
+}
 
 // ******************************************************************
-// menu functions
+// main menu functions
 // ******************************************************************
+function playGame() {
+    "use strict";
+    
+    hideElement("menu");
+    showElement("game");
+}
 
+function showScores() {
+    "use strict";
+    
+    hideElement("menu");
+    showElement("scores");
+}
+
+function showQuestion() {
+    "use strict";
+    
+    showElement("question");
+}
+
+function hideQuestion() {
+    "use strict";
+    
+    hideElement("question");
+}
+
+// ******************************************************************
+// scoreboard functions
+// ******************************************************************
+function shareScores() {
+    "use strict";
+    
+    alert("URL copied to clipboard");
+}
 
 // ******************************************************************
 // game functions
 // ******************************************************************
-
+function playGame() {
+    "use strict";
+    
+    hideElement("menu");
+    showElement("game");
+}
 
 // ******************************************************************
 // initial startup function
@@ -99,5 +176,5 @@ function start() {
     "use strict";
     
     hideElement("hide");
-    //showElement("transparency");
+    showElement("disclaimer");
 }

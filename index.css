@@ -1,5 +1,18 @@
 ﻿/* DIG33 Internet Project Development */
 
+/*
+*********************************************************************
+z-index ranges:
+*********************************************************************
+0 - 8   = behind game board
+9       = game board (grid background)
+10 - 50 = rows from bottom to top of grid on game board (21w x 41h)
+51 - 52 = #transparency (with loading circle)
+53 - 60 = game menus
+61      = #hide
+*********************************************************************
+*/
+
 html, body {
     height: 100%;
     margin: 0;
@@ -9,7 +22,7 @@ html, body {
 
 #hide {
     position: fixed;
-    z-index: 10;
+    z-index: 61;
     top: 0px;
     bottom: 0px;
     left: 0px;
@@ -19,7 +32,7 @@ html, body {
 
 #transparency {
     position: fixed;
-    z-index: 9;
+    z-index: 51;
     top: 0px;
     bottom: 0px;
     left: 0px;

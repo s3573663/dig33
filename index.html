@@ -21,6 +21,9 @@
         <!-- div to hide page behind while loading -->
         <div id="hide"></div>
         
+        <!-- firebase -->
+        
+        
         <!-- javascript -->
         <script src="index.js"></script>
         
@@ -29,14 +32,89 @@
             <div class="loader"></div>
         </div>
         
-        <!-- login -->
+        <!-- disclaimer menu -->
+        <div id="disclaimer" style="display:none">
+            <div id="disclaimer-text">
+                drinking blah
+                age blah
+                permission blah
+            </div>
+            <button class="menu-button" onclick="showLogin()">
+                ACCEPT
+            </button>
+            <button class="menu-button" onclick="showExit()">
+                DECLINE
+            </button>
+        </div>
         
+        <!-- login menu -->
+        <div id="login" style="display:none">
+            <input type="text" name="username" id="login-username"
+                   placeholder="USERNAME" required="">
+            <input type="text" name="password" id="login-password"
+                   placeholder="PASSWORD" required="">
+            <button class="menu-button" onclick="showMenu()">
+                LOGIN
+            </button>
+            <button class="menu-button" onclick="register()">
+                REGISTER
+            </button>
+        </div>
         
-        <!-- menu -->
+        <!-- main menu -->
+        <div id="menu" style="display:none">
+            <div id="game-title">
+                GAME TITLE
+            </div>
+            <button class="menu-button" onclick="playGame()">
+                PLAY
+            </button>
+            <button class="menu-button" onclick="showScores()">
+                SCOREBOARD
+            </button>
+        </div>
         
+        <!-- scoreboard menu -->
+        <div id="scores" style="display:none">
+            <div id="scores-title">
+                HIGH SCORES
+            </div>
+            <button class="menu-button" onclick="shareScores()">
+                SHARE
+            </button>
+            <button class="menu-button" onclick="showMenu()">
+                MENU
+            </button>
+        </div>
         
-        <!-- game -->
+        <!-- game screen -->
+        <div id="game" style="display:none">
+            game goes here...
+            <button class="menu-button" onclick="showQuestion()">
+                MENU
+            </button>
+        </div>
         
+        <!-- question menu -->
+        <div id="question" style="display:none">
+            <div id="question-text">
+                If you exit now, your game will not be saved. Are you sure?
+            </div>
+            <button class="menu-button" onclick="showMenu()">
+                YES
+            </button>
+            <button class="menu-button" onclick="hideQuestion()">
+                NO
+            </button>
+        </div>
+        
+        <!-- exit message -->
+        <div id="exit" style="display:none">
+            Thanks for the visit!
+            <button class="menu-button" onclick="showDisclaimer()">
+                RETURN TO GAME
+            </button>
+        </div>
         
         <footer>
             <p>Version 0.01</p>
