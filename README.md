@@ -1,1 +1,1 @@
-# desperados
+# desperados: the game
