@@ -84,8 +84,6 @@ footer p {
 
 #game {
     z-index: 9;
-    min-width: 400px;
-    min-height: 400px;
     width: 100vmin;
     height: 100vmin;
     position: absolute;
@@ -100,8 +98,6 @@ footer p {
 
 .menu-box {
     z-index: 53;
-    min-width: 300px;
-    min-height: 300px;
     width: 75vmin;
     height: 75vmin;
     position: absolute;
@@ -121,11 +117,11 @@ footer p {
     background-color: white;
     border: 0.5vmin solid black;
     text-align: center;
-    min-width: 150px;
     width: 37.5vmin;
     font-size: 4vmin;
     font-family: monospace;
     cursor: pointer;
+    user-select: none;
 }
 
 .menu-button:hover, .menu-button:active {
@@ -135,7 +131,6 @@ footer p {
 
 #login-username, #login-password {
     display: inline-block;
-    min-width: 200px;
     width: 50vmin;
     padding: 1vmin;
     margin: 1vmin;
@@ -146,7 +141,6 @@ footer p {
 
 #disclaimer-text, #question-text, #exit-text {
     display: inline-block;
-    min-width: 200px;
     width: 50vmin;
     padding: 1vmin;
     margin-top: 20vmin;
@@ -154,11 +148,11 @@ footer p {
     font-size: 4vmin;
     font-family: monospace;
     text-align: justify;
+    user-select: none;
 }
 
 #login-text {
     display: inline-block;
-    min-width: 200px;
     width: 50vmin;
     padding: 1vmin;
     margin-top: 10vmin;
@@ -166,6 +160,7 @@ footer p {
     font-size: 4vmin;
     font-family: monospace;
     text-align: justify;
+    user-select: none;
 }
 
 #scores-title {
@@ -173,12 +168,12 @@ footer p {
     font-family: monospace;
     text-align: center;
     margin-top: 3vmin;
+    user-select: none;
 }
 
 #scores-text {
     display: inline-block;
-    min-width: 280px;
-    width: 70vmin;
+    width: 67vmin;
     padding: 1vmin;
     margin-top: 1vmin;
     margin-bottom: 1vmin;
@@ -199,4 +194,48 @@ footer p {
     font-family: monospace;
     text-align: center;
     margin-top: 20vmin;
+}
+
+#game-controls {
+    background: rgb(0,0,0,0);
+    display: flex;
+}
+
+#timer {
+    float: right;
+    text-align: center;
+    width: 10vmin;
+    font-size: 4vmin;
+    padding: 1.5vmin;
+    margin: 1vmin;
+    user-select: none;
+}
+
+#score {
+    float: right;
+    text-align: center;
+    width: 10vmin;
+    font-size: 4vmin;
+    padding: 1.5vmin;
+    margin: 1vmin;
+    user-select: none;
+}
+
+.menu-button-small {
+    padding: 1vmin;
+    margin: 1vmin;
+    background-color: white;
+    border: 0.5vmin solid black;
+    text-align: center;
+    width: 20vmin;
+    font-size: 4vmin;
+    font-family: monospace;
+    cursor: pointer;
+    float: right;
+    user-select: none;
+}
+
+.menu-button-small:hover, .menu-button-small:active {
+    background-color: black;
+    color: white;
 }

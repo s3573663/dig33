@@ -92,6 +92,7 @@ function showMenu() {
     hideElement("login");
     hideElement("scores");
     hideElement("question");
+    hideElement("game-controls");
     showElement("transparency");
     showElement("menu");
 }
@@ -120,20 +121,6 @@ function showScores() {
     showElement("scores");
 }
 
-function showQuestion() {
-    "use strict";
-    
-    showElement("transparency");
-    showElement("question");
-}
-
-function hideQuestion() {
-    "use strict";
-    
-    hideElement("transparency");
-    hideElement("question");
-}
-
 function hideMenu() {
     "use strict";
     
@@ -158,7 +145,21 @@ function playGame() {
     
     hideElement("menu");
     hideElement("transparency");
-    showElement("game");
+    showElement("game-controls");
+}
+
+function showQuestion() {
+    "use strict";
+    
+    showElement("transparency");
+    showElement("question");
+}
+
+function hideQuestion() {
+    "use strict";
+    
+    hideElement("transparency");
+    hideElement("question");
 }
 
 // ******************************************************************
@@ -167,7 +168,6 @@ function playGame() {
 function start() {
     "use strict";
     
-    showElement("game");
     showElement("transparency");
     hideElement("hide");
     showElement("disclaimer");

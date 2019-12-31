@@ -104,10 +104,18 @@
         </div>
         
         <!-- game screen -->
-        <div id="game" style="display:none">
-            <button class="menu-button" onclick="showQuestion()">
-                MENU
-            </button>
+        <div id="game">
+            <div id="game-controls" style="display:none">
+                <button class="menu-button-small" onclick="showQuestion()">
+                    MENU
+                </button>
+                <div id="timer">
+                    ##:##
+                </div>
+                <div id="score">
+                    0
+                </div>
+            </div>
         </div>
         
         <!-- question menu -->
