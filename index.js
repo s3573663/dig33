@@ -45,24 +45,6 @@ function getDate() {
     return today;
 }
 
-// center element by id and size
-function centerElement(elementID, elementWidth, elementHeight) {
-    "use strict";
-    
-    var Xpos = (window.innerWidth - elementWidth) / 2,
-        Ypos = (window.innerHeight - elementHeight) / 2;
-    
-    document.getElementById(elementID).style.left = Xpos + "px";
-    document.getElementById(elementID).style.top = Ypos + "px";
-}
-
-// resize elements if window size changes
-function resize() {
-    "use strict";
-    
-    //centerElement('elementID', elementWidth, elementHeight);
-}
-
 // show block element by id
 function showElement(elementID) {
     "use strict";
@@ -110,7 +92,7 @@ function showMenu() {
     hideElement("login");
     hideElement("scores");
     hideElement("question");
-    hideElement("game");
+    showElement("transparency");
     showElement("menu");
 }
 
@@ -141,13 +123,22 @@ function showScores() {
 function showQuestion() {
     "use strict";
     
+    showElement("transparency");
     showElement("question");
 }
 
 function hideQuestion() {
     "use strict";
     
+    hideElement("transparency");
     hideElement("question");
+}
+
+function hideMenu() {
+    "use strict";
+    
+    hideElement("menu");
+    showElement("login");
 }
 
 // ******************************************************************
@@ -166,6 +157,7 @@ function playGame() {
     "use strict";
     
     hideElement("menu");
+    hideElement("transparency");
     showElement("game");
 }
 
@@ -175,6 +167,8 @@ function playGame() {
 function start() {
     "use strict";
     
+    showElement("game");
+    showElement("transparency");
     hideElement("hide");
     showElement("disclaimer");
 }

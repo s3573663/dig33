@@ -17,7 +17,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: rgb(255,255,255);
+    background-color: rgb(128,128,128);
 }
 
 #hide {
@@ -80,4 +80,123 @@ footer p {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+#game {
+    z-index: 9;
+    min-width: 400px;
+    min-height: 400px;
+    width: 100vmin;
+    height: 100vmin;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: white;
+    text-align: right;
+}
+
+.menu-box {
+    z-index: 53;
+    min-width: 300px;
+    min-height: 300px;
+    width: 75vmin;
+    height: 75vmin;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1vmin solid black;
+    text-align: center;
+}
+
+.menu-button {
+    padding: 1vmin;
+    margin: 1vmin;
+    background-color: white;
+    border: 0.5vmin solid black;
+    text-align: center;
+    min-width: 150px;
+    width: 37.5vmin;
+    font-size: 4vmin;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+.menu-button:hover, .menu-button:active {
+    background-color: black;
+    color: white;
+}
+
+#login-username, #login-password {
+    display: inline-block;
+    min-width: 200px;
+    width: 50vmin;
+    padding: 1vmin;
+    margin: 1vmin;
+    border: 0.5vmin solid black;
+    font-size: 4vmin;
+    font-family: monospace;
+}
+
+#disclaimer-text, #question-text, #exit-text {
+    display: inline-block;
+    min-width: 200px;
+    width: 50vmin;
+    padding: 1vmin;
+    margin-top: 20vmin;
+    margin-bottom: 1vmin;
+    font-size: 4vmin;
+    font-family: monospace;
+    text-align: justify;
+}
+
+#login-text {
+    display: inline-block;
+    min-width: 200px;
+    width: 50vmin;
+    padding: 1vmin;
+    margin-top: 10vmin;
+    margin-bottom: 1vmin;
+    font-size: 4vmin;
+    font-family: monospace;
+    text-align: justify;
+}
+
+#scores-title {
+    font-size: 7vmin;
+    font-family: monospace;
+    text-align: center;
+    margin-top: 3vmin;
+}
+
+#scores-text {
+    display: inline-block;
+    min-width: 280px;
+    width: 70vmin;
+    padding: 1vmin;
+    margin-top: 1vmin;
+    margin-bottom: 1vmin;
+    font-size: 2vmin;
+    font-family: monospace;
+    text-align: left;
+    border: 0.5vmin solid black;
+}
+
+#scores-text p {
+    padding-left: 1vmin;
+    padding-right: 1vmin;
+    margin: 1vmin;
+}
+
+#game-title {
+    font-size: 9vmin;
+    font-family: monospace;
+    text-align: center;
+    margin-top: 20vmin;
 }

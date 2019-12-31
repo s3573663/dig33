@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="index.css" type="text/css"/>
     </head>
     
-    <body onload="start()" onresize="resize()">
+    <body onload="start()">
         
         <!-- div to hide page behind while loading -->
         <div id="hide"></div>
@@ -33,11 +33,9 @@
         </div>
         
         <!-- disclaimer menu -->
-        <div id="disclaimer" style="display:none">
+        <div id="disclaimer" class="menu-box" style="display:none">
             <div id="disclaimer-text">
-                drinking blah
-                age blah
-                permission blah
+                DISCLAIMER: You must be over the age of 18 to continue.
             </div>
             <button class="menu-button" onclick="showLogin()">
                 ACCEPT
@@ -48,7 +46,10 @@
         </div>
         
         <!-- login menu -->
-        <div id="login" style="display:none">
+        <div id="login" class="menu-box" style="display:none">
+            <div id="login-text">
+                Resister now or login if you have already registered.
+            </div>
             <input type="text" name="username" id="login-username"
                    placeholder="USERNAME" required="">
             <input type="text" name="password" id="login-password"
@@ -62,7 +63,7 @@
         </div>
         
         <!-- main menu -->
-        <div id="menu" style="display:none">
+        <div id="menu" class="menu-box" style="display:none">
             <div id="game-title">
                 GAME TITLE
             </div>
@@ -72,12 +73,27 @@
             <button class="menu-button" onclick="showScores()">
                 SCOREBOARD
             </button>
+            <button class="menu-button" onclick="hideMenu()">
+                LOGOUT
+            </button>
         </div>
         
         <!-- scoreboard menu -->
-        <div id="scores" style="display:none">
+        <div id="scores" class="menu-box" style="display:none">
             <div id="scores-title">
                 HIGH SCORES
+            </div>
+            <div id="scores-text">
+                <p>#1</p>
+                <p>#2</p>
+                <p>#3</p>
+                <p>#4</p>
+                <p>#5</p>
+                <p>#6</p>
+                <p>#7</p>
+                <p>#8</p>
+                <p>#9</p>
+                <p>#10</p>
             </div>
             <button class="menu-button" onclick="shareScores()">
                 SHARE
@@ -89,14 +105,13 @@
         
         <!-- game screen -->
         <div id="game" style="display:none">
-            game goes here...
             <button class="menu-button" onclick="showQuestion()">
                 MENU
             </button>
         </div>
         
         <!-- question menu -->
-        <div id="question" style="display:none">
+        <div id="question" class="menu-box" style="display:none">
             <div id="question-text">
                 If you exit now, your game will not be saved. Are you sure?
             </div>
@@ -109,8 +124,10 @@
         </div>
         
         <!-- exit message -->
-        <div id="exit" style="display:none">
-            Thanks for the visit!
+        <div id="exit" class="menu-box" style="display:none">
+            <div id="exit-text">
+                Come back when your ready to party!
+            </div>
             <button class="menu-button" onclick="showDisclaimer()">
                 RETURN TO GAME
             </button>
