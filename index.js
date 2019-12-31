@@ -151,6 +151,7 @@ function playGame() {
 function showQuestion() {
     "use strict";
     
+    hideElement("game-controls");
     showElement("transparency");
     showElement("question");
 }
@@ -160,6 +161,7 @@ function hideQuestion() {
     
     hideElement("transparency");
     hideElement("question");
+    showElement("game-controls");
 }
 
 // ******************************************************************
