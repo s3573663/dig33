@@ -168,6 +168,7 @@ function hideQuestion() {
 function start() {
     "use strict";
     
+    hideElement("game-controls");
     showElement("transparency");
     hideElement("hide");
     showElement("disclaimer");
