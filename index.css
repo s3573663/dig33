@@ -84,8 +84,8 @@ footer p {
 
 #game {
     z-index: 9;
-    width: 94vmin;
-    height: 94vmin;
+    width: 90vmin;
+    height: 90vmin;
     position: absolute;
     margin: 0;
     top: 50%;
@@ -156,7 +156,7 @@ footer p {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
-    margin-top: 10vmin;
+    margin-top: 9vmin;
     margin-bottom: 1vmin;
     font-size: 4vmin;
     font-family: monospace;

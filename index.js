@@ -92,7 +92,6 @@ function showMenu() {
     hideElement("login");
     hideElement("scores");
     hideElement("question");
-    hideElement("game-controls");
     showElement("transparency");
     showElement("menu");
 }
@@ -111,7 +110,9 @@ function playGame() {
     "use strict";
     
     hideElement("menu");
+    hideElement("transparency");
     showElement("game");
+    showElement("game-controls");
 }
 
 function showScores() {
@@ -140,14 +141,6 @@ function shareScores() {
 // ******************************************************************
 // game functions
 // ******************************************************************
-function playGame() {
-    "use strict";
-    
-    hideElement("menu");
-    hideElement("transparency");
-    showElement("game-controls");
-}
-
 function showQuestion() {
     "use strict";
     
