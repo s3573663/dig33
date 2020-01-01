@@ -116,16 +116,21 @@ function sendEmailVerification() {
 function register() {
     "use strict";
     
-    var email, password, verify;
+    var email, password, username, user, verify;
     verify = true;
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
+    username = document.getElementById('register-username').value;
     if (email.length < 4) {
         alert('Please enter an email address.');
         return;
     }
     if (password.length < 4) {
         alert('Please enter a password.');
+        return;
+    }
+    if (username.length <= 0) {
+        alert('Please enter a username.');
         return;
     }
     // Create user with email and pass.
@@ -145,44 +150,25 @@ function register() {
         verify = false;
     });
     
+      
     setTimeout(function () {
         if (verify === true) {
+            user = firebase.auth().currentUser;
+            user.updateProfile({
+                displayName: username
+            }).then(function () {
+                // Update successful.
+                verify = true;
+            }).catch(function (error) {
+                // An error happened.
+                verify = false;
+            });
             hideElement("login");
-            showElement("username");
-        }
-    }, 1000);
-}
-
-function registerUsername() {
-    "use strict";
-    var user, username, verify;
-    user = firebase.auth().currentUser;
-    username = document.getElementById('register-username').value;
-    
-    if (username.length < 4) {
-        alert('Please enter a username with 4 characters or more.');
-        return;
-    }
-
-    user.updateProfile({
-        displayName: username
-    }).then(function () {
-        // Update successful.
-        verify = true;
-    }).catch(function (error) {
-    // An error happened.
-        verify = false;
-    });
-    
-    setTimeout(function () {
-        if (verify === true) {
-            hideElement("username");
             showElement("menu");
-            // Debug - remove later
-            console.log(user.displayName);
         }
-    }, 1000);
+    }, 5000);
 }
+
 
 function logIn() {
     "use strict";
@@ -226,7 +212,7 @@ function logIn() {
         if (verify === true) {
             showMenu();
         }
-    }, 1000);
+    }, 5000);
 }
 
 // ******************************************************************
