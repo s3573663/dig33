@@ -143,8 +143,8 @@ function register() {
         alert('Please enter a password at least 8 characters in length.');
         showLogin();
         return;
-    } else if (username.length < 8) {
-        alert('Please enter a username at least 8 characters in length.');
+    } else if (username.length < 2) {
+        alert('Please enter a username at least 2 characters in length.');
         return;
     } else {
         hideElement("login");
