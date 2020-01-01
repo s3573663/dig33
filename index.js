@@ -139,15 +139,15 @@ function register() {
         alert('Please enter a valid email address.');
         showLogin();
         return;
-    }
-    if (password.length < 8) {
+    } else if (password.length < 8) {
         alert('Please enter a password at least 8 characters in length.');
         showLogin();
         return;
-    }
-    if (username.length < 8) {
+    } else if (username.length < 8) {
         alert('Please enter a username at least 8 characters in length.');
         return;
+    } else {
+        hideElement("login");
     }
     
     // create a new user with a valid email address and password.
@@ -163,6 +163,7 @@ function register() {
             alert(errorMessage);
         }
         console.log(error);
+        showElement("login");
         verify = false;
     });
     
@@ -200,10 +201,11 @@ function login() {
     if (email.length < 10) {
         alert('Please enter a valid email address.');
         return;
-    }
-    if (password.length < 8) {
+    } else if (password.length < 8) {
         alert('Please enter a password at least 8 characters in length.');
         return;
+    } else {
+        hideElement("login");
     }
     
     // sign in with valid email address and password
@@ -218,6 +220,7 @@ function login() {
             alert(errorMessage);
         }
         console.log(error);
+        showElement("login");
         verify = false;
     });
     
