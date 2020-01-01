@@ -79,25 +79,26 @@
                    placeholder="EMAIL" required="">
             <input type="password" name="password" id="login-password"
                    placeholder="PASSWORD" required="">
-            <input type="username" name="username" id="register-username"
-                   placeholder="USERNAME" required="">
-            <button class="menu-button" onclick="logIn()">
+            <button class="menu-button" onclick="login()">
                 LOGIN
             </button>
-            <button class="menu-button" onclick="register()">
+            <button class="menu-button" onclick="showUsername()">
                 REGISTER
             </button>
         </div>
         
         <!-- username -->
         <div id="username" class="menu-box" style="display:none">
-            <div id="username-text">
-                Please enter a username.   
+            <div id="login-text">
+                Please enter a unique username.
             </div>
-            <input type="text" name="username" id="register-username"
+            <input type="text" name="username" id="login-username"
                    placeholder="USERNAME" required="">
-            <button class="menu-button" onclick="registerUsername()">
+            <button class="menu-button" onclick="register()">
                 REGISTER
+            </button>
+            <button class="menu-button" onclick="showLogin()">
+                GO BACK
             </button>
         </div>
         
@@ -181,7 +182,7 @@
         </div>
         
         <footer>
-            <p>Version 0.09</p>
+            <p>Version 0.12</p>
             <!-- Authors: Aaron Bramich (19366050),
                           Brendan O'Keefe (19363873) -->
         </footer>

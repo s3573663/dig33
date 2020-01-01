@@ -130,7 +130,7 @@ footer p {
     color: white;
 }
 
-#login-username, #login-password, #login-email, #register-username {
+#login-username, #login-password, #login-email {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
@@ -138,6 +138,7 @@ footer p {
     border: 0.5vmin solid black;
     font-size: 4vmin;
     font-family: monospace;
+    outline: none;
 }
 
 #disclaimer-text, #question-text, #exit-text {
@@ -156,7 +157,7 @@ footer p {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
-    margin-top: 9vmin;
+    margin-top: 4vmin;
     margin-bottom: 1vmin;
     font-size: 4vmin;
     font-family: monospace;

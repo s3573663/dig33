@@ -10,8 +10,7 @@ var alert;          // browser alert messages
 var console;        // browser console (for debug purposes)
 var interval;       // for delayed instructions
 var location;       // link address
-
-/*global firebase*/
+var firebase;       // google firebase
 
 // return a URL parameter
 function getParameter(parameter) {
@@ -68,6 +67,7 @@ function showLogin() {
     "use strict";
     
     hideElement("disclaimer");
+    hideElement("username");
     showElement("login");
 }
 
@@ -88,6 +88,13 @@ function showDisclaimer() {
 // ******************************************************************
 // login functions
 // ******************************************************************
+function showUsername() {
+    "use strict";
+    
+    hideElement("login");
+    showElement("username");
+}
+
 function showMenu() {
     "use strict";
     
@@ -98,9 +105,12 @@ function showMenu() {
     showElement("menu");
 }
 
-// Not currently in use
+// **********************************
+// *********** not in use ***********
+// **********************************
 function sendEmailVerification() {
     "use strict";
+    
     // [START sendemailverification]
     firebase.auth().currentUser.sendEmailVerification().then(function () {
         // Email Verification sent!
@@ -108,10 +118,13 @@ function sendEmailVerification() {
         alert('Email Verification Sent!');
         // [END_EXCLUDE]
     });
+    
     // [END sendemailverification]
     document.getElementById('quickstart-verify-email').hidden = false;
-    
 }
+// **********************************
+// **********************************
+// **********************************
 
 function register() {
     "use strict";
@@ -120,27 +133,30 @@ function register() {
     verify = true;
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
-    username = document.getElementById('register-username').value;
-    if (email.length < 4) {
-        alert('Please enter an email address.');
+    username = document.getElementById('login-username').value;
+    
+    if (email.length < 10) {
+        alert('Please enter a valid email address.');
+        showLogin();
         return;
     }
-    if (password.length < 4) {
-        alert('Please enter a password.');
+    if (password.length < 8) {
+        alert('Please enter a password at least 8 characters in length.');
+        showLogin();
         return;
     }
-    if (username.length <= 0) {
-        alert('Please enter a username.');
+    if (username.length < 8) {
+        alert('Please enter a username at least 8 characters in length.');
         return;
     }
-    // Create user with email and pass.
+    
+    // create a new user with a valid email address and password.
     // [START createwithemail]
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
-        // Handle Errors here.
+        // handle errors
         var errorCode, errorMessage;
         errorCode = error.code;
         errorMessage = error.message;
-
         if (errorCode === 'auth/weak-password') {
             alert('The password is too weak.');
         } else {
@@ -150,17 +166,16 @@ function register() {
         verify = false;
     });
     
-      
     setTimeout(function () {
         if (verify === true) {
             user = firebase.auth().currentUser;
             user.updateProfile({
                 displayName: username
             }).then(function () {
-                // Update successful.
+                // update successful
                 verify = true;
             }).catch(function (error) {
-                // An error happened.
+                // an error happened
                 verify = false;
             });
             hideElement("login");
@@ -169,11 +184,10 @@ function register() {
     }, 5000);
 }
 
-
-function logIn() {
+function login() {
     "use strict";
     
-    // Sign current user out
+    // sign out current user
     if (firebase.auth().currentUser) {
         firebase.auth().signOut();
     }
@@ -183,21 +197,21 @@ function logIn() {
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
     
-    if (email.length < 4) {
-        alert('Please enter an email address.');
+    if (email.length < 10) {
+        alert('Please enter a valid email address.');
         return;
     }
-    if (password.length === 0) {
-        alert('Please enter a password');
+    if (password.length < 8) {
+        alert('Please enter a password at least 8 characters in length.');
         return;
     }
-    // Sign in with email and pass.
+    
+    // sign in with valid email address and password
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
-        // Handle Errors here.
+        // handle errors
         var errorCode, errorMessage;
         errorCode = error.code;
         errorMessage = error.message;
-
         if (errorCode === 'auth/wrong-password') {
             alert('Wrong password.');
         } else {
@@ -207,7 +221,7 @@ function logIn() {
         verify = false;
     });
     
-    // Call showMenu if no errors are thrown
+    // call showMenu() if no errors are thrown
     setTimeout(function () {
         if (verify === true) {
             showMenu();
@@ -238,6 +252,7 @@ function hideMenu() {
     "use strict";
     
     hideElement("menu");
+    hideElement("username");
     showElement("login");
 }
 
@@ -279,5 +294,4 @@ function start() {
     showElement("transparency");
     hideElement("hide");
     showElement("disclaimer");
-    //initApp();
 }
