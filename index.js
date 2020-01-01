@@ -11,6 +11,8 @@ var console;        // browser console (for debug purposes)
 var interval;       // for delayed instructions
 var location;       // link address
 
+/*global firebase*/
+
 // return a URL parameter
 function getParameter(parameter) {
     "use strict";
@@ -96,11 +98,135 @@ function showMenu() {
     showElement("menu");
 }
 
+// Not currently in use
+function sendEmailVerification() {
+    "use strict";
+    // [START sendemailverification]
+    firebase.auth().currentUser.sendEmailVerification().then(function () {
+        // Email Verification sent!
+        // [START_EXCLUDE]
+        alert('Email Verification Sent!');
+        // [END_EXCLUDE]
+    });
+    // [END sendemailverification]
+    document.getElementById('quickstart-verify-email').hidden = false;
+    
+}
+
 function register() {
     "use strict";
     
-    hideElement("login");
-    showElement("menu");
+    var email, password, verify;
+    verify = true;
+    email = document.getElementById('login-email').value;
+    password = document.getElementById('login-password').value;
+    if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+    }
+    if (password.length < 4) {
+        alert('Please enter a password.');
+        return;
+    }
+    // Create user with email and pass.
+    // [START createwithemail]
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+        // Handle Errors here.
+        var errorCode, errorMessage;
+        errorCode = error.code;
+        errorMessage = error.message;
+
+        if (errorCode === 'auth/weak-password') {
+            alert('The password is too weak.');
+        } else {
+            alert(errorMessage);
+        }
+        console.log(error);
+        verify = false;
+    });
+    
+    setTimeout(function () {
+        if (verify === true) {
+            hideElement("login");
+            showElement("username");
+        }
+    }, 1000);
+}
+
+function registerUsername() {
+    "use strict";
+    var user, username, verify;
+    user = firebase.auth().currentUser;
+    username = document.getElementById('register-username').value;
+    
+    if (username.length < 4) {
+        alert('Please enter a username with 4 characters or more.');
+        return;
+    }
+
+    user.updateProfile({
+        displayName: username
+    }).then(function () {
+        // Update successful.
+        verify = true;
+    }).catch(function (error) {
+    // An error happened.
+        verify = false;
+    });
+    
+    setTimeout(function () {
+        if (verify === true) {
+            hideElement("username");
+            showElement("menu");
+            // Debug - remove later
+            console.log(user.displayName);
+        }
+    }, 1000);
+}
+
+function logIn() {
+    "use strict";
+    
+    // Sign current user out
+    if (firebase.auth().currentUser) {
+        firebase.auth().signOut();
+    }
+    
+    var email, password, verify;
+    verify = true;
+    email = document.getElementById('login-email').value;
+    password = document.getElementById('login-password').value;
+    
+    if (email.length < 4) {
+        alert('Please enter an email address.');
+        return;
+    }
+    if (password.length === 0) {
+        alert('Please enter a password');
+        return;
+    }
+    // Sign in with email and pass.
+    firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+        // Handle Errors here.
+        var errorCode, errorMessage;
+        errorCode = error.code;
+        errorMessage = error.message;
+
+        if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
+        } else {
+            alert(errorMessage);
+        }
+        console.log(error);
+        verify = false;
+    });
+    
+    // Call showMenu if no errors are thrown
+    setTimeout(function () {
+        if (verify === true) {
+            showMenu();
+        }
+    }, 1000);
 }
 
 // ******************************************************************
@@ -167,4 +293,5 @@ function start() {
     showElement("transparency");
     hideElement("hide");
     showElement("disclaimer");
+    //initApp();
 }

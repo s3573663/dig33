@@ -21,7 +21,32 @@
         <!-- div to hide page behind while loading -->
         <div id="hide"></div>
         
-        <!-- firebase -->
+        <!-- firebase SDK -->
+        
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+        
+        <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+        
+        <!-- firebase database -->
+        <script 
+        src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js">
+        </script>
+
+        <script>
+            // Firebase configuration
+            var firebaseConfig = {
+                apiKey: "AIzaSyD--YxXf3lx-6KmB8APnhlKFXueVL2tPrU",
+                authDomain: "desperados-7a8e9.firebaseapp.com",
+                databaseURL: "https://desperados-7a8e9.firebaseio.com",
+                projectId: "desperados-7a8e9",
+                storageBucket: "desperados-7a8e9.appspot.com",
+                messagingSenderId: "426466987116",
+                appId: "1:426466987116:web:2e85877e1721d217f65c49",
+                measurementId: "G-JX3MHH0XS4"
+            };
+            // Initialize Firebase
+            firebase.initializeApp(firebaseConfig);
+        </script>
         
         
         <!-- javascript -->
@@ -48,16 +73,28 @@
         <!-- login menu -->
         <div id="login" class="menu-box" style="display:none">
             <div id="login-text">
-                Resister now or login if you have already registered.
+                Register now or login if you have already registered.
             </div>
-            <input type="text" name="username" id="login-username"
-                   placeholder="USERNAME" required="">
-            <input type="text" name="password" id="login-password"
+            <input type="text" name="email" id="login-email"
+                   placeholder="EMAIL" required="">
+            <input type="password" name="password" id="login-password"
                    placeholder="PASSWORD" required="">
-            <button class="menu-button" onclick="showMenu()">
+            <button class="menu-button" onclick="logIn()">
                 LOGIN
             </button>
             <button class="menu-button" onclick="register()">
+                REGISTER
+            </button>
+        </div>
+        
+        <!-- username -->
+        <div id="username" class="menu-box" style="display:none">
+            <div id="username-text">
+                Please enter a username.   
+            </div>
+            <input type="text" name="username" id="register-username"
+                   placeholder="USERNAME" required="">
+            <button class="menu-button" onclick="registerUsername()">
                 REGISTER
             </button>
         </div>

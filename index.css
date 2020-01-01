@@ -130,7 +130,7 @@ footer p {
     color: white;
 }
 
-#login-username, #login-password {
+#login-username, #login-password, #login-email, #register-username {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
