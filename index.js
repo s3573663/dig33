@@ -179,7 +179,7 @@ function register() {
                 // an error happened
                 verify = false;
             });
-            hideElement("login");
+            hideElement("username");
             showElement("menu");
         }
     }, 5000);
