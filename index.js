@@ -212,7 +212,7 @@ function registerUsername() {
 
 function login() {
     "use strict";
-    
+
     // sign out current user
     if (firebase.auth().currentUser) {
         firebase.auth().signOut();
@@ -277,6 +277,17 @@ function deleteUser() {
     
     document.getElementById('login-username').value = "";
     showLogin();
+}
+
+function logOut() {
+    "use strict";
+
+    
+    firebase.auth().signOut();
+
+    hideElement("menu");
+    hideElement("username");
+    showElement("login");
 }
 
 // ******************************************************************
