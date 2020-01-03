@@ -279,15 +279,41 @@ function deleteUser() {
     showLogin();
 }
 
+// log user out of Desperados
 function logOut() {
     "use strict";
-
-    
+ 
     firebase.auth().signOut();
 
     hideElement("menu");
     hideElement("username");
     showElement("login");
+}
+
+// send a email link to change password
+function resetPassword() {
+    "use strict";
+    
+    var email, errorCode, errorMessage;
+    
+    email = document.getElementById('login-email').value;
+
+    firebase.auth().sendPasswordResetEmail(email).then(function () {
+        // Password Reset Email Sent!
+        alert('Password Reset Email Sent!');
+    }).catch(function (error) {
+        
+        errorCode = error.code;
+        errorMessage = error.message;
+
+        if (errorCode === 'auth/invalid-email') {
+            alert(errorMessage);
+        } else if (errorCode === 'auth/user-not-found') {
+            alert(errorMessage);
+        }
+        console.log(error);
+    });
+
 }
 
 // ******************************************************************
