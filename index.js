@@ -133,8 +133,7 @@ function register() {
     verify = true;
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
-
-    
+ 
     if (email.length < 10) {
         alert('Please enter a valid email address.');
         document.getElementById("login-email").value = "";
@@ -297,6 +296,13 @@ function resetPassword() {
     var email, errorCode, errorMessage;
     
     email = document.getElementById('login-email').value;
+    
+    if (email.length < 10) {
+        alert('Please enter a valid email address.');
+        document.getElementById("login-email").value = "";
+        document.getElementById("login-password").value = "";
+        return;
+    }
 
     firebase.auth().sendPasswordResetEmail(email).then(function () {
         // Password Reset Email Sent!
