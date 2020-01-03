@@ -129,26 +129,24 @@ function sendEmailVerification() {
 function register() {
     "use strict";
     
-    var email, password, username, user, verify;
+    var email, password, verify;
     verify = true;
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
-    username = document.getElementById('login-username').value;
+
     
     if (email.length < 10) {
         alert('Please enter a valid email address.');
-        showLogin();
+        document.getElementById("login-email").value = "";
+        document.getElementById("login-password").value = "";
         return;
-    } else if (password.length < 8) {
-        alert('Please enter a password at least 8 characters in length.');
-        showLogin();
-        return;
-    } else if (username.length < 2) {
-        alert('Please enter a username at least 2 characters in length.');
-        return;
-    } else {
-        hideElement("login");
     }
+    if (password.length < 8) {
+        alert('Please enter a password at least 8 characters in length.');
+        document.getElementById("login-password").value = "";
+        return;
+    }
+ 
     
     // create a new user with a valid email address and password.
     // [START createwithemail]
@@ -167,20 +165,47 @@ function register() {
         verify = false;
     });
     
+     
     setTimeout(function () {
         if (verify === true) {
-            user = firebase.auth().currentUser;
-            user.updateProfile({
-                displayName: username
-            }).then(function () {
-                // update successful
-                verify = true;
-            }).catch(function (error) {
-                // an error happened
-                verify = false;
-            });
+            hideElement("login");
+            email = document.getElementById('login-email').value = "";
+            password = document.getElementById('login-password').value = "";
+            showElement("username");
+        }
+    }, 5000);
+}
+
+function registerUsername() {
+    "use strict";
+    var user, username, verify;
+    user = firebase.auth().currentUser;
+    username = document.getElementById('login-username').value;
+
+    if (username.length < 2) {
+        alert('Please enter a username at least 2 characters in length.');
+        document.getElementById('login-username').value = "";
+        return;
+    }
+
+    user.updateProfile({
+        displayName: username
+    }).then(function () {
+        // Update successful.
+        verify = true;
+    }).catch(function (error) {
+    // An error happened.
+        verify = false;
+    });
+    
+    
+    setTimeout(function () {
+        if (verify === true) {
             hideElement("username");
+            document.getElementById('login-username').value = "";
             showElement("menu");
+            // Debug - remove later
+            console.log(user.displayName);
         }
     }, 5000);
 }
@@ -200,9 +225,12 @@ function login() {
     
     if (email.length < 10) {
         alert('Please enter a valid email address.');
+        document.getElementById("login-email").value = "";
+        document.getElementById("login-password").value = "";
         return;
     } else if (password.length < 8) {
         alert('Please enter a password at least 8 characters in length.');
+        document.getElementById("login-password").value = "";
         return;
     } else {
         hideElement("login");
@@ -224,12 +252,31 @@ function login() {
         verify = false;
     });
     
+    document.getElementById("login-email").value = "";
+    document.getElementById("login-password").value = "";
+    
     // call showMenu() if no errors are thrown
     setTimeout(function () {
+        
         if (verify === true) {
             showMenu();
         }
     }, 5000);
+}
+
+// if user does not complete registration, remove the email from firebase
+function deleteUser() {
+    "use strict";
+    var user = firebase.auth().currentUser;
+
+    user.delete().then(function () {
+    // User deleted.
+    }).catch(function (error) {
+    // An error happened.
+    });
+    
+    document.getElementById('login-username').value = "";
+    showLogin();
 }
 
 // ******************************************************************
