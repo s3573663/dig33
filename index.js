@@ -113,9 +113,8 @@ function sendEmailVerification() {
     
     // [START sendemailverification]
     firebase.auth().currentUser.sendEmailVerification().then(function () {
-        // Email Verification sent!
         // [START_EXCLUDE]
-        alert('Email Verification Sent!');
+        alert('Email verification sent.');
         // [END_EXCLUDE]
     });
     
@@ -145,7 +144,6 @@ function register() {
         document.getElementById("login-password").value = "";
         return;
     }
- 
     
     // create a new user with a valid email address and password.
     // [START createwithemail]
@@ -164,7 +162,6 @@ function register() {
         verify = false;
     });
     
-     
     setTimeout(function () {
         if (verify === true) {
             hideElement("login");
@@ -177,16 +174,17 @@ function register() {
 
 function registerUsername() {
     "use strict";
+    
     var user, username, verify;
     user = firebase.auth().currentUser;
     username = document.getElementById('login-username').value;
-
+    
     if (username.length < 2) {
         alert('Please enter a username at least 2 characters in length.');
         document.getElementById('login-username').value = "";
         return;
     }
-
+    
     user.updateProfile({
         displayName: username
     }).then(function () {
@@ -196,7 +194,6 @@ function registerUsername() {
     // An error happened.
         verify = false;
     });
-    
     
     setTimeout(function () {
         if (verify === true) {
@@ -211,7 +208,7 @@ function registerUsername() {
 
 function login() {
     "use strict";
-
+    
     // sign out current user
     if (firebase.auth().currentUser) {
         firebase.auth().signOut();
@@ -256,7 +253,6 @@ function login() {
     
     // call showMenu() if no errors are thrown
     setTimeout(function () {
-        
         if (verify === true) {
             showMenu();
         }
@@ -266,24 +262,25 @@ function login() {
 // if user does not complete registration, remove the email from firebase
 function deleteUser() {
     "use strict";
+    
     var user = firebase.auth().currentUser;
-
+    
     user.delete().then(function () {
-    // User deleted.
+    // user deleted.
     }).catch(function (error) {
-    // An error happened.
+    // an error happened.
     });
     
     document.getElementById('login-username').value = "";
     showLogin();
 }
 
-// log user out of Desperados
+// log user out of game
 function logOut() {
     "use strict";
- 
+    
     firebase.auth().signOut();
-
+    
     hideElement("menu");
     hideElement("username");
     showElement("login");
@@ -303,15 +300,13 @@ function resetPassword() {
         document.getElementById("login-password").value = "";
         return;
     }
-
+    
     firebase.auth().sendPasswordResetEmail(email).then(function () {
-        // Password Reset Email Sent!
-        alert('Password Reset Email Sent!');
+        alert('Password reset email sent.');
     }).catch(function (error) {
-        
         errorCode = error.code;
         errorMessage = error.message;
-
+        
         if (errorCode === 'auth/invalid-email') {
             alert(errorMessage);
         } else if (errorCode === 'auth/user-not-found') {
@@ -319,7 +314,6 @@ function resetPassword() {
         }
         console.log(error);
     });
-
 }
 
 // ******************************************************************
