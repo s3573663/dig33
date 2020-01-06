@@ -12,6 +12,15 @@ var interval;       // for delayed instructions
 var location;       // link address
 var firebase;       // google firebase
 
+var clickXpx;       // click x position in pixels
+var clickYpx;       // click y position in pixels
+var clickXvmin;     // click x position in viewport min units
+var clickYvmin;     // click y position in viewport min units
+var boardXpx;       // click x position in pixels on game board
+var boardYpx;       // click y position in pixels on game board
+var boardXvmin;     // click x position in viewport min units on game board
+var boardYvmin;     // click y position in viewport min units on game board
+
 // return a URL parameter
 function getParameter(parameter) {
     "use strict";
@@ -58,6 +67,54 @@ function hideElement(elementID) {
     "use strict";
     
     document.getElementById(elementID).style.display = "none";
+}
+
+// get click/tap position
+function getPos(e) {
+    "use strict";
+    
+    var vmin,        // pixels per viewport min unit
+        offsetXpx,   // offset game board start x pos in px
+        offsetYpx,   // offset game board start y pos in px
+        offsetXvmin, // offset game board start x pos in vmin
+        offsetYvmin; // offset game board start y pos in vmin
+    
+    if (window.innerWidth > window.innerHeight) {
+        // landscape mode
+        vmin = window.innerHeight / 100;
+        offsetXpx = (window.innerWidth - (vmin * 90)) / 2;
+        offsetYpx = vmin * 5;
+        offsetXvmin = (((window.innerWidth -
+                         window.innerHeight) / vmin) / 2) + 5;
+        offsetYvmin = 5;
+    } else {
+        // portrait mode
+        vmin = window.innerWidth / 100;
+        offsetXpx = vmin * 5;
+        offsetYpx = (window.innerHeight - (vmin * 90)) / 2;
+        offsetXvmin = 5;
+        offsetYvmin = (((window.innerHeight -
+                         window.innerWidth) / vmin) / 2) + 5;
+    }
+    
+    clickXpx = e.clientX;
+    clickYpx = e.clientY;
+    clickXvmin = parseInt(clickXpx / vmin, 0);
+    clickYvmin = parseInt(clickYpx / vmin, 0);
+    boardXpx = parseInt(e.clientX - offsetXpx, 0);
+    boardYpx = parseInt(e.clientY - offsetYpx, 0);
+    boardXvmin = parseInt(boardXpx / vmin, 0);
+    boardYvmin = parseInt(boardYpx / vmin, 0);
+    
+    // DEBUG - REMOVE LATER
+    console.log("clickXpx = " + clickXpx);
+    console.log("clickYpx = " + clickYpx);
+    console.log("clickXvmin = " + clickXvmin);
+    console.log("clickYvmin = " + clickYvmin);
+    console.log("boardXpx = " + boardXpx);
+    console.log("boardYpx = " + boardYpx);
+    console.log("boardXvmin = " + boardXvmin);
+    console.log("boardYvmin = " + boardYvmin);
 }
 
 // ******************************************************************
@@ -376,6 +433,8 @@ function hideQuestion() {
 // ******************************************************************
 function start() {
     "use strict";
+    
+    window.addEventListener("click", getPos, false);
     
     hideElement("game-controls");
     showElement("transparency");

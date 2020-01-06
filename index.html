@@ -22,16 +22,13 @@
         <div id="hide"></div>
         
         <!-- firebase SDK -->
-        
         <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
-        
         <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
         
         <!-- firebase database -->
         <script 
         src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js">
         </script>
-
         <script>
             // firebase configuration
             var firebaseConfig = {
@@ -47,7 +44,6 @@
             // initialize Firebase
             firebase.initializeApp(firebaseConfig);
         </script>
-        
         
         <!-- javascript -->
         <script src="index.js"></script>
@@ -107,7 +103,7 @@
         
         <!-- main menu -->
         <div id="menu" class="menu-box" style="display:none">
-            <div id="game-title">
+            <div id="menu-title">
                 GAME TITLE
             </div>
             <button class="menu-button" onclick="playGame()">
@@ -159,6 +155,8 @@
                     0
                 </div>
             </div>
+            <img id="game-background" alt="template - flat background.png"
+                 src="graphics/template%20-%20flat%20background.png">
         </div>
         
         <!-- question menu -->

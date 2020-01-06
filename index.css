@@ -4,9 +4,10 @@
 *********************************************************************
 z-index ranges:
 *********************************************************************
-0 - 8   = behind game board
-9       = game board (grid background)
-10 - 50 = rows from bottom to top of grid on game board (21w x 41h)
+1 - 4   = behind game board
+5 - 8   = game board
+9 - 49  = rows from bottom to top of grid on game board (21w x 41h)
+50      = game controls
 51 - 52 = #transparency (with loading circle)
 53 - 60 = game menus
 61      = #hide
@@ -82,20 +83,6 @@ footer p {
     100% { transform: rotate(360deg); }
 }
 
-#game {
-    z-index: 9;
-    width: 90vmin;
-    height: 90vmin;
-    position: absolute;
-    margin: 0;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    background-color: white;
-    text-align: right;
-}
-
 .menu-box {
     z-index: 53;
     width: 75vmin;
@@ -129,6 +116,13 @@ footer p {
 .menu-button:hover, .menu-button:active {
     background-color: black;
     color: white;
+}
+
+#menu-title {
+    font-size: 9vmin;
+    font-family: monospace;
+    text-align: center;
+    margin-top: 20vmin;
 }
 
 #login-username, #login-password, #login-email {
@@ -192,14 +186,42 @@ footer p {
     margin: 1vmin;
 }
 
-#game-title {
-    font-size: 9vmin;
-    font-family: monospace;
-    text-align: center;
-    margin-top: 20vmin;
+#game {
+    z-index: 5;
+    width: 90vmin;
+    height: 90vmin;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    background-color: white;
+    text-align: right;
+}
+
+#game-background {
+    z-index: 6;
+    width: 90vmin;
+    height: 90vmin;
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 #game-controls {
+    z-index: 50;
+    width: 90vmin;
+    height: auto;
+    position: absolute;
+    margin: 0;
+    top: 0;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
     background: rgb(0,0,0,0);
     display: flex;
 }
@@ -243,3 +265,4 @@ footer p {
     background-color: black;
     color: white;
 }
+
