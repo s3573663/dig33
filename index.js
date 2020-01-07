@@ -74,47 +74,43 @@ function getPos(e) {
     "use strict";
     
     var vmin,        // pixels per viewport min unit
+        vminWidth,   // width in viewport min units
+        vminHeight,  // height in viewport min units
         offsetXpx,   // offset game board start x pos in px
-        offsetYpx,   // offset game board start y pos in px
-        offsetXvmin, // offset game board start x pos in vmin
-        offsetYvmin; // offset game board start y pos in vmin
+        offsetYpx;   // offset game board start y pos in px
     
     if (window.innerWidth > window.innerHeight) {
         // landscape mode
         vmin = window.innerHeight / 100;
-        offsetXpx = (window.innerWidth - (vmin * 90)) / 2;
+        vminWidth = window.innerWidth / vmin;
+        vminHeight = 100;
+        offsetXpx = ((vminWidth - 90) / 2) * vmin;
         offsetYpx = vmin * 5;
-        offsetXvmin = (((window.innerWidth -
-                         window.innerHeight) / vmin) / 2) + 5;
-        offsetYvmin = 5;
     } else {
         // portrait mode
         vmin = window.innerWidth / 100;
+        vminWidth = 100;
+        vminHeight = window.innerHeight / 100;
         offsetXpx = vmin * 5;
-        offsetYpx = (window.innerHeight - (vmin * 90)) / 2;
-        offsetXvmin = 5;
-        offsetYvmin = (((window.innerHeight -
-                         window.innerWidth) / vmin) / 2) + 5;
+        offsetYpx = ((vminHeight - 90) / 2) * vmin;
     }
     
     clickXpx = e.clientX;
     clickYpx = e.clientY;
-    clickXvmin = parseInt(clickXpx / vmin, 0);
-    clickYvmin = parseInt(clickYpx / vmin, 0);
-    boardXpx = parseInt(e.clientX - offsetXpx, 0);
-    boardYpx = parseInt(e.clientY - offsetYpx, 0);
-    boardXvmin = parseInt(boardXpx / vmin, 0);
-    boardYvmin = parseInt(boardYpx / vmin, 0);
+    clickXvmin = clickXpx / vmin;
+    clickYvmin = clickYpx / vmin;
+    boardXpx = e.clientX - offsetXpx;
+    boardYpx = e.clientY - offsetYpx;
+    boardXvmin = boardXpx / vmin;
+    boardYvmin = boardYpx / vmin;
     
     // DEBUG - REMOVE LATER
-    console.log("clickXpx = " + clickXpx);
-    console.log("clickYpx = " + clickYpx);
-    console.log("clickXvmin = " + clickXvmin);
-    console.log("clickYvmin = " + clickYvmin);
+    // ********************
     console.log("boardXpx = " + boardXpx);
     console.log("boardYpx = " + boardYpx);
     console.log("boardXvmin = " + boardXvmin);
     console.log("boardYvmin = " + boardYvmin);
+    // ********************
 }
 
 // ******************************************************************
@@ -378,6 +374,11 @@ function resetPassword() {
 // ******************************************************************
 function playGame() {
     "use strict";
+    
+    // DEBUG - REMOVE LATER
+    // ********************
+    hideElement("disclaimer");
+    // ********************
     
     hideElement("menu");
     hideElement("transparency");
