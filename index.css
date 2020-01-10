@@ -198,6 +198,7 @@ footer p {
     transform: translate(-50%, -50%);
     background-color: white;
     text-align: right;
+    user-select: none;
 }
 
 #game-background {
@@ -210,6 +211,7 @@ footer p {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    pointer-events: none;
 }
 
 #game-controls {
@@ -224,6 +226,22 @@ footer p {
     transform: translateX(-50%);
     background: rgb(0,0,0,0);
     display: flex;
+}
+
+#game-cell {
+    z-index: 49;
+    width: 9vmin;
+    height: 4.5vmin;
+    position: absolute;
+    margin: 0;
+}
+
+#game-sprite {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
 }
 
 #timer {
@@ -265,4 +283,3 @@ footer p {
     background-color: black;
     color: white;
 }
-

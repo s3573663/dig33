@@ -4,22 +4,19 @@
 // globals and helper functions
 // ******************************************************************
 
-var document;       // the web page
-var window;         // the browser
-var alert;          // browser alert messages
-var console;        // browser console (for debug purposes)
-var interval;       // for delayed instructions
-var location;       // link address
-var firebase;       // google firebase
+var document;         // the web page
+var window;           // the browser
+var alert;            // browser alert messages
+var console;          // browser console (for debug purposes)
+var interval;         // for delayed instructions
+var location;         // link address
+var firebase;         // google firebase
 
-var clickXpx;       // click x position in pixels
-var clickYpx;       // click y position in pixels
-var clickXvmin;     // click x position in viewport min units
-var clickYvmin;     // click y position in viewport min units
-var boardXpx;       // click x position in pixels on game board
-var boardYpx;       // click y position in pixels on game board
-var boardXvmin;     // click x position in viewport min units on game board
-var boardYvmin;     // click y position in viewport min units on game board
+// id and position of in-game objects
+/*var gameObjects = [
+    [5, 10, "sprite01"],
+    [15, 30, "sprite02"]
+];*/
 
 // return a URL parameter
 function getParameter(parameter) {
@@ -69,15 +66,81 @@ function hideElement(elementID) {
     document.getElementById(elementID).style.display = "none";
 }
 
+// calculate player move
+function calcMove(xPos, yPos, elementID) {
+    "use strict";
+    
+    var i;
+    
+    if (elementID === undefined) {
+        // add choices if user selects a cell
+        
+        // default return if user selects an empty cell
+        return "game-cell";
+    } //else {
+        // add choices if computer selects a cell
+        
+        
+    //}
+}
+
+// position element by id in cell x y
+function positionElement(xPos, yPos, elementID) {
+    "use strict";
+    
+    if (elementID === undefined) {
+        elementID = calcMove(xPos, yPos);
+    }
+    
+    if (xPos > -1 && xPos < 21 && yPos > -1 && yPos < 41) {
+        xPos = (xPos * 4.5) - 4.5;
+        yPos = (yPos * 2.25) - 2.25;
+    
+        document.getElementById(elementID).style.left = xPos + "vmin";
+        document.getElementById(elementID).style.top = yPos + "vmin";
+        document.getElementById(elementID).style.zIndex = yPos + 9;
+    }
+}
+
+// show element by id in cell x y
+function showElementInCell(xPos, yPos, elementID) {
+    "use strict";
+    
+    if (elementID === undefined) {
+        elementID = "game-cell";
+    }
+    
+    positionElement(xPos, yPos, elementID);
+    showElement(elementID);
+}
+
+// get cell number
+function getCell(boardXvmin, boardYvmin) {
+    "use strict";
+    
+    var i, xPos, yPos, xWidth = 90 / 20, yHeight = 90 / 40;
+    
+    xPos = (boardXvmin / xWidth).toFixed(0);
+    yPos = (boardYvmin / yHeight).toFixed(0);
+    
+    if (xPos > 0 && xPos < 20 && yPos > 0 && yPos < 40) {
+        showElementInCell(xPos, yPos);
+    }
+}
+
 // get click/tap position
 function getPos(e) {
     "use strict";
     
-    var vmin,        // pixels per viewport min unit
-        vminWidth,   // width in viewport min units
-        vminHeight,  // height in viewport min units
-        offsetXpx,   // offset game board start x pos in px
-        offsetYpx;   // offset game board start y pos in px
+    var vmin,       // pixels per viewport min unit
+        vminWidth,  // width in viewport min units
+        vminHeight, // height in viewport min units
+        offsetXpx,  // offset game board start x pos in px
+        offsetYpx,  // offset game board start y pos in px
+        boardXpx,   // click x position in pixels on game board
+        boardYpx,   // click y position in pixels on game board
+        boardXvmin, // click x position in viewport min units on game board
+        boardYvmin; // click y position in viewport min units on game board
     
     if (window.innerWidth > window.innerHeight) {
         // landscape mode
@@ -95,22 +158,12 @@ function getPos(e) {
         offsetYpx = ((vminHeight - 90) / 2) * vmin;
     }
     
-    clickXpx = e.clientX;
-    clickYpx = e.clientY;
-    clickXvmin = clickXpx / vmin;
-    clickYvmin = clickYpx / vmin;
     boardXpx = e.clientX - offsetXpx;
     boardYpx = e.clientY - offsetYpx;
     boardXvmin = boardXpx / vmin;
     boardYvmin = boardYpx / vmin;
     
-    // DEBUG - REMOVE LATER
-    // ********************
-    console.log("boardXpx = " + boardXpx);
-    console.log("boardYpx = " + boardYpx);
-    console.log("boardXvmin = " + boardXvmin);
-    console.log("boardYvmin = " + boardYvmin);
-    // ********************
+    getCell(boardXvmin, boardYvmin);
 }
 
 // ******************************************************************
@@ -158,9 +211,9 @@ function showMenu() {
     showElement("menu");
 }
 
-// **********************************
-// *********** not in use ***********
-// **********************************
+// ********************
+// not in use
+// ********************
 function sendEmailVerification() {
     "use strict";
     
@@ -174,9 +227,9 @@ function sendEmailVerification() {
     // [END sendemailverification]
     document.getElementById('quickstart-verify-email').hidden = false;
 }
-// **********************************
-// **********************************
-// **********************************
+// ********************
+// ********************
+// ********************
 
 function register() {
     "use strict";
@@ -241,10 +294,10 @@ function registerUsername() {
     user.updateProfile({
         displayName: username
     }).then(function () {
-        // Update successful.
+        // update successful.
         verify = true;
     }).catch(function (error) {
-    // An error happened.
+        // an error happened.
         verify = false;
     });
     
@@ -375,15 +428,19 @@ function resetPassword() {
 function playGame() {
     "use strict";
     
-    // DEBUG - REMOVE LATER
-    // ********************
-    hideElement("disclaimer");
-    // ********************
+    var i;
     
     hideElement("menu");
     hideElement("transparency");
     showElement("game");
     showElement("game-controls");
+    
+    // display startup environment and sprite objects
+    /*for (i = 0; i < gameObjects.length; i = i + 1) {
+        showElementInCell(gameObjects[i][0],
+                          gameObjects[i][1],
+                          gameObjects[i][2]);
+    }*/
 }
 
 function showScores() {
@@ -437,8 +494,16 @@ function start() {
     
     window.addEventListener("click", getPos, false);
     
-    hideElement("game-controls");
-    showElement("transparency");
-    hideElement("hide");
-    showElement("disclaimer");
+    if (getParameter("debug") === "true") {
+        //start in debug mode (skips all menus)
+        hideElement("hide");
+        hideElement("disclaimer");
+        playGame();
+    } else {
+        //start normally
+        hideElement("game-controls");
+        showElement("transparency");
+        hideElement("hide");
+        showElement("disclaimer");
+    }
 }

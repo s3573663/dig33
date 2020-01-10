@@ -64,11 +64,6 @@
             <button class="menu-button" onclick="showExit()">
                 DECLINE
             </button>
-            <!-- DEBUG - REMOVE LATER -->
-            <button class="menu-button" onclick="playGame()">
-                DEBUG
-            </button>
-            <!-- ******************** -->
         </div>
         
         <!-- login menu -->
@@ -160,8 +155,25 @@
                     0
                 </div>
             </div>
-            <img id="game-background" alt="template - flat background.png"
-                 src="graphics/template%20-%20flat%20background.png">
+            
+            <!-- game environment objects -->
+            <img id="game-background" alt="template-flat-background.png"
+                 src="graphics/template-flat-background.png">
+            
+            <img id="game-cell" alt="template-highlight.png"
+                 src="graphics/template-highlight.png"
+                 style="display:none">
+            
+            <!-- game sprite objects -->
+            <!--<img id="sprite01" class="game-sprite"
+                 alt="sprite-wally.png"
+                 src="graphics/sprite-wally.png"
+                 style="display:none">
+            
+            <img id="sprite02" class="game-sprite"
+                 alt="sprite-randy-marsh.png"
+                 src="graphics/sprite-randy-marsh.png"
+                 style="display:none">-->
         </div>
         
         <!-- question menu -->
@@ -188,7 +200,7 @@
         </div>
         
         <footer>
-            <p>Version 0.24</p>
+            <p>V0.24</p>
             <!-- Authors: Aaron Bramich (19366050),
                           Brendan O'Keefe (19363873) -->
         </footer>
