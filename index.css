@@ -236,7 +236,7 @@ footer p {
     margin: 0;
 }
 
-#game-sprite {
+.game-sprite {
     z-index: 9;
     width: 9vmin;
     height: 9vmin;
@@ -282,4 +282,10 @@ footer p {
 .menu-button-small:hover, .menu-button-small:active {
     background-color: black;
     color: white;
+}
+
+#sprite01 {
+    background: url(graphics/sprite-randy-marsh.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }

@@ -13,10 +13,11 @@ var location;         // link address
 var firebase;         // google firebase
 
 // id and position of in-game objects
-/*var gameObjects = [
-    [5, 10, "sprite01"],
-    [15, 30, "sprite02"]
-];*/
+var gameObjects = [
+    [10, 20, "sprite01"]
+];
+// game object selected
+var gameObject = [0, 0, "none"];
 
 // return a URL parameter
 function getParameter(parameter) {
@@ -66,52 +67,105 @@ function hideElement(elementID) {
     document.getElementById(elementID).style.display = "none";
 }
 
-// calculate player move
-function calcMove(xPos, yPos, elementID) {
+// sprite animation
+function animateSprite(elementID, startIndex, endIndex) {
     "use strict";
     
-    var i;
+    var position = parseInt(startIndex, 10);
     
-    if (elementID === undefined) {
-        // add choices if user selects a cell
+    interval = setInterval(function () {
         
-        // default return if user selects an empty cell
-        return "game-cell";
-    } //else {
-        // add choices if computer selects a cell
+        position = position - startIndex;
         
+        if (position === endIndex) {
+            position = 0;
+        }
         
-    //}
-}
-
-// position element by id in cell x y
-function positionElement(xPos, yPos, elementID) {
-    "use strict";
-    
-    if (elementID === undefined) {
-        elementID = calcMove(xPos, yPos);
-    }
-    
-    if (xPos > -1 && xPos < 21 && yPos > -1 && yPos < 41) {
-        xPos = (xPos * 4.5) - 4.5;
-        yPos = (yPos * 2.25) - 2.25;
-    
-        document.getElementById(elementID).style.left = xPos + "vmin";
-        document.getElementById(elementID).style.top = yPos + "vmin";
-        document.getElementById(elementID).style.zIndex = yPos + 9;
-    }
+        document.getElementById(elementID).style.backgroundPositionX =
+            position + "vmin";
+    }, 200);
 }
 
 // show element by id in cell x y
 function showElementInCell(xPos, yPos, elementID) {
     "use strict";
     
-    if (elementID === undefined) {
-        elementID = "game-cell";
-    }
+    var zlayer, i, xPosInt, yPosInt, xObjInt, yObjInt;
     
-    positionElement(xPos, yPos, elementID);
-    showElement(elementID);
+    if (xPos > -1 && xPos < 21 && yPos > -1 && yPos < 41) {
+        
+        // calculate player move
+        if (elementID === undefined) {
+            for (i = 0; i < gameObjects.length; i = i + 1) {
+                
+                xPosInt = parseInt(xPos, 10);
+                yPosInt = parseInt(yPos, 10);
+                xObjInt = parseInt(gameObjects[i][0], 10);
+                yObjInt = parseInt(gameObjects[i][1], 10);
+                
+                if (xPosInt === xObjInt && yPosInt === yObjInt) {
+                    
+                    // object in cell
+                    if (gameObject[2] === "none") {
+                        // user selects object
+                        gameObject[0] = gameObjects[i][2];
+                        gameObject[1] = gameObjects[i][2];
+                        gameObject[2] = gameObjects[i][2];
+                        // highlight selected object
+                        elementID = "game-cell";
+                    } else {
+                        // show error
+                        console.log("cell occupied");
+                        elementID = undefined;
+                    }
+                    
+                } else {
+                    
+                    // empty cell
+                    if (gameObject[2] === "none") {
+                        // show error
+                        console.log("cell empty");
+                        elementID = undefined;
+                    } else {
+                        // move object to cell
+                        elementID = gameObject[2];
+                        gameObjects[i][0] = xPosInt;
+                        gameObjects[i][1] = yPosInt;
+                        // clear gameObject
+                        gameObject[0] = 0;
+                        gameObject[1] = 1;
+                        gameObject[2] = "none";
+                        // hide selection box
+                        hideElement("game-cell");
+                    }
+                }
+            }
+            console.log("gameObject: " + gameObject[2]);
+        } else {
+            // calculate automatic move
+            animateSprite(elementID, 9, -27);
+        }
+        
+        if (elementID !== undefined) {
+            zlayer = parseInt(yPos, 10) + 9;
+            document.getElementById(elementID).style.zIndex =
+                zlayer.toString();
+            
+            console.log(elementID + ", " + xPos + ", " + yPos + ", " + zlayer);
+            
+            if (elementID === "game-cell") {
+                xPos = (xPos * 4.5) - 4.5;
+                yPos = (yPos * 2.25) - 2.25;
+            } else {
+                xPos = (xPos * 4.5) - 4.5;
+                yPos = (yPos * 2.25) - 9;
+            }
+            
+            document.getElementById(elementID).style.left = xPos + "vmin";
+            document.getElementById(elementID).style.top = yPos + "vmin";
+            showElement(elementID);
+        }
+    }
 }
 
 // get cell number
@@ -436,11 +490,11 @@ function playGame() {
     showElement("game-controls");
     
     // display startup environment and sprite objects
-    /*for (i = 0; i < gameObjects.length; i = i + 1) {
+    for (i = 0; i < gameObjects.length; i = i + 1) {
         showElementInCell(gameObjects[i][0],
                           gameObjects[i][1],
                           gameObjects[i][2]);
-    }*/
+    }
 }
 
 function showScores() {
