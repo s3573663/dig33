@@ -8,9 +8,11 @@ var document;         // the web page
 var window;           // the browser
 var alert;            // browser alert messages
 var console;          // browser console (for debug purposes)
-var interval;         // for delayed instructions
 var location;         // link address
 var firebase;         // google firebase
+
+var intervals = [];   // for delayed instructions (interval)
+var animated = [];    // for delayed instructions (elementID)
 
 // id and position of in-game objects
 var gameObjects = [
@@ -67,104 +69,170 @@ function hideElement(elementID) {
     document.getElementById(elementID).style.display = "none";
 }
 
-// sprite animation
-function animateSprite(elementID, startIndex, endIndex) {
+// ******************************************************************
+// game functions
+// ******************************************************************
+// function call order:
+// 
+// 1) click/touch event
+// 2) getPos
+// 3) getCell
+// 4) calculateMove
+// 5) showElementInCell or
+// 6) moveAlongPath
+// 7) animationStart
+// 8) showElementInCell (repeated)
+// 9) animationStop
+// ******************************************************************
+
+// start animation of element (and adds interval to intervals array)
+function animationStart(elementID, startIndex, endIndex) {
     "use strict";
     
     var position = parseInt(startIndex, 10);
     
-    interval = setInterval(function () {
-        
+    animated.push(elementID);
+    intervals.push(setInterval(function () {
         position = position - startIndex;
-        
         if (position === endIndex) {
             position = 0;
         }
-        
         document.getElementById(elementID).style.backgroundPositionX =
             position + "vmin";
-    }, 200);
+    }, 200));
+}
+
+// stop animation of element (and removes interval from intervals array)
+function animationStop(elementID) {
+    "use strict";
+    
+    var i = animated.indexOf(elementID);
+    
+    animated.splice(i, 1);
+    clearInterval(intervals[i]);
+    intervals.splice(i, 1);
 }
 
 // show element by id in cell x y
 function showElementInCell(xPos, yPos, elementID) {
     "use strict";
     
-    var zlayer, i, xPosInt, yPosInt, xObjInt, yObjInt;
+    var zlayer, i;
     
-    if (xPos > -1 && xPos < 21 && yPos > -1 && yPos < 41) {
+    // an elementID must be given to this function
+    if (elementID !== undefined) {
+        zlayer = parseInt(yPos, 10) + 9;
+        document.getElementById(elementID).style.zIndex = zlayer.toString();
         
-        // calculate player move
-        if (elementID === undefined) {
-            for (i = 0; i < gameObjects.length; i = i + 1) {
-                
-                xPosInt = parseInt(xPos, 10);
-                yPosInt = parseInt(yPos, 10);
-                xObjInt = parseInt(gameObjects[i][0], 10);
-                yObjInt = parseInt(gameObjects[i][1], 10);
-                
-                if (xPosInt === xObjInt && yPosInt === yObjInt) {
+        // DEBUG MODE
+        if (getParameter("debug") === "true") {
+            console.log(elementID + ", " + xPos + ", " + yPos + ", " + zlayer);
+        }
+        
+        // a "game-cell" element is a cell highlight, which is only 20px high
+        if (elementID === "game-cell") {
+            xPos = (xPos * 4.5) - 4.5;
+            yPos = (yPos * 2.25) - 2.25;
+        // a standard sprite object (40px x 40px)
+        } else {
+            xPos = (xPos * 4.5) - 4.5;
+            yPos = (yPos * 2.25) - 9;
+        }
+        
+        document.getElementById(elementID).style.left = xPos + "vmin";
+        document.getElementById(elementID).style.top = yPos + "vmin";
+        showElement(elementID);
+    }
+}
+
+// move an object along a path at a set interval
+function moveAlongPath(startX, startY, endX, endY, elementID) {
+    "use strict";
+    
+    showElementInCell(startX, startY, elementID);
+}
+
+// select and or move an object
+function calculateMove(xPos, yPos, elementID) {
+    "use strict";
+    
+    var i, xPosInt, yPosInt, xObjInt, yObjInt;
+    
+    // human event
+    if (elementID === undefined) {
+        // check if the selected cell contains a game object (sprite etc.)
+        for (i = 0; i < gameObjects.length; i = i + 1) {
+        
+            xPosInt = parseInt(xPos, 10);
+            yPosInt = parseInt(yPos, 10);
+            xObjInt = parseInt(gameObjects[i][0], 10);
+            yObjInt = parseInt(gameObjects[i][1], 10);
+            
+            // object in cell
+            if (xPosInt === xObjInt && yPosInt === yObjInt) {
+                // check if user has already selected an object
+                if (gameObject[2] === "none") {
+                    // user selects object
+                    gameObject[0] = gameObjects[i][2];
+                    gameObject[1] = gameObjects[i][2];
+                    gameObject[2] = gameObjects[i][2];
                     
-                    // object in cell
-                    if (gameObject[2] === "none") {
-                        // user selects object
-                        gameObject[0] = gameObjects[i][2];
-                        gameObject[1] = gameObjects[i][2];
-                        gameObject[2] = gameObjects[i][2];
-                        // highlight selected object
-                        elementID = "game-cell";
-                    } else {
-                        // show error
-                        console.log("cell occupied");
-                        elementID = undefined;
-                    }
+                    // highlight selected object
+                    elementID = "game-cell";
+                    showElementInCell(xPos, yPos, elementID);
                     
+                // user has already selected an object (can't move)
                 } else {
-                    
-                    // empty cell
-                    if (gameObject[2] === "none") {
-                        // show error
-                        console.log("cell empty");
-                        elementID = undefined;
-                    } else {
-                        // move object to cell
-                        elementID = gameObject[2];
-                        gameObjects[i][0] = xPosInt;
-                        gameObjects[i][1] = yPosInt;
-                        // clear gameObject
-                        gameObject[0] = 0;
-                        gameObject[1] = 1;
-                        gameObject[2] = "none";
-                        // hide selection box
-                        hideElement("game-cell");
+                    // DEBUG MODE
+                    if (getParameter("debug") === "true") {
+                        console.log("cell occupied");
                     }
+                    elementID = undefined;
+                }
+            
+            // empty cell
+            } else {
+                // no object previously selected (can't move)
+                if (gameObject[2] === "none") {
+                    // DEBUG MODE
+                    if (getParameter("debug") === "true") {
+                        console.log("cell empty");
+                    }
+                    elementID = undefined;
+                    
+                // object selected and destination selected
+                } else {
+                    // move object to cell
+                    elementID = gameObject[2];
+                    gameObjects[i][0] = xPosInt;
+                    gameObjects[i][1] = yPosInt;
+                    
+                    // clear gameObject
+                    gameObject[0] = 0;
+                    gameObject[1] = 1;
+                    gameObject[2] = "none";
+                    
+                    // hide selection box
+                    hideElement("game-cell");
+                    
+                    // move oject along calculated path
+                    moveAlongPath(xPosInt, yPosInt,
+                                  xObjInt, yObjInt, elementID);
                 }
             }
-            console.log("gameObject: " + gameObject[2]);
-        } else {
-            // calculate automatic move
-            animateSprite(elementID, 9, -27);
         }
         
-        if (elementID !== undefined) {
-            zlayer = parseInt(yPos, 10) + 9;
-            document.getElementById(elementID).style.zIndex =
-                zlayer.toString();
-            
-            console.log(elementID + ", " + xPos + ", " + yPos + ", " + zlayer);
-            
-            if (elementID === "game-cell") {
-                xPos = (xPos * 4.5) - 4.5;
-                yPos = (yPos * 2.25) - 2.25;
-            } else {
-                xPos = (xPos * 4.5) - 4.5;
-                yPos = (yPos * 2.25) - 9;
-            }
-            
-            document.getElementById(elementID).style.left = xPos + "vmin";
-            document.getElementById(elementID).style.top = yPos + "vmin";
-            showElement(elementID);
+        // DEBUG MODE
+        if (getParameter("debug") === "true") {
+            console.log("gameObject: " + gameObject[2]);
         }
+    // computer event
+    } else {
+        // calculate automatic move
+        
+        // TEST CODE - REMOVE TO IMPLEMENT COMPUTER MOVE
+        animationStart(elementID, 9, -27);
+        showElementInCell(xPos, yPos, elementID);
     }
 }
 
@@ -172,13 +240,15 @@ function showElementInCell(xPos, yPos, elementID) {
 function getCell(boardXvmin, boardYvmin) {
     "use strict";
     
+    // convert click vmin coordinates into cell x y coordinates
     var i, xPos, yPos, xWidth = 90 / 20, yHeight = 90 / 40;
     
     xPos = (boardXvmin / xWidth).toFixed(0);
     yPos = (boardYvmin / yHeight).toFixed(0);
     
+    // if a valid cell was chosen, calculate what to do next
     if (xPos > 0 && xPos < 20 && yPos > 0 && yPos < 40) {
-        showElementInCell(xPos, yPos);
+        calculateMove(xPos, yPos);
     }
 }
 
@@ -196,6 +266,7 @@ function getPos(e) {
         boardXvmin, // click x position in viewport min units on game board
         boardYvmin; // click y position in viewport min units on game board
     
+    // convert click pixel coordinates into vmin coordinates
     if (window.innerWidth > window.innerHeight) {
         // landscape mode
         vmin = window.innerHeight / 100;
@@ -217,6 +288,7 @@ function getPos(e) {
     boardXvmin = boardXpx / vmin;
     boardYvmin = boardYpx / vmin;
     
+    // determine which board square was selected 
     getCell(boardXvmin, boardYvmin);
 }
 
@@ -360,8 +432,11 @@ function registerUsername() {
             hideElement("username");
             document.getElementById('login-username').value = "";
             showElement("menu");
-            // Debug - remove later
-            console.log(user.displayName);
+            
+            // DEBUG MODE
+            if (getParameter("debug") === "true") {
+                console.log(user.displayName);
+            }
         }
     }, 5000);
 }
@@ -491,9 +566,7 @@ function playGame() {
     
     // display startup environment and sprite objects
     for (i = 0; i < gameObjects.length; i = i + 1) {
-        showElementInCell(gameObjects[i][0],
-                          gameObjects[i][1],
-                          gameObjects[i][2]);
+        calculateMove(gameObjects[i][0], gameObjects[i][1], gameObjects[i][2]);
     }
 }
 
@@ -518,7 +591,7 @@ function hideMenu() {
 function shareScores() {
     "use strict";
     
-    alert("URL copied to clipboard");
+    alert("URL copied to clipboard (not really!)");
 }
 
 // ******************************************************************
@@ -546,7 +619,8 @@ function hideQuestion() {
 function start() {
     "use strict";
     
-    window.addEventListener("click", getPos, false);
+    document.addEventListener("click", getPos, false);
+    document.addEventListener("touchstart", getPos, false);
     
     if (getParameter("debug") === "true") {
         //start in debug mode (skips all menus)
