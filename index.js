@@ -236,7 +236,7 @@ function saveScore() {
     newRef.set({
         username: user.displayName,
         score: score
-    });          
+    });
 }
 
 // ******************************************************************
@@ -518,6 +518,23 @@ function playGame() {
 
 function showScores() {
     "use strict";
+    
+    var scores, ref, i;
+    i = 0;
+    
+    var ref = firebase.database().ref();
+    ref.orderByChild("score").limitToLast(10).on("value", function(snapshot) {  
+        
+        snapshot.forEach(function(data) {
+            console.log("The " + data.val().username + " score is " + data.val().score);     
+            i = i + 1;
+        });
+        snapshot.forEach(function(data) {
+            document.getElementById("pos" + i).innerHTML = 
+                '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+            i = i - 1;
+        });
+    });
     
     hideElement("menu");
     showElement("scores");
