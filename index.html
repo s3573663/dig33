@@ -43,8 +43,6 @@
             };
             // initialize Firebase
             firebase.initializeApp(firebaseConfig);
-            var database = firebase.database();
-            
         </script>
         
         <!-- javascript -->
@@ -125,16 +123,16 @@
                 HIGH SCORES
             </div>
             <div id="scores-text">
-                <p id="pos1">#1</p>
-                <p id="pos2">#2</p>
-                <p id="pos3">#3</p>
-                <p id="pos4">#4</p>
-                <p id="pos5">#5</p>
-                <p id="pos6">#6</p>
-                <p id="pos7">#7</p>
-                <p id="pos8">#8</p>
-                <p id="pos9">#9</p>
-                <p id="pos10">#10</p>
+                <p>#1</p>
+                <p>#2</p>
+                <p>#3</p>
+                <p>#4</p>
+                <p>#5</p>
+                <p>#6</p>
+                <p>#7</p>
+                <p>#8</p>
+                <p>#9</p>
+                <p>#10</p>
             </div>
             <button class="menu-button" onclick="shareScores()">
                 SHARE
@@ -147,38 +145,94 @@
         <!-- game screen -->
         <div id="game">
             <div id="game-controls">
-                <button class="menu-button-small" onclick="showQuestion()">
+                <button class="menu-button-small" onclick="showQuit()">
                     MENU
                 </button>
-                <div id="timer">
+                <div id="game-timer">
                     ##:##
                 </div>
-                <div id="score">
+                <div id="game-score">
                     0
                 </div>
             </div>
+            <div id="bubble-entrance" class="bubble" style="display:none"
+                 onclick="getMove('bubble-entrance')"></div>
+            <div id="bubble-bar" class="bubble" style="display:none"
+                 onclick="getMove('bubble-bar1')"></div>
+            <div id="bubble-dancefloor" class="bubble" style="display:none"
+                 onclick="getMove('bubble-dancefloor')"></div>
+            <div id="bubble-large" style="display:none"
+                 onclick="getMove('bubble-large')"></div>
             
             <!-- game environment objects -->
-            <img id="game-background" alt="template-flat-background.png"
-                 src="graphics/template-flat-background.png">
+            <img id="game-background" alt="background.png"
+                 src="graphics/background.png">
             
             <img id="game-cell" alt="template-highlight.png"
                  src="graphics/template-highlight.png"
                  style="display:none">
             
-            <!-- game sprite objects (cannot be higher than 40px -->
-            <p id="sprite01" class="game-sprite" style="display:none">
+            <!-- game objects (walls etc) -->
+            <p id="wall" class="game-sprite" style="display:none"></p>
+            <p id="bar" class="game-sprite" style="display:none"></p>
+            <p id="speakers" class="game-sprite" style="display:none"></p>
+            <p id="mixdesk" class="game-sprite" style="display:none"></p>
+            
+            <!-- game sprites -->
+            <p id="dj" class="game-sprite" style="display:none"
+               onclick="speak('dj')"></p>
+            <p id="bartender" class="game-sprite" style="display:none"
+               onclick="speak('bartender')"></p>
+            <p id="bouncer01" class="game-sprite" style="display:none"
+               onclick="speak('bouncer01')"></p>
+            <p id="bouncer02" class="game-sprite" style="display:none"
+               onclick="speak('bouncer02')"></p>
+            
+            <p id="patron01" class="game-sprite" style="display:none"
+               onclick="speak('patron01')"></p>
+            <p id="patron02" class="game-sprite" style="display:none"
+               onclick="speak('patron02')"></p>
+            <p id="patron03" class="game-sprite" style="display:none"
+               onclick="speak('patron03')"></p>
+            <p id="patron04" class="game-sprite" style="display:none"
+               onclick="speak('patron04')"></p>
+            <p id="patron05" class="game-sprite" style="display:none"
+               onclick="speak('patron05')"></p>
+            <p id="patron06" class="game-sprite" style="display:none"
+               onclick="speak('patron06')"></p>
+            <p id="patron07" class="game-sprite" style="display:none"
+               onclick="speak('patron07')"></p>
+            <p id="patron08" class="game-sprite" style="display:none"
+               onclick="speak('patron08')"></p>
+            <p id="patron09" class="game-sprite" style="display:none"
+               onclick="speak('patron09')"></p>
+            <p id="patron10" class="game-sprite" style="display:none"
+               onclick="speak('patron10')"></p>
+            <p id="patron11" class="game-sprite" style="display:none"
+               onclick="speak('patron11')"></p>
+            <p id="patron12" class="game-sprite" style="display:none"
+               onclick="speak('patron12')"></p>
+            <p id="patron13" class="game-sprite" style="display:none"
+               onclick="speak('patron13')"></p>
+            <p id="patron14" class="game-sprite" style="display:none"
+               onclick="speak('patron14')"></p>
+            <p id="patron15" class="game-sprite" style="display:none"
+               onclick="speak('patron15')"></p>
+            <p id="patron16" class="game-sprite" style="display:none"
+               onclick="speak('patron16')"></p>
+            <p id="patron17" class="game-sprite" style="display:none"
+               onclick="speak('patron17')"></p>
         </div>
         
-        <!-- question menu -->
-        <div id="question" class="menu-box" style="display:none">
-            <div id="question-text">
+        <!-- quit menu -->
+        <div id="quit" class="menu-box" style="display:none">
+            <div id="quit-text">
                 If you exit now, your game will not be saved. Are you sure?
             </div>
             <button class="menu-button" onclick="showMenu()">
                 YES
             </button>
-            <button class="menu-button" onclick="hideQuestion()">
+            <button class="menu-button" onclick="hideQuit()">
                 NO
             </button>
         </div>

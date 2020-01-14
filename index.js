@@ -8,16 +8,58 @@ var document;         // the web page
 var window;           // the browser
 var alert;            // browser alert messages
 var console;          // browser console (for debug purposes)
-var interval;         // for delayed instructions
 var location;         // link address
 var firebase;         // google firebase
 
-// id and position of in-game objects
+var intervals = [];   // for delayed instructions (interval)
+var animated = [];    // for delayed instructions (elementID)
+
+// library of objects available (walls etc)
 var gameObjects = [
-    [10, 20, "sprite01"]
+    [0, 0, "wall"],
+    [0, 0, "bar"],
+    [0, 0, "speakers"],
+    [0, 0, "mixdesk"]
 ];
-// game object selected
-var gameObject = [0, 0, "none"];
+
+// objects in current level
+var levelObjects = [];
+
+// library of sprites available
+var gameSprites = [
+    [3, 11, "dj", "SE"],
+    [17, 11, "bartender", "SW"],
+    [17, 33, "bouncer01", "SE"],
+    [15, 35, "bouncer02", "SE"],
+    [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron04", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron05", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron06", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron07", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron08", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron09", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron10", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron11", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron12", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron13", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron14", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron15", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron16", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron17", "NW", "Desperados", "dance", "social"]
+];
+
+// sprites in current level
+var levelSprites = [
+    [3, 11, "dj", "SE"],
+    [17, 11, "bartender", "SW"],
+    [17, 33, "bouncer01", "SE"],
+    [15, 35, "bouncer02", "SE"]
+];
+
+// sprite currently selected by player
+var selectedSprite = [];
 
 // return a URL parameter
 function getParameter(parameter) {
@@ -34,6 +76,15 @@ function getParameter(parameter) {
             return parameterName[1];
         }
     }
+}
+
+// returns a random integer between max and min (including min)
+function getRandomInt(min, max) {
+    "use strict";
+    
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 // returns today's UTC date in yyyy-mm-dd format
@@ -67,118 +118,108 @@ function hideElement(elementID) {
     document.getElementById(elementID).style.display = "none";
 }
 
-// sprite animation
-function animateSprite(elementID, startIndex, endIndex) {
+// ******************************************************************
+// game functions
+// ******************************************************************
+
+// start animation of element (and adds interval to intervals array)
+function animationStart(elementID, startIndex, endIndex) {
     "use strict";
+    
+    // example usage:
+    // walking SW: animationStart(elementID, 0, -18);
+    // walking NW: animationStart(elementID, -27, -45);
+    // walking SE: animationStart(elementID, -54, -72);
+    // walking NE: animationStart(elementID, -81, -99);
+    // dancing SW: animationStart(elementID, -108, -126);
     
     var position = parseInt(startIndex, 10);
     
-    interval = setInterval(function () {
-        
+    animated.push(elementID);
+    intervals.push(setInterval(function () {
         position = position - startIndex;
-        
         if (position === endIndex) {
             position = 0;
         }
-        
         document.getElementById(elementID).style.backgroundPositionX =
             position + "vmin";
-    }, 200);
+    }, 200));
+}
+
+// stop animation of element (and removes interval from intervals array)
+function animationStop(elementID) {
+    "use strict";
+    
+    var i = animated.indexOf(elementID);
+    
+    animated.splice(i, 1);
+    clearInterval(intervals[i]);
+    intervals.splice(i, 1);
 }
 
 // show element by id in cell x y
-function showElementInCell(xPos, yPos, elementID) {
+function showElementInCell(xPos, yPos, elementID, facing) {
     "use strict";
     
-    var zlayer, i, xPosInt, yPosInt, xObjInt, yObjInt;
+    var zlayer, i;
     
-    if (xPos > -1 && xPos < 21 && yPos > -1 && yPos < 41) {
+    // an elementID must be given to this function
+    if (elementID !== undefined) {
+        zlayer = parseInt(yPos, 10) + 9;
+        document.getElementById(elementID).style.zIndex = zlayer.toString();
         
-        // calculate player move
-        if (elementID === undefined) {
-            for (i = 0; i < gameObjects.length; i = i + 1) {
-                
-                xPosInt = parseInt(xPos, 10);
-                yPosInt = parseInt(yPos, 10);
-                xObjInt = parseInt(gameObjects[i][0], 10);
-                yObjInt = parseInt(gameObjects[i][1], 10);
-                
-                if (xPosInt === xObjInt && yPosInt === yObjInt) {
-                    
-                    // object in cell
-                    if (gameObject[2] === "none") {
-                        // user selects object
-                        gameObject[0] = gameObjects[i][2];
-                        gameObject[1] = gameObjects[i][2];
-                        gameObject[2] = gameObjects[i][2];
-                        // highlight selected object
-                        elementID = "game-cell";
-                    } else {
-                        // show error
-                        console.log("cell occupied");
-                        elementID = undefined;
-                    }
-                    
-                } else {
-                    
-                    // empty cell
-                    if (gameObject[2] === "none") {
-                        // show error
-                        console.log("cell empty");
-                        elementID = undefined;
-                    } else {
-                        // move object to cell
-                        elementID = gameObject[2];
-                        gameObjects[i][0] = xPosInt;
-                        gameObjects[i][1] = yPosInt;
-                        // clear gameObject
-                        gameObject[0] = 0;
-                        gameObject[1] = 1;
-                        gameObject[2] = "none";
-                        // hide selection box
-                        hideElement("game-cell");
-                    }
-                }
-            }
-            console.log("gameObject: " + gameObject[2]);
+        // set the direction that the element faces (SW, SE, NW, NE)
+        if (facing === "NW") {
+            document.getElementById(elementID).style.backgroundPositionX =
+                "-27vmin";
+        } else if (facing === "NE") {
+            document.getElementById(elementID).style.backgroundPositionX =
+                "-81vmin";
+        } else if (facing === "SE") {
+            document.getElementById(elementID).style.backgroundPositionX =
+                "-54vmin";
         } else {
-            // calculate automatic move
-            animateSprite(elementID, 9, -27);
+            document.getElementById(elementID).style.backgroundPositionX =
+                "0vmin";
         }
         
-        if (elementID !== undefined) {
-            zlayer = parseInt(yPos, 10) + 9;
-            document.getElementById(elementID).style.zIndex =
-                zlayer.toString();
-            
-            console.log(elementID + ", " + xPos + ", " + yPos + ", " + zlayer);
-            
-            if (elementID === "game-cell") {
-                xPos = (xPos * 4.5) - 4.5;
-                yPos = (yPos * 2.25) - 2.25;
-            } else {
-                xPos = (xPos * 4.5) - 4.5;
-                yPos = (yPos * 2.25) - 9;
-            }
-            
-            document.getElementById(elementID).style.left = xPos + "vmin";
-            document.getElementById(elementID).style.top = yPos + "vmin";
-            showElement(elementID);
+        // DEBUG MODE
+        if (getParameter("debug") === "true") {
+            console.log(elementID + ", " + xPos + ", " + yPos + ", " + facing);
         }
+        
+        // a "game-cell" element is a cell highlight, which is only 20px high
+        if (elementID === "game-cell") {
+            xPos = (xPos * 4.5) - 4.5;
+            yPos = (yPos * 2.25) - 2.25;
+            
+        // a standard sprite object (40px x 40px)
+        } else {
+            xPos = (xPos * 4.5) - 4.5;
+            yPos = (yPos * 2.25) - 9;
+        }
+        
+        document.getElementById(elementID).style.left = xPos + "vmin";
+        document.getElementById(elementID).style.top = yPos + "vmin";
+        showElement(elementID);
     }
 }
 
+// not in use
+// ********************
 // get cell number
-function getCell(boardXvmin, boardYvmin) {
+/*function getCell(boardXvmin, boardYvmin) {
     "use strict";
     
+    // convert click vmin coordinates into cell x y coordinates
     var i, xPos, yPos, xWidth = 90 / 20, yHeight = 90 / 40;
     
     xPos = (boardXvmin / xWidth).toFixed(0);
     yPos = (boardYvmin / yHeight).toFixed(0);
     
+    // if a valid cell was chosen, calculate what to do next
     if (xPos > 0 && xPos < 20 && yPos > 0 && yPos < 40) {
-        showElementInCell(xPos, yPos);
+        return [xPos, yPos];
     }
 }
 
@@ -196,6 +237,7 @@ function getPos(e) {
         boardXvmin, // click x position in viewport min units on game board
         boardYvmin; // click y position in viewport min units on game board
     
+    // convert click pixel coordinates into vmin coordinates
     if (window.innerWidth > window.innerHeight) {
         // landscape mode
         vmin = window.innerHeight / 100;
@@ -217,27 +259,10 @@ function getPos(e) {
     boardXvmin = boardXpx / vmin;
     boardYvmin = boardYpx / vmin;
     
+    // determine which board square was selected 
     getCell(boardXvmin, boardYvmin);
-}
-
-// save score to the firebase database
-function saveScore() {
-    "use strict";
-    var score, ref, user, newRef;
-    
-    //**static number to be changed to valid score**//
-    score = 3;
-    
-    ref = firebase.database().ref();
-    newRef = ref.push();
-    
-    user = firebase.auth().currentUser;
-    
-    newRef.set({
-        username: user.displayName,
-        score: score
-    });
-}
+}*/
+// ********************
 
 // ******************************************************************
 // disclaimer functions
@@ -279,15 +304,14 @@ function showMenu() {
     
     hideElement("login");
     hideElement("scores");
-    hideElement("question");
+    hideElement("quit");
     showElement("transparency");
     showElement("menu");
 }
 
-// ********************
 // not in use
 // ********************
-function sendEmailVerification() {
+/*function sendEmailVerification() {
     "use strict";
     
     // [START sendemailverification]
@@ -299,9 +323,7 @@ function sendEmailVerification() {
     
     // [END sendemailverification]
     document.getElementById('quickstart-verify-email').hidden = false;
-}
-// ********************
-// ********************
+}*/
 // ********************
 
 function register() {
@@ -379,8 +401,11 @@ function registerUsername() {
             hideElement("username");
             document.getElementById('login-username').value = "";
             showElement("menu");
-            // Debug - remove later
-            console.log(user.displayName);
+            
+            // DEBUG MODE
+            if (getParameter("debug") === "true") {
+                console.log(user.displayName);
+            }
         }
     }, 5000);
 }
@@ -508,33 +533,21 @@ function playGame() {
     showElement("game");
     showElement("game-controls");
     
-    // display startup environment and sprite objects
-    for (i = 0; i < gameObjects.length; i = i + 1) {
-        showElementInCell(gameObjects[i][0],
-                          gameObjects[i][1],
-                          gameObjects[i][2]);
+    // load game objects
+    for (i = 0; i < levelObjects.length; i = i + 1) {
+        showElementInCell(levelSprites[i][0], levelSprites[i][1],
+                          levelSprites[i][2]);
+    }
+    
+    // load sprite objects
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        showElementInCell(levelSprites[i][0], levelSprites[i][1],
+                          levelSprites[i][2], levelSprites[i][3]);
     }
 }
 
 function showScores() {
     "use strict";
-    
-    var scores, ref, i;
-    i = 0;
-    
-    var ref = firebase.database().ref();
-    ref.orderByChild("score").limitToLast(10).on("value", function(snapshot) {  
-        
-        snapshot.forEach(function(data) {
-            console.log("The " + data.val().username + " score is " + data.val().score);     
-            i = i + 1;
-        });
-        snapshot.forEach(function(data) {
-            document.getElementById("pos" + i).innerHTML = 
-                '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
-            i = i - 1;
-        });
-    });
     
     hideElement("menu");
     showElement("scores");
@@ -554,26 +567,82 @@ function hideMenu() {
 function shareScores() {
     "use strict";
     
-    alert("URL copied to clipboard");
+    alert("URL copied to clipboard (not really!)");
 }
 
 // ******************************************************************
 // game functions
 // ******************************************************************
-function showQuestion() {
+function showQuit() {
     "use strict";
     
     hideElement("game-controls");
+    hideElement("bubble-large");
     showElement("transparency");
-    showElement("question");
+    showElement("quit");
 }
 
-function hideQuestion() {
+function hideQuit() {
     "use strict";
     
     hideElement("transparency");
-    hideElement("question");
+    hideElement("quit");
     showElement("game-controls");
+}
+
+// this function is triggered when the player clicks on a speech bubble.
+// it will present in-game choices in the "bubble-large" element and
+// then move the characters accordingly once a choice is chosen.
+function getMove(elementID) {
+    "use strict";
+    
+    document.getElementById("bubble-large").innerHTML =
+        "you have clicked on a choice bubble!";
+}
+
+// this function is triggered when the player clicks on a sprite.
+// It will display a random message from the sprite in the
+// "bubble-large" element
+function speak(elementID) {
+    "use strict";
+    
+    var phrases = [
+        "it's going to be a fun night",
+        "i love my job",
+        "wait for the drop",
+        "i've got some bangers lined up",
+        "stop bothering me",
+        "the glass is half full when i pour it",
+        "when i drink, i can almost remember what happy felt like",
+        "ever wonder why that desperados beer is so tasty?",
+        "yes the glasses have been dried thoroughly",
+        "no, i only make these 3 cocktails",
+        "i'm cold",
+        "ID please",
+        "no it's not a backpack, i got that wagon on me",
+        "if you can still turn your head, your traps aren't big enough",
+        "when i need calcium, i just rub milk all over my legs"
+    ];
+    
+    showElement("bubble-large");
+    
+    if (elementID === "dj") {
+        document.getElementById("bubble-large").innerHTML =
+            "the " + elementID + " says: " +
+            phrases[getRandomInt(0, 5)];
+    } else if (elementID === "bartender") {
+        document.getElementById("bubble-large").innerHTML =
+            "the " + elementID + " says: " +
+            phrases[getRandomInt(5, 10)];
+    } else if (elementID === "bouncer01") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID + " says: " +
+            phrases[getRandomInt(10, 12)];
+    } else if (elementID === "bouncer02") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID + " says: " +
+            phrases[getRandomInt(12, 15)];
+    }
 }
 
 // ******************************************************************
@@ -582,7 +651,11 @@ function hideQuestion() {
 function start() {
     "use strict";
     
-    window.addEventListener("click", getPos, false);
+    // not in use
+    // ********************
+    //document.addEventListener("click", getPos, false);
+    //document.addEventListener("touchstart", getPos, false);
+    // ********************
     
     if (getParameter("debug") === "true") {
         //start in debug mode (skips all menus)

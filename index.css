@@ -136,7 +136,7 @@ footer p {
     outline: none;
 }
 
-#disclaimer-text, #question-text, #exit-text {
+#disclaimer-text, #quit-text, #exit-text {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
@@ -224,7 +224,7 @@ footer p {
     left: 50%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
-    background: rgb(0,0,0,0);
+    background: rgb(0,0,0,0.2);
     display: flex;
 }
 
@@ -244,24 +244,32 @@ footer p {
     margin: 0;
 }
 
-#timer {
+#game-timer {
+    font-family: monospace;
     float: right;
     text-align: center;
     width: 10vmin;
     font-size: 4vmin;
+    font-weight: bold;
     padding: 1.5vmin;
     margin: 1vmin;
     user-select: none;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
-#score {
+#game-score {
+    font-family: monospace;
     float: right;
     text-align: center;
     width: 10vmin;
     font-size: 4vmin;
+    font-weight: bold;
     padding: 1.5vmin;
     margin: 1vmin;
     user-select: none;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 .menu-button-small {
@@ -284,8 +292,187 @@ footer p {
     color: white;
 }
 
-#sprite01 {
+.bubble {
+    z-index: 50;
+    width: 4.5vmin;
+    height: 4.5vmin;
+    position: absolute;
+    margin: 0;
+    background-color: white;
+    border: 0.5vmin solid black;
+    border-radius: 2vmin;
+}
+
+#bubble-large {
+    z-index: 50;
+    width: 40vmin;
+    height: 20vmin;
+    position: absolute;
+    margin: 1vmin;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    border: 0.5vmin solid black;
+    border-radius: 2vmin;
+    font-size: 3vmin;
+    font-family: monospace;
+    text-align: left;
+    user-select: none;
+    padding: 1vmin;
+}
+
+/*
+*********************************************************************
+game objects and sprites
+*********************************************************************
+*/
+
+#wall {
+    background: url(graphics/cube-wall.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#bar {
+    background: url(graphics/cube-bar.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#speakers {
+    background: url(graphics/cube-speakers.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#mixdesk {
+    background: url(graphics/cube-mixdesk.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#dj {
+    background: url(graphics/sprite-dj.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#bartender {
+    background: url(graphics/sprite-bartender.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#bouncer01 {
+    background: url(graphics/sprite-bouncer-bald.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#bouncer02 {
+    background: url(graphics/sprite-bouncer-brown-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron01 {
+    background: url(graphics/sprite-black-shirt-vicar.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron02 {
+    background: url(graphics/sprite-black-shirt.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron03 {
+    background: url(graphics/sprite-blue-dress-girl.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron04 {
+    background: url(graphics/sprite-blue-shirt-beard.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron05 {
+    background: url(graphics/sprite-green-dress-girl.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron06 {
+    background: url(graphics/sprite-green-shirt-blonde-guy.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron07 {
+    background: url(graphics/sprite-naked-guy.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron08 {
+    background: url(graphics/sprite-navy-dress-girl-ginger.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron09 {
+    background: url(graphics/sprite-navy-dress-girl.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron10 {
+    background: url(graphics/sprite-pink-dress-girl.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron11 {
     background: url(graphics/sprite-randy-marsh.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron12 {
+    background: url(graphics/sprite-red-shirt-blonde-beard.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron13 {
+    background: url(graphics/sprite-red-shirt-blonde-guy.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron14 {
+    background: url(graphics/sprite-red-shirt-ginger-beard.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron15 {
+    background: url(graphics/sprite-waldo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron16 {
+    background: url(graphics/sprite-white-dress-girl.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#patron17 {
+    background: url(graphics/sprite-white-shirt-ginger-beard.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
