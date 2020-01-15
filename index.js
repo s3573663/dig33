@@ -590,8 +590,6 @@ function resetPassword() {
 function playGame() {
     "use strict";
     
-    var i;
-    
     hideElement("menu");
     hideElement("transparency");
     showElement("game");
@@ -707,6 +705,8 @@ function speak(elementID) {
 // ******************************************************************
 function start() {
     "use strict";
+    
+    var i;
     
     // load game objects
     for (i = 0; i < levelObjects.length; i = i + 1) {
