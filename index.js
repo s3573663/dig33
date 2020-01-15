@@ -596,20 +596,6 @@ function playGame() {
     hideElement("transparency");
     showElement("game");
     showElement("game-controls");
-    
-    // load game objects
-    for (i = 0; i < levelObjects.length; i = i + 1) {
-        newObject(levelObjects[i][2]);
-        showElementInCell(levelObjects[i][0], levelObjects[i][1],
-                          levelObjects[i][2]);
-    }
-    
-    // load sprite objects
-    for (i = 0; i < levelSprites.length; i = i + 1) {
-        newSprite(levelSprites[i][2]);
-        showElementInCell(levelSprites[i][0], levelSprites[i][1],
-                          levelSprites[i][2], levelSprites[i][3]);
-    }
 }
 
 function showScores() {
@@ -721,6 +707,20 @@ function speak(elementID) {
 // ******************************************************************
 function start() {
     "use strict";
+    
+    // load game objects
+    for (i = 0; i < levelObjects.length; i = i + 1) {
+        newObject(levelObjects[i][2]);
+        showElementInCell(levelObjects[i][0], levelObjects[i][1],
+                          levelObjects[i][2]);
+    }
+    
+    // load sprite objects
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        newSprite(levelSprites[i][2]);
+        showElementInCell(levelSprites[i][0], levelSprites[i][1],
+                          levelSprites[i][2], levelSprites[i][3]);
+    }
     
     if (getParameter("debug") === "true") {
         document.addEventListener("click", getPos, false);
