@@ -17,18 +17,54 @@ var animated = [];    // for delayed instructions (elementID)
 // library of objects available (walls etc)
 var gameObjects = [
     [0, 0, "wall"],
+    [0, 0, "wallleft"],
+    [0, 0, "wallright"],
+    [0, 0, "wallcorner"],
+    [0, 0, "wallcornerright"],
+    [0, 0, "wallhalfright"],
     [0, 0, "bar"],
     [0, 0, "speakers"],
     [0, 0, "mixdesk"]
 ];
 
 // objects in current level
-var levelObjects = [];
+var levelObjects = [
+    [1, 24, "wall01"], [2, 25, "wall02"],
+    [3, 26, "wall03"], [4, 27, "wall04"],
+    [5, 28, "wall05"], [6, 29, "wall06"],
+    [7, 30, "wall07"], [8, 31, "wall08"],
+    [9, 32, "wall09"], [10, 33, "wall10"],
+    [19, 26, "wall11"], [18, 27, "wallhalfright12"],
+    [17, 28, "wallright13"], [16, 29, "wallright14"],
+    [15, 30, "wallright15"], [14, 31, "wallright16"],
+    [13, 32, "wallright17"], [17, 26, "wall18"],
+    [16, 27, "wall19"], [15, 28, "wall20"],
+    [14, 29, "wall21"], [13, 30, "wall22"],
+    [12, 33, "wall23"], [11, 34, "wall24"],
+    [1, 26, "wallleft25"], [2, 27, "wallleft26"],
+    [3, 28, "wallleft27"], [4, 29, "wallleft28"],
+    [5, 30, "wallleft29"], [6, 31, "wallleft30"],
+    [7, 32, "wallleft31"], [8, 33, "wallleft32"],
+    [9, 34, "wallleft33"], [10, 35, "wallleft34"],
+    [19, 28, "wallright35"], [18, 29, "wallright36"],
+    [17, 30, "wallright37"], [16, 31, "wallcornerright38"],
+    [14, 33, "wallright39"], [13, 34, "wallright40"],
+    [12, 35, "wallright41"], [11, 36, "wallcorner42"],
+    [1, 28, "wallleft43"], [2, 29, "wallleft44"],
+    [3, 30, "wallleft45"], [4, 31, "wallleft46"],
+    [5, 32, "wallleft47"], [6, 33, "wallleft48"],
+    [7, 34, "wallleft49"], [8, 35, "wallleft50"],
+    [9, 36, "wallleft51"], [10, 37, "wallleft52"],
+    [19, 30, "wallright53"], [18, 31, "wallright54"],
+    [17, 32, "wallright55"], [16, 33, "wallcorner56"],
+    [14, 35, "wallright57"], [13, 36, "wallright58"],
+    [12, 37, "wallright59"], [11, 38, "wallcorner60"]
+];
 
 // library of sprites available
 var gameSprites = [
-    [3, 11, "dj", "SE"],
-    [17, 11, "bartender", "SW"],
+    [3, 11, "dj01", "SE"],
+    [17, 11, "bartender01", "SW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
     [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
@@ -52,14 +88,44 @@ var gameSprites = [
 
 // sprites in current level
 var levelSprites = [
-    [3, 11, "dj", "SE"],
-    [17, 11, "bartender", "SW"],
+    [3, 11, "dj01", "SE"],
+    [17, 11, "bartender01", "SW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"]
 ];
 
 // sprite currently selected by player
 var selectedSprite = [];
+
+// create a DOM element for game object
+function newObject(objectName) {
+    "use strict";
+    
+    var levelObject = document.createElement("P");
+    
+    levelObject.setAttribute("id", objectName);
+    levelObject.setAttribute("class",
+                             objectName.substring(0, objectName.length - 2) +
+                             "-object");
+    levelObject.setAttribute("style", "display:none");
+    
+    document.getElementById("game").appendChild(levelObject);
+}
+
+// create a DOM element for game sprite
+function newSprite(spriteName) {
+    "use strict";
+    
+    var levelSprite = document.createElement("P");
+    
+    levelSprite.setAttribute("id", spriteName);
+    levelSprite.setAttribute("class", "game-sprite");
+    levelSprite.setAttribute("style", "display:none");
+    levelSprite.setAttribute("onclick", "speak('" +
+                             spriteName + "')");
+    
+    document.getElementById("game").appendChild(levelSprite);
+}
 
 // return a URL parameter
 function getParameter(parameter) {
@@ -185,7 +251,8 @@ function showElementInCell(xPos, yPos, elementID, facing) {
         
         // DEBUG MODE
         if (getParameter("debug") === "true") {
-            console.log(elementID + ", " + xPos + ", " + yPos + ", " + facing);
+            console.log(elementID + ": x" + xPos + ", y" + yPos +
+                        ", facing " + facing);
         }
         
         // a "game-cell" element is a cell highlight, which is only 20px high
@@ -205,10 +272,8 @@ function showElementInCell(xPos, yPos, elementID, facing) {
     }
 }
 
-// not in use
-// ********************
-// get cell number
-/*function getCell(boardXvmin, boardYvmin) {
+// get cell number (debug mode function)
+function getCell(boardXvmin, boardYvmin) {
     "use strict";
     
     // convert click vmin coordinates into cell x y coordinates
@@ -219,11 +284,11 @@ function showElementInCell(xPos, yPos, elementID, facing) {
     
     // if a valid cell was chosen, calculate what to do next
     if (xPos > 0 && xPos < 20 && yPos > 0 && yPos < 40) {
-        return [xPos, yPos];
+        console.log("click event: x" + xPos + ", y" + yPos);
     }
 }
 
-// get click/tap position
+// get click/tap position (debug mode function)
 function getPos(e) {
     "use strict";
     
@@ -261,8 +326,7 @@ function getPos(e) {
     
     // determine which board square was selected 
     getCell(boardXvmin, boardYvmin);
-}*/
-// ********************
+}
 
 // ******************************************************************
 // disclaimer functions
@@ -535,12 +599,14 @@ function playGame() {
     
     // load game objects
     for (i = 0; i < levelObjects.length; i = i + 1) {
-        showElementInCell(levelSprites[i][0], levelSprites[i][1],
-                          levelSprites[i][2]);
+        newObject(levelObjects[i][2]);
+        showElementInCell(levelObjects[i][0], levelObjects[i][1],
+                          levelObjects[i][2]);
     }
     
     // load sprite objects
     for (i = 0; i < levelSprites.length; i = i + 1) {
+        newSprite(levelSprites[i][2]);
         showElementInCell(levelSprites[i][0], levelSprites[i][1],
                           levelSprites[i][2], levelSprites[i][3]);
     }
@@ -619,6 +685,7 @@ function speak(elementID) {
         "no, i only make these 3 cocktails",
         "i'm cold",
         "ID please",
+        "i don't know any jokes",
         "no it's not a backpack, i got that wagon on me",
         "if you can still turn your head, your traps aren't big enough",
         "when i need calcium, i just rub milk all over my legs"
@@ -626,22 +693,26 @@ function speak(elementID) {
     
     showElement("bubble-large");
     
-    if (elementID === "dj") {
+    if (elementID === "dj01") {
         document.getElementById("bubble-large").innerHTML =
-            "the " + elementID + " says: " +
-            phrases[getRandomInt(0, 5)];
-    } else if (elementID === "bartender") {
+            "the " + elementID.substring(0, elementID.length - 2) +
+            " says: " + phrases[getRandomInt(0, 5)];
+    } else if (elementID === "bartender01") {
         document.getElementById("bubble-large").innerHTML =
-            "the " + elementID + " says: " +
+            "the " + elementID.substring(0, elementID.length - 2) +
             phrases[getRandomInt(5, 10)];
     } else if (elementID === "bouncer01") {
         document.getElementById("bubble-large").innerHTML =
-            elementID + " says: " +
-            phrases[getRandomInt(10, 12)];
+            "the " + elementID.substring(0, elementID.length - 2) +
+            phrases[getRandomInt(10, 13)];
     } else if (elementID === "bouncer02") {
         document.getElementById("bubble-large").innerHTML =
-            elementID + " says: " +
-            phrases[getRandomInt(12, 15)];
+            "the " + elementID.substring(0, elementID.length - 2) +
+            phrases[getRandomInt(13, 16)];
+    } else {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            phrases[getRandomInt(16, 30)];
     }
 }
 
@@ -651,13 +722,8 @@ function speak(elementID) {
 function start() {
     "use strict";
     
-    // not in use
-    // ********************
-    //document.addEventListener("click", getPos, false);
-    //document.addEventListener("touchstart", getPos, false);
-    // ********************
-    
     if (getParameter("debug") === "true") {
+        document.addEventListener("click", getPos, false);
         //start in debug mode (skips all menus)
         hideElement("hide");
         hideElement("disclaimer");

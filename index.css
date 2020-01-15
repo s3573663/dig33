@@ -327,37 +327,112 @@ game objects and sprites
 *********************************************************************
 */
 
-#wall {
+.wall-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
     background: url(graphics/cube-wall.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#bar {
+.wallleft-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-wall_left.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallright-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-wall_right.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallcorner-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-wall_outer_corner.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallcornerright-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-wall_inner_corner_right.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallhalfright-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-wall_half_right.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bar-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
     background: url(graphics/cube-bar.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#speakers {
+.speaker-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
     background: url(graphics/cube-speakers.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#mixdesk {
+.mixdesk-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
     background: url(graphics/cube-mixdesk.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#dj {
+#dj01 {
     background: url(graphics/sprite-dj.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#bartender {
+#bartender01 {
     background: url(graphics/sprite-bartender.png);
     background-repeat: no-repeat;
     background-size: cover;
