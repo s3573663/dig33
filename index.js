@@ -700,46 +700,47 @@ function speak(elementID) {
     "use strict";
     
     var phrases = [
-        "it's going to be a fun night",
-        "i love my job",
-        "wait for the drop",
-        "i've got some bangers lined up",
-        "stop bothering me",
-        "the glass is half full when i pour it",
-        "when i drink, i can almost remember what happy felt like",
+        "it's going to be a fun night!",
+        "i love my job!",
+        "wait for the drop...",
+        "i've got some real bangers lined up.",
+        "stop bothering me!",
+        "the glass is half full when i pour it.",
+        "when i drink, i can almost remember what happy felt like.",
         "ever wonder why that desperados beer is so tasty?",
-        "yes the glasses have been dried thoroughly",
-        "no, i only make these 3 cocktails",
-        "i'm cold",
-        "ID please",
-        "i don't know any jokes",
-        "no it's not a backpack, i got that wagon on me",
-        "if you can still turn your head, your traps aren't big enough",
-        "when i need calcium, i just rub milk all over my legs"
+        "yes the glasses have been dried thoroughly.",
+        "no, i only make these 3 cocktails.",
+        "i'm cold.",
+        "ID please.",
+        "sorry, no cudas.",
+        "i don't know any jokes.",
+        "no it's not a backpack, i got that wagon on me.",
+        "if you can still turn your head, your traps aren't big enough.",
+        "when i need calcium, i just rub milk all over my legs."
     ];
     
     showElement("bubble-large");
     
     if (elementID === "dj01") {
         document.getElementById("bubble-large").innerHTML =
-            "the " + elementID.substring(0, elementID.length - 2) +
-            " says: " + phrases[getRandomInt(0, 5)];
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(0, 5)];
     } else if (elementID === "bartender01") {
         document.getElementById("bubble-large").innerHTML =
-            "the " + elementID.substring(0, elementID.length - 2) +
-            phrases[getRandomInt(5, 10)];
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(5, 10)];
     } else if (elementID === "bouncer01") {
         document.getElementById("bubble-large").innerHTML =
-            "the " + elementID.substring(0, elementID.length - 2) +
-            phrases[getRandomInt(10, 13)];
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(10, 14)];
     } else if (elementID === "bouncer02") {
         document.getElementById("bubble-large").innerHTML =
-            "the " + elementID.substring(0, elementID.length - 2) +
-            phrases[getRandomInt(13, 16)];
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(14, 17)];
     } else {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
-            phrases[getRandomInt(16, 30)];
+            ": " + phrases[getRandomInt(17, 30)];
     }
 }
 

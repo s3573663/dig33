@@ -196,7 +196,7 @@ footer p {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: rgb(128,128,128);
     text-align: right;
     user-select: none;
 }
@@ -225,7 +225,6 @@ footer p {
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
     background: rgb(0,0,0,0.2);
-    display: flex;
 }
 
 #game-cell {
@@ -245,8 +244,10 @@ footer p {
 }
 
 #game-timer {
+    position: absolute;
+    top: 0;
+    left: 0;
     font-family: monospace;
-    float: right;
     text-align: center;
     width: 10vmin;
     font-size: 4vmin;
@@ -259,8 +260,12 @@ footer p {
 }
 
 #game-score {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
     font-family: monospace;
-    float: right;
     text-align: center;
     width: 10vmin;
     font-size: 4vmin;
@@ -282,7 +287,6 @@ footer p {
     font-size: 4vmin;
     font-family: monospace;
     cursor: pointer;
-    float: right;
     user-select: none;
     outline: none;
 }
