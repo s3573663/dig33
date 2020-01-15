@@ -411,7 +411,6 @@ function register() {
     }
     
     // create a new user with a valid email address and password.
-    // [START createwithemail]
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
         // handle errors
         var errorCode, errorMessage;
@@ -596,13 +595,6 @@ function playGame() {
     showElement("game-controls");
 }
 
-function showScores() {
-    "use strict";
-    
-    hideElement("menu");
-    showElement("scores");
-}
-
 function hideMenu() {
     "use strict";
     
@@ -614,6 +606,57 @@ function hideMenu() {
 // ******************************************************************
 // scoreboard functions
 // ******************************************************************
+
+// save score to the firebase database
+function saveScore() {
+    "use strict";
+    var score, ref, user, newRef;
+    
+    //**static number to be changed to valid score**//
+    score = 3;
+    
+    ref = firebase.database().ref();
+    newRef = ref.push();
+    
+    user = firebase.auth().currentUser;
+    
+    newRef.set({
+        username: user.displayName,
+        score: score
+    });
+}
+
+// show the top ten scores 
+function showScores() {
+    "use strict";
+    
+    var scores, ref, i;
+    i = 0;
+    
+    ref = firebase.database().ref();
+    ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
+        
+        snapshot.forEach(function (data) {
+            console.log("The " + data.val().username + " score is " + data.val().score);
+            i = i + 1;
+        });
+        snapshot.forEach(function (data) {
+            document.getElementById("pos" + i).innerHTML =
+                '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+            i = i - 1;
+        });
+    });
+    
+    // call showMenu() if no errors are thrown
+    setTimeout(function () {
+        hideElement("menu");
+        showElement("scores");
+    }, 1500);
+    
+}
+
+
+
 function shareScores() {
     "use strict";
     
