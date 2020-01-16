@@ -11,6 +11,12 @@ var console;          // browser console (for debug purposes)
 var location;         // link address
 var firebase;         // google firebase
 
+var timer;            // game timer interval
+var minutes;          // game timer (minutes left in game)
+var seconds;          // game timer (seconds left in game)
+
+var score;            // game score (number of patrons in club)
+
 var intervals = [];   // for delayed instructions (interval)
 var animated = [];    // for delayed instructions (elementID)
 
@@ -592,6 +598,67 @@ function resetPassword() {
 // ******************************************************************
 // main menu functions
 // ******************************************************************
+function finishGame() {
+    "use strict";
+    
+    // close game screen
+    hideElement("game-controls");
+    hideElement("bubble-large");
+    
+    // post score to and display score board
+    showElement("scores");
+}
+
+function stopTimer() {
+    "use strict";
+    
+    clearInterval(timer);
+    timer = undefined;
+}
+
+function resetTimer() {
+    "use strict";
+    
+    // set the default round length in minutes and seconds
+    minutes = 5;
+    seconds = 0;
+}
+
+function startTimer() {
+    "use strict";
+    
+    var min, sec;
+    
+    if (timer === undefined) {
+        timer = setInterval(function () {
+            if (minutes === 0 && seconds === 0) {
+                stopTimer();
+                resetTimer();
+                finishGame();
+            } else if (minutes > 0 && seconds === 0) {
+                seconds = 59;
+                minutes = minutes - 1;
+            } else {
+                seconds = seconds - 1;
+            }
+            
+            if (minutes < 10) {
+                min = "0" + minutes.toString();
+            } else {
+                min = minutes.toString();
+            }
+            if (seconds < 10) {
+                sec = "0" + seconds.toString();
+            } else {
+                sec = seconds.toString();
+            }
+            
+            document.getElementById("game-timer").innerHTML =
+                min + ":" + sec;
+        }, 1000);
+    }
+}
+
 function playGame() {
     "use strict";
     
@@ -599,6 +666,10 @@ function playGame() {
     hideElement("transparency");
     showElement("game");
     showElement("game-controls");
+    
+    // set/reset and start game timer
+    resetTimer();
+    startTimer();
 }
 
 function hideMenu() {
@@ -677,6 +748,9 @@ function showQuit() {
     hideElement("bubble-large");
     showElement("transparency");
     showElement("quit");
+    
+    // pause game timer
+    stopTimer();
 }
 
 function hideQuit() {
@@ -685,6 +759,9 @@ function hideQuit() {
     hideElement("transparency");
     hideElement("quit");
     showElement("game-controls");
+    
+    // resume timer
+    startTimer();
 }
 
 // this function is triggered when the player clicks on a speech bubble.
