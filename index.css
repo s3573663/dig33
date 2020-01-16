@@ -408,13 +408,24 @@ game objects and sprites
     background-size: cover;
 }
 
-.speaker-object {
+.barlefttop-object {
     z-index: 9;
     width: 9vmin;
     height: 9vmin;
     position: absolute;
     margin: 0;
-    background: url(graphics/cube-speakers.png);
+    background: url(graphics/cube-bar_left_top.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.bartap-object {
+    z-index: 9;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-bartap.png);
     background-repeat: no-repeat;
     background-size: cover;
 }

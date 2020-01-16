@@ -23,7 +23,8 @@ var gameObjects = [
     [0, 0, "wallcornerright"],
     [0, 0, "wallhalfright"],
     [0, 0, "bar"],
-    [0, 0, "speakers"],
+    [0, 0, "bartap"],
+    [0, 0, "barlefttop"],
     [0, 0, "mixdesk"]
 ];
 
@@ -58,13 +59,18 @@ var levelObjects = [
     [19, 30, "wallright53"], [18, 31, "wallright54"],
     [17, 32, "wallright55"], [16, 33, "wallcorner56"],
     [14, 35, "wallright57"], [13, 36, "wallright58"],
-    [12, 37, "wallright59"], [11, 38, "wallcorner60"]
+    [12, 37, "wallright59"], [11, 38, "wallcorner60"],
+    [12, 13, "bar61"], [13, 14, "bar62"],
+    [14, 15, "bartap63"], [15, 16, "bar64"],
+    [16, 17, "bar65"], [17, 18, "bar66"],
+    [18, 19, "bar67"], [19, 20, "barlefttop68"],
+    [4, 13, "mixdesk69"]
 ];
 
 // library of sprites available
 var gameSprites = [
     [3, 11, "dj01", "SE"],
-    [17, 11, "bartender01", "SW"],
+    [15, 11, "bartender01", "SW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
     [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
@@ -89,7 +95,7 @@ var gameSprites = [
 // sprites in current level
 var levelSprites = [
     [3, 11, "dj01", "SE"],
-    [17, 11, "bartender01", "SW"],
+    [15, 13, "bartender01", "SW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"]
 ];
@@ -654,8 +660,6 @@ function showScores() {
     }, 1500);
     
 }
-
-
 
 function shareScores() {
     "use strict";
