@@ -119,10 +119,11 @@ footer p {
 }
 
 #menu-title {
-    font-size: 9vmin;
+    font-size: 12vmin;
     font-family: monospace;
     text-align: center;
-    margin-top: 20vmin;
+    margin-top: 7vmin;
+    margin-bottom: 3vmin;
 }
 
 #login-username, #login-password, #login-email {
@@ -393,6 +394,17 @@ game objects and sprites
     position: absolute;
     margin: 0;
     background: url(graphics/cube-wall_half_right.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wallentrance-object {
+    z-index: 9;
+    width: 27vmin;
+    height: 22.5vmin;
+    position: absolute;
+    margin: 0;
+    background: url(graphics/cube-wall_entrance_purple.png);
     background-repeat: no-repeat;
     background-size: cover;
 }

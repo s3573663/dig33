@@ -28,6 +28,7 @@ var gameObjects = [
     [0, 0, "wallcorner"],
     [0, 0, "wallcornerright"],
     [0, 0, "wallhalfright"],
+    [0, 0, "wallentrance"],
     [0, 0, "bar"],
     [0, 0, "bartap"],
     [0, 0, "barlefttop"],
@@ -42,11 +43,6 @@ var levelObjects = [
     [7, 30, "wall07"], [8, 31, "wall08"],
     [9, 32, "wall09"], [10, 33, "wall10"],
     [19, 26, "wall11"], [18, 27, "wallhalfright12"],
-    [17, 28, "wallright13"], [16, 29, "wallright14"],
-    [15, 30, "wallright15"], [14, 31, "wallright16"],
-    [13, 32, "wallright17"], [17, 26, "wall18"],
-    [16, 27, "wall19"], [15, 28, "wall20"],
-    [14, 29, "wall21"], [13, 30, "wall22"],
     [12, 33, "wall23"], [11, 34, "wall24"],
     [1, 26, "wallleft25"], [2, 27, "wallleft26"],
     [3, 28, "wallleft27"], [4, 29, "wallleft28"],
@@ -70,7 +66,7 @@ var levelObjects = [
     [14, 15, "bartap63"], [15, 16, "bar64"],
     [16, 17, "bar65"], [17, 18, "bar66"],
     [18, 19, "bar67"], [19, 20, "barlefttop68"],
-    [4, 13, "mixdesk69"]
+    [4, 13, "mixdesk69"], [13, 26, "wallentrance70"]
 ];
 
 // library of sprites available
@@ -210,6 +206,9 @@ function animationStart(elementID, startIndex, endIndex) {
     // walking SE: animationStart(elementID, -54, -72);
     // walking NE: animationStart(elementID, -81, -99);
     // dancing SW: animationStart(elementID, -108, -126);
+    // dancing NW: animationStart(elementID, -135, -153);
+    // dancing SE: animationStart(elementID, -162, -180);
+    // dancing Ne: animationStart(elementID, -189, -198);
     
     var position = parseInt(startIndex, 10);
     
@@ -217,7 +216,7 @@ function animationStart(elementID, startIndex, endIndex) {
     intervals.push(setInterval(function () {
         position = position - startIndex;
         if (position === endIndex) {
-            position = 0;
+            position = startIndex;
         }
         document.getElementById(elementID).style.backgroundPositionX =
             position + "vmin";
@@ -797,7 +796,8 @@ function speak(elementID) {
         "i don't know any jokes.",
         "no it's not a backpack, i got that wagon on me.",
         "if you can still turn your head, your traps aren't big enough.",
-        "when i need calcium, i just rub milk all over my legs."
+        "when i need calcium, i just rub milk all over my legs.",
+        "where is everyone?"
     ];
     
     showElement("bubble-large");
@@ -821,7 +821,7 @@ function speak(elementID) {
     } else {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(17, 30)];
+            ": " + phrases[getRandomInt(17, 18)];
     }
 }
 
