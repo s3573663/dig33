@@ -93,7 +93,7 @@ footer p {
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    background-image: linear-gradient(rgb(255,235,130), rgb(255,225,130));
+    background-image: linear-gradient(rgb(175,175,255), rgb(255,175,175));
     border: 1vmin solid black;
     text-align: center;
 }
@@ -122,8 +122,12 @@ footer p {
     font-size: 12vmin;
     font-family: monospace;
     text-align: center;
+    font-weight: bold;
     margin-top: 7vmin;
     margin-bottom: 3vmin;
+    color: white;
+    text-shadow: -0.3vmin 0 black, 0 0.3vmin black,
+        0.3vmin 0 black, 0 -0.3vmin black;
 }
 
 #login-username, #login-password, #login-email {
@@ -257,7 +261,8 @@ footer p {
     margin: 1vmin;
     user-select: none;
     color: white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    text-shadow: -0.2vmin 0 black, 0 0.2vmin black,
+        0.2vmin 0 black, 0 -0.2vmin black;
 }
 
 #game-score {
@@ -275,7 +280,8 @@ footer p {
     margin: 1vmin;
     user-select: none;
     color: white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    text-shadow: -0.2vmin 0 black, 0 0.2vmin black,
+        0.2vmin 0 black, 0 -0.2vmin black;
 }
 
 .menu-button-small {
