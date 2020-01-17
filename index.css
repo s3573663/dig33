@@ -105,7 +105,7 @@ footer p {
     text-align: center;
     width: 37.5vmin;
     font-size: 4vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     cursor: pointer;
     user-select: none;
     outline: none;
@@ -120,7 +120,7 @@ footer p {
 
 #menu-title {
     font-size: 12vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: center;
     font-weight: bold;
     margin-top: 7vmin;
@@ -137,7 +137,7 @@ footer p {
     margin: 1vmin;
     border: 0.5vmin solid black;
     font-size: 4vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     outline: none;
 }
 
@@ -148,7 +148,7 @@ footer p {
     margin-top: 20vmin;
     margin-bottom: 1vmin;
     font-size: 4vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: justify;
     user-select: none;
 }
@@ -160,14 +160,14 @@ footer p {
     margin-top: 4vmin;
     margin-bottom: 1vmin;
     font-size: 4vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: justify;
     user-select: none;
 }
 
 #scores-title {
     font-size: 7vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: center;
     margin-top: 3vmin;
     user-select: none;
@@ -180,9 +180,10 @@ footer p {
     margin-top: 1vmin;
     margin-bottom: 1vmin;
     font-size: 2vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: left;
     border: 0.5vmin solid black;
+    background-color: white;
 }
 
 #scores-text p {
@@ -252,7 +253,7 @@ footer p {
     position: absolute;
     top: 0;
     left: 0;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: center;
     width: 10vmin;
     font-size: 4vmin;
@@ -271,7 +272,7 @@ footer p {
     left: 50%;
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: center;
     width: 10vmin;
     font-size: 4vmin;
@@ -292,7 +293,7 @@ footer p {
     text-align: center;
     width: 20vmin;
     font-size: 4vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     cursor: pointer;
     user-select: none;
     outline: none;
@@ -326,7 +327,7 @@ footer p {
     border: 0.5vmin solid black;
     border-radius: 2vmin;
     font-size: 3vmin;
-    font-family: monospace;
+    font-family: 'Share Tech Mono', monospace;
     text-align: left;
     user-select: none;
     padding: 1vmin;
