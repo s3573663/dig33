@@ -627,7 +627,6 @@ function saveScore() {
     var score, ref, user, newRef;
        
     score = levelSprites.length - 4;
-    
     ref = firebase.database().ref();
     newRef = ref.push();
     user = firebase.auth().currentUser;
@@ -644,16 +643,10 @@ function saveScore() {
 function showScores() {
     "use strict";
     
-    var scores, ref, i, check, interval;
-    i = 0;
-    check = false;
-    ref = firebase.database().ref();
+    var scores, interval, i = 10, check = false,
+        ref = firebase.database().ref();
+    
     ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
-        
-        snapshot.forEach(function (data) {
-            console.log("The " + data.val().username + " score is " + data.val().score);
-            i = i + 1;
-        });
         snapshot.forEach(function (data) {
             document.getElementById("pos" + i).innerHTML =
                 '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
@@ -690,10 +683,11 @@ function finishGame() {
     // close game screen
     hideElement("game-controls");
     hideElement("bubble-large");
+    showElement("transparency");
     
     // display score board (DEBUG MODE)
     if (getParameter("debug") === "true") {
-        showElement("scores");
+        showScores();
     // post score to and display score board
     } else {
         saveScore();
