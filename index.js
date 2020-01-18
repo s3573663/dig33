@@ -692,8 +692,8 @@ function finishGame() {
     hideElement("bubble-large");
     
     // display score board (DEBUG MODE)
-    if (firebase.auth().currentUser.displayName === null) {
-        showScores();
+    if (getParameter("debug") === "true") {
+        showElement("scores");
     // post score to and display score board
     } else {
         saveScore();
@@ -712,8 +712,13 @@ function resetTimer() {
     "use strict";
     
     // set the default round length in minutes and seconds
-    minutes = 5;
-    seconds = 0;
+    if (getParameter("debug") === "true") {
+        minutes = 1;
+        seconds = 0;
+    } else {
+        minutes = 5;
+        seconds = 0;
+    }
 }
 
 function startTimer() {
