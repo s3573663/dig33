@@ -401,10 +401,11 @@ function showMenu() {
 }*/
 // ********************
 
+// register a new email account
 function register() {
     "use strict";
     
-    var email, password, verify;
+    var email, password, verify, interval;
     verify = true;
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
@@ -437,20 +438,24 @@ function register() {
         verify = false;
     });
     
-    setTimeout(function () {
+    interval = setInterval(function () {
+
         if (verify === true) {
+
             hideElement("login");
             email = document.getElementById('login-email').value = "";
             password = document.getElementById('login-password').value = "";
             showElement("username");
+            clearInterval(interval);
         }
-    }, 5000);
+    }, 1000);
 }
 
+// link a username with email account
 function registerUsername() {
     "use strict";
     
-    var user, username, verify;
+    var user, username, verify, interval;
     user = firebase.auth().currentUser;
     username = document.getElementById('login-username').value;
     
@@ -470,18 +475,23 @@ function registerUsername() {
         verify = false;
     });
     
-    setTimeout(function () {
+
+    interval = setInterval(function () {
+        showElement("transparency");
+
         if (verify === true) {
+            hideElement("transparency");
             hideElement("username");
             document.getElementById('login-username').value = "";
             showElement("menu");
+            clearInterval(interval);
             
             // DEBUG MODE
             if (getParameter("debug") === "true") {
                 console.log(user.displayName);
             }
         }
-    }, 5000);
+    }, 1000);
 }
 
 function login() {
@@ -492,7 +502,7 @@ function login() {
         firebase.auth().signOut();
     }
     
-    var email, password, verify;
+    var email, password, verify, interval;
     verify = true;
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
@@ -526,19 +536,31 @@ function login() {
         verify = false;
     });
     
+    // set text fields to null
     document.getElementById("login-email").value = "";
     document.getElementById("login-password").value = "";
     
-    // call showMenu() if no errors are thrown
-    setTimeout(function () {
-        if (verify === true) {
-            showMenu();
+    
+    interval = setInterval(function () {
+        // if the user email and password log-in is successful 
+        if (firebase.auth().currentUser) {
+            // prompt the user for a username if they did not do so on registration
+            if (firebase.auth().currentUser.displayName !== null) {
+                showMenu();
+            } else {
+                hideElement("transparency");
+                showUsername();
+            }
+            clearInterval(interval);
         }
-    }, 5000);
+        clearInterval(interval);
+    }, 1000);
 }
 
 // if user does not complete registration, remove the email from firebase
-function deleteUser() {
+// not currently in use
+// ********************
+/*function deleteUser() {
     "use strict";
     
     var user = firebase.auth().currentUser;
@@ -551,7 +573,8 @@ function deleteUser() {
     
     document.getElementById('login-username').value = "";
     showLogin();
-}
+}*/
+// ********************
 
 // log user out of game
 function logOut() {
@@ -595,6 +618,70 @@ function resetPassword() {
 }
 
 // ******************************************************************
+// scoreboard functions
+// ******************************************************************
+
+// save score to the firebase database
+function saveScore() {
+    "use strict";
+    var score, ref, user, newRef;
+       
+    score = levelSprites.length - 4;
+    
+    ref = firebase.database().ref();
+    newRef = ref.push();
+    user = firebase.auth().currentUser;
+    
+    if (user !== null) {
+        newRef.set({
+            username: user.displayName,
+            score: score
+        });
+    }
+}
+
+// show the top ten scores 
+function showScores() {
+    "use strict";
+    
+    var scores, ref, i, check, interval;
+    i = 0;
+    check = false;
+    ref = firebase.database().ref();
+    ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
+        
+        snapshot.forEach(function (data) {
+            console.log("The " + data.val().username + " score is " + data.val().score);
+            i = i + 1;
+        });
+        snapshot.forEach(function (data) {
+            document.getElementById("pos" + i).innerHTML =
+                '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+            i = i - 1;
+        });
+        check = true;
+    });
+    
+    // display loading animation while retrieving from database
+    interval = setInterval(function () {
+        hideElement("menu");
+        showElement("transparency");
+
+        if (check === true) {
+            hideElement("transparency");
+            showElement("scores");
+            clearInterval(interval);
+        }
+    }, 1000);
+}
+
+function shareScores() {
+    "use strict";
+    
+    alert("URL copied to clipboard (not really!)");
+}
+
+// ******************************************************************
 // main menu functions
 // ******************************************************************
 function finishGame() {
@@ -605,7 +692,9 @@ function finishGame() {
     hideElement("bubble-large");
     
     // post score to and display score board
-    showElement("scores");
+    saveScore();
+    showScores();
+    
 }
 
 function stopTimer() {
@@ -663,12 +752,31 @@ function playGame() {
     
     hideElement("menu");
     hideElement("transparency");
+    if (firebase.auth().currentUser.displayName !== null) {
+        showElement("game");
+        showElement("game-controls");
+    
+        // set/reset and start game timer
+        resetTimer();
+        startTimer();     
+    } else {
+        showElement("username");
+    }   
+}
+
+function playGameDebug() {
+    "use strict";
+    
+    hideElement("menu");
+    hideElement("transparency");
+    
     showElement("game");
     showElement("game-controls");
     
     // set/reset and start game timer
     resetTimer();
-    startTimer();
+    startTimer();     
+    
 }
 
 function hideMenu() {
@@ -679,63 +787,7 @@ function hideMenu() {
     showElement("login");
 }
 
-// ******************************************************************
-// scoreboard functions
-// ******************************************************************
 
-// save score to the firebase database
-function saveScore() {
-    "use strict";
-    var score, ref, user, newRef;
-    
-    //**static number to be changed to valid score**//
-    score = 3;
-    
-    ref = firebase.database().ref();
-    newRef = ref.push();
-    
-    user = firebase.auth().currentUser;
-    
-    newRef.set({
-        username: user.displayName,
-        score: score
-    });
-}
-
-// show the top ten scores 
-function showScores() {
-    "use strict";
-    
-    var scores, ref, i;
-    i = 0;
-    
-    ref = firebase.database().ref();
-    ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
-        
-        snapshot.forEach(function (data) {
-            console.log("The " + data.val().username + " score is " + data.val().score);
-            i = i + 1;
-        });
-        snapshot.forEach(function (data) {
-            document.getElementById("pos" + i).innerHTML =
-                '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
-            i = i - 1;
-        });
-    });
-    
-    // call showMenu() if no errors are thrown
-    setTimeout(function () {
-        hideElement("menu");
-        showElement("scores");
-    }, 1500);
-    
-}
-
-function shareScores() {
-    "use strict";
-    
-    alert("URL copied to clipboard (not really!)");
-}
 
 // ******************************************************************
 // game functions
@@ -852,7 +904,7 @@ function start() {
         //start in debug mode (skips all menus)
         hideElement("hide");
         hideElement("disclaimer");
-        playGame();
+        playGameDebug();
     } else {
         //start normally
         hideElement("game-controls");
