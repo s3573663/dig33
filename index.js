@@ -75,7 +75,7 @@ var gameSprites = [
     [15, 11, "bartender01", "SW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
-    [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
+    [17, 35, "randy01", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron04", "NW", "Desperados", "dance", "social"],
@@ -758,10 +758,10 @@ function playGame() {
     
         // set/reset and start game timer
         resetTimer();
-        startTimer();     
+        startTimer();
     } else {
         showElement("username");
-    }   
+    }
 }
 
 function playGameDebug() {
@@ -775,7 +775,7 @@ function playGameDebug() {
     
     // set/reset and start game timer
     resetTimer();
-    startTimer();     
+    startTimer();
     
 }
 
@@ -849,6 +849,11 @@ function speak(elementID) {
         "no it's not a backpack, i got that wagon on me.",
         "if you can still turn your head, your traps aren't big enough.",
         "when i need calcium, i just rub milk all over my legs.",
+        "i mm lorde, ya ya ya!",
+        "staaaaaan",
+        "i don't have any change! ",
+        "this is ectoplasm",
+        "i thought this was america",
         "where is everyone?"
     ];
     
@@ -870,10 +875,14 @@ function speak(elementID) {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(14, 17)];
+    } else if (elementID === "randy01") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(17, 22)];
     } else {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(17, 18)];
+            ": " + phrases[getRandomInt(22, 23)];
     }
 }
 
