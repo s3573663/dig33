@@ -838,7 +838,45 @@ function speak(elementID) {
         "i don't have any change! ",
         "this is ectoplasm",
         "i thought this was america",
-        "where is everyone?"
+        "where is everyone?",
+        "tequila + beer = good times",
+        "say, this is the best beer i've ever had",
+        "it's easier to pull the trigger than play the guitar",
+        "you know saragosa? they serve beer...not quite as good as this!",
+        "i came here to drink beer and kick ass...and i've finished my beer",
+        "if you type 'google' into google, you can break the internet",
+        "did you see that ludicrous display last night",
+        "man, its so loud in here",
+        "the thing about arsenal is they always try to walk it in",
+        "i love this. i feel so social",
+        "the beastie boys fought and possibly died for my right to party",
+        "i know i may look like a real person, but i'm not actually a real person",
+        "all in the game...",
+        "i thought kraft punk were playin' tonight",
+        "the thing about the old days: they the old days",
+        "loud noises!",
+        "mmmmm desperados",
+        "did you know desperados beer was first created 20 years ago?",
+        "you all took a life here today. the life of the party",
+        "i'm not superstitious, but i'm a little stitious",
+        "if i can't scuba, then what's this been all about?",
+        "do you like fish sticks?",
+        "oooooh this is a banger!",
+        "freestyler, rock the microphone",
+        "a fire at a sea parks?",
+        "99 bottles of desperados on a wall",
+        "desperados time!",
+        "no guts, no glory!",
+        "i am not impressed by your performance",
+        "ooooh, dance friend",
+        "imma bust a move",
+        "woop woop",
+        "why tequila? why not!",
+        "created in france...",
+        "smooth beer, smooth tunes",
+        "..you do the hokey pokey and turn yourself around...",
+        "it's party time",
+        "one tequila, two tequila, three tequila, floor..."
     ];
     
     showElement("bubble-large");
@@ -866,9 +904,10 @@ function speak(elementID) {
     } else {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(22, 23)];
+            ": " + phrases[getRandomInt(22, 60)];
     }
 }
+
 
 // ******************************************************************
 // initial startup function
