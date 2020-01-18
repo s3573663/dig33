@@ -17,8 +17,8 @@ var seconds;          // game timer (seconds left in game)
 
 var score;            // game score (number of patrons in club)
 
-var intervals = [];   // for delayed instructions (interval)
-var animated = [];    // for delayed instructions (elementID)
+var intervals = [];   // for sprite animation (interval)
+var animated = [];    // for sprite animation (elementID)
 
 // library of objects available (walls etc)
 var gameObjects = [
@@ -691,10 +691,14 @@ function finishGame() {
     hideElement("game-controls");
     hideElement("bubble-large");
     
+    // display score board (DEBUG MODE)
+    if (firebase.auth().currentUser.displayName === null) {
+        showScores();
     // post score to and display score board
-    saveScore();
-    showScores();
-    
+    } else {
+        saveScore();
+        showScores();
+    }
 }
 
 function stopTimer() {
@@ -735,6 +739,7 @@ function startTimer() {
             } else {
                 min = minutes.toString();
             }
+            
             if (seconds < 10) {
                 sec = "0" + seconds.toString();
             } else {
@@ -752,23 +757,6 @@ function playGame() {
     
     hideElement("menu");
     hideElement("transparency");
-    if (firebase.auth().currentUser.displayName !== null) {
-        showElement("game");
-        showElement("game-controls");
-    
-        // set/reset and start game timer
-        resetTimer();
-        startTimer();
-    } else {
-        showElement("username");
-    }
-}
-
-function playGameDebug() {
-    "use strict";
-    
-    hideElement("menu");
-    hideElement("transparency");
     
     showElement("game");
     showElement("game-controls");
@@ -776,7 +764,6 @@ function playGameDebug() {
     // set/reset and start game timer
     resetTimer();
     startTimer();
-    
 }
 
 function hideMenu() {
@@ -786,8 +773,6 @@ function hideMenu() {
     hideElement("username");
     showElement("login");
 }
-
-
 
 // ******************************************************************
 // game functions
@@ -913,7 +898,7 @@ function start() {
         //start in debug mode (skips all menus)
         hideElement("hide");
         hideElement("disclaimer");
-        playGameDebug();
+        playGame();
     } else {
         //start normally
         hideElement("game-controls");
