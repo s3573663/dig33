@@ -75,8 +75,8 @@ var gameSprites = [
     [15, 11, "bartender01", "SW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
-    [17, 35, "randy01", "NW", "Desperados", "dance", "social"],
-    [17, 35, "wally01", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
+    [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron04", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron05", "NW", "Desperados", "dance", "social"],
@@ -191,7 +191,6 @@ function hideElement(elementID) {
     
     document.getElementById(elementID).style.display = "none";
 }
-
 // ******************************************************************
 // game functions
 // ******************************************************************
@@ -427,27 +426,29 @@ function register() {
     "use strict";
     
     var email, password, errorCode, errorMessage, user, username;
-
+    
     email = document.getElementById('register-email').value;
     password = document.getElementById('register-password').value;
     username = document.getElementById('register-username').value;
- 
+    
     if (email.length < 10) {
         alert('Please enter a valid email address.');
         document.getElementById("register-email").value = "";
         document.getElementById("register-password").value = "";
+        document.getElementById("register-email").focus();
         return;
-    }
-    if (password.length < 8) {
+    } else if (password.length < 8) {
         alert('Please enter a password at least 8 characters in length.');
         document.getElementById("register-password").value = "";
+        document.getElementById("register-password").focus();
         return;
-    }
-    
-    if (username.length < 2) {
+    } else if (username.length < 2) {
         alert('Please enter a username at least 2 characters in length.');
         document.getElementById('register-username').value = "";
+        document.getElementById("register-username").focus();
         return;
+    } else {
+        hideElement("register");
     }
     
     // create a new user with a valid email address and password.
@@ -462,38 +463,41 @@ function register() {
         // Handle Errors here.
         errorCode = error.code;
         errorMessage = error.message;
+        
         if (errorCode === 'auth/weak-password') {
             alert('The password is too weak.');
         } else {
             alert(errorMessage);
             console.log(error);
-            showElement("login");
         }
+        showElement("register");
     });
 }
 
 function login() {
     "use strict";
     
-    // sign out current user
-    if (firebase.auth().currentUser) {
-        firebase.auth().signOut();
-    }
-    
-    var email, password;
-
-    email = document.getElementById('login-email').value;
-    password = document.getElementById('login-password').value;
+    var email = document.getElementById('login-email').value,
+        password = document.getElementById('login-password').value;
     
     if (email.length < 10) {
         alert('Please enter a valid email address.');
         document.getElementById("login-email").value = "";
         document.getElementById("login-password").value = "";
+        document.getElementById("login-email").focus();
         return;
     } else if (password.length < 8) {
         alert('Please enter a password at least 8 characters in length.');
         document.getElementById("login-password").value = "";
+        document.getElementById("login-password").focus();
         return;
+    } else {
+        hideElement("login");
+    }
+    
+    // sign out current user
+    if (firebase.auth().currentUser) {
+        firebase.auth().signOut();
     }
     
     // sign in with valid email address and password
@@ -503,6 +507,7 @@ function login() {
         document.getElementById("login-email").value = "";
         document.getElementById("login-password").value = "";
         showMenu();
+        
     }, function (error) {
         // handle errors
         var errorCode, errorMessage;
@@ -512,8 +517,8 @@ function login() {
             alert('Wrong password.');
         } else {
             alert(errorMessage);
+            console.log(error);
         }
-        console.log(error);
         showElement("login");
     });
 }
@@ -864,7 +869,7 @@ function speak(elementID) {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(14, 17)];
-    } else if (elementID === "randy01") {
+    } else if (elementID === "patron01") {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(17, 22)];
@@ -887,7 +892,7 @@ function formEnter() {
         loginPassword = document.getElementById("login-password"),
         registerEmail = document.getElementById("register-email"),
         registerPassword = document.getElementById("register-password"),
-        registerUsername = document.getElementById("register-password");
+        registerUsername = document.getElementById("register-username");
     
     loginEmail.addEventListener("keyup", function (event) {
         if (event.keyCode === 13) {
