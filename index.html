@@ -81,7 +81,7 @@
             <button class="menu-button" onclick="login()">
                 LOGIN
             </button>
-            <button class="menu-button" onclick="register()">
+            <button class="menu-button" onclick="showUsername()">
                 REGISTER
             </button>
             <button class="menu-button" onclick="resetPassword()">
@@ -89,17 +89,21 @@
             </button>
         </div>
         
-        <!-- username -->
+        <!-- register -->
         <div id="username" class="menu-box" style="display:none">
             <div id="login-text">
-                Please enter a unique username.
+                Please enter email, password and a unique username.
             </div>
+             <input type="text" name="email" id="register-email"
+                   placeholder="EMAIL" required="">
+            <input type="password" name="password" id="register-password"
+                   placeholder="PASSWORD" required="">
             <input type="text" name="username" id="login-username"
                    placeholder="USERNAME" required="">
-            <button class="menu-button" onclick="registerUsername()">
+            <button class="menu-button" onclick="register()">
                 REGISTER
             </button>
-            <button class="menu-button" onclick="showMenu()">
+            <button class="menu-button" onclick="showLogIn()">
                 GO BACK
             </button>
         </div>

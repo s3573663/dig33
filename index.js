@@ -76,7 +76,7 @@ var gameSprites = [
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
     [17, 35, "randy01", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
+    [17, 35, "wally01", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron04", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron05", "NW", "Desperados", "dance", "social"],
@@ -401,63 +401,49 @@ function showMenu() {
 }*/
 // ********************
 
+// link a username with email account
+function registerUsername(user) {
+    "use strict";
+    
+    var username;
+
+    username = document.getElementById('login-username').value;
+    
+    user.updateProfile({
+        displayName: username
+    }).then(function () {
+        // username linked to email account
+        hideElement("username");
+        document.getElementById('login-username').value = "";
+        showElement("menu");
+    }, function (error) {
+        // an error occured.
+        console.log(error.message);
+    });
+}
+
+
 // register a new email account
 function register() {
     "use strict";
     
-    var email, password, verify, interval;
-    verify = true;
-    email = document.getElementById('login-email').value;
-    password = document.getElementById('login-password').value;
+    var email, password, errorCode, errorMessage, user, username;
+
+    email = document.getElementById('register-email').value;
+    password = document.getElementById('register-password').value;
+    username = document.getElementById('login-username').value;
  
     if (email.length < 10) {
         alert('Please enter a valid email address.');
-        document.getElementById("login-email").value = "";
-        document.getElementById("login-password").value = "";
+        document.getElementById("register-email").value = "";
+        document.getElementById("register-password").value = "";
         return;
     }
     if (password.length < 8) {
         alert('Please enter a password at least 8 characters in length.');
-        document.getElementById("login-password").value = "";
+        document.getElementById("register-password").value = "";
         return;
     }
-    
-    // create a new user with a valid email address and password.
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
-        // handle errors
-        var errorCode, errorMessage;
-        errorCode = error.code;
-        errorMessage = error.message;
-        if (errorCode === 'auth/weak-password') {
-            alert('The password is too weak.');
-        } else {
-            alert(errorMessage);
-        }
-        console.log(error);
-        showElement("login");
-        verify = false;
-    });
-    
-    interval = setInterval(function () {
-
-        if (verify === true) {
-
-            hideElement("login");
-            email = document.getElementById('login-email').value = "";
-            password = document.getElementById('login-password').value = "";
-            showElement("username");
-            clearInterval(interval);
-        }
-    }, 1000);
-}
-
-// link a username with email account
-function registerUsername() {
-    "use strict";
-    
-    var user, username, verify, interval;
-    user = firebase.auth().currentUser;
-    username = document.getElementById('login-username').value;
     
     if (username.length < 2) {
         alert('Please enter a username at least 2 characters in length.');
@@ -465,34 +451,27 @@ function registerUsername() {
         return;
     }
     
-    user.updateProfile({
-        displayName: username
-    }).then(function () {
-        // update successful.
-        verify = true;
-    }).catch(function (error) {
-        // an error happened.
-        verify = false;
-    });
-    
-
-    interval = setInterval(function () {
-        showElement("transparency");
-
-        if (verify === true) {
-            hideElement("transparency");
-            hideElement("username");
-            document.getElementById('login-username').value = "";
-            showElement("menu");
-            clearInterval(interval);
-            
-            // DEBUG MODE
-            if (getParameter("debug") === "true") {
-                console.log(user.displayName);
-            }
+    // create a new user with a valid email address and password.
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
+        user = firebase.auth().currentUser;
+        registerUsername(user);
+        document.getElementById('register-email').value = "";
+        document.getElementById('register-password').value = "";
+        
+    }, function (error) {
+        // Handle Errors here.
+        errorCode = error.code;
+        errorMessage = error.message;
+        if (errorCode === 'auth/weak-password') {
+            alert('The password is too weak.');
+        } else {
+            alert(errorMessage);
+            console.log(error);
+            showElement("login");
         }
-    }, 1000);
+    });
 }
+
 
 function login() {
     "use strict";
@@ -502,8 +481,8 @@ function login() {
         firebase.auth().signOut();
     }
     
-    var email, password, verify, interval;
-    verify = true;
+    var email, password;
+
     email = document.getElementById('login-email').value;
     password = document.getElementById('login-password').value;
     
@@ -516,12 +495,15 @@ function login() {
         alert('Please enter a password at least 8 characters in length.');
         document.getElementById("login-password").value = "";
         return;
-    } else {
-        hideElement("login");
     }
     
     // sign in with valid email address and password
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function (user) {
+         // set text fields to null
+        document.getElementById("login-email").value = "";
+        document.getElementById("login-password").value = "";
+        showMenu();
+    }, function (error) {
         // handle errors
         var errorCode, errorMessage;
         errorCode = error.code;
@@ -533,28 +515,7 @@ function login() {
         }
         console.log(error);
         showElement("login");
-        verify = false;
     });
-    
-    // set text fields to null
-    document.getElementById("login-email").value = "";
-    document.getElementById("login-password").value = "";
-    
-    
-    interval = setInterval(function () {
-        // if the user email and password log-in is successful 
-        if (firebase.auth().currentUser) {
-            // prompt the user for a username if they did not do so on registration
-            if (firebase.auth().currentUser.displayName !== null) {
-                showMenu();
-            } else {
-                hideElement("transparency");
-                showUsername();
-            }
-            clearInterval(interval);
-        }
-        clearInterval(interval);
-    }, 1000);
 }
 
 // if user does not complete registration, remove the email from firebase
@@ -604,7 +565,7 @@ function resetPassword() {
     
     firebase.auth().sendPasswordResetEmail(email).then(function () {
         alert('Password reset email sent.');
-    }).catch(function (error) {
+    }, function (error) {
         errorCode = error.code;
         errorMessage = error.message;
         
@@ -837,6 +798,12 @@ function speak(elementID) {
         "i don't have any change! ",
         "this is ectoplasm",
         "i thought this was america",
+        "found me",
+        "hmmm what is my name again? wally or waldo?",
+        "that wizard whitebeard is a hunk",
+        "where's my walking stick?!",
+        "no, louis theroux is not my long lost brother",
+        "",
         "where is everyone?",
         "tequila + beer = good times",
         "say, this is the best beer i've ever had",
