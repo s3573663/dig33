@@ -346,7 +346,7 @@ function showLogin() {
     "use strict";
     
     hideElement("disclaimer");
-    hideElement("username");
+    hideElement("register");
     showElement("login");
 }
 
@@ -367,11 +367,11 @@ function showDisclaimer() {
 // ******************************************************************
 // login functions
 // ******************************************************************
-function showUsername() {
+function showRegister() {
     "use strict";
     
     hideElement("login");
-    showElement("username");
+    showElement("register");
 }
 
 function showMenu() {
@@ -407,21 +407,20 @@ function registerUsername(user) {
     
     var username;
 
-    username = document.getElementById('login-username').value;
+    username = document.getElementById('register-username').value;
     
     user.updateProfile({
         displayName: username
     }).then(function () {
         // username linked to email account
-        hideElement("username");
-        document.getElementById('login-username').value = "";
+        hideElement("register");
+        document.getElementById('register-username').value = "";
         showElement("menu");
     }, function (error) {
         // an error occured.
         console.log(error.message);
     });
 }
-
 
 // register a new email account
 function register() {
@@ -431,7 +430,7 @@ function register() {
 
     email = document.getElementById('register-email').value;
     password = document.getElementById('register-password').value;
-    username = document.getElementById('login-username').value;
+    username = document.getElementById('register-username').value;
  
     if (email.length < 10) {
         alert('Please enter a valid email address.');
@@ -447,12 +446,13 @@ function register() {
     
     if (username.length < 2) {
         alert('Please enter a username at least 2 characters in length.');
-        document.getElementById('login-username').value = "";
+        document.getElementById('register-username').value = "";
         return;
     }
     
     // create a new user with a valid email address and password.
-    firebase.auth().createUserWithEmailAndPassword(email, password).then(function (user) {
+    firebase.auth().createUserWithEmailAndPassword(email,
+                                                   password).then(function (user) {
         user = firebase.auth().currentUser;
         registerUsername(user);
         document.getElementById('register-email').value = "";
@@ -471,7 +471,6 @@ function register() {
         }
     });
 }
-
 
 function login() {
     "use strict";
@@ -498,7 +497,8 @@ function login() {
     }
     
     // sign in with valid email address and password
-    firebase.auth().signInWithEmailAndPassword(email, password).then(function (user) {
+    firebase.auth().signInWithEmailAndPassword(email,
+                                               password).then(function (user) {
          // set text fields to null
         document.getElementById("login-email").value = "";
         document.getElementById("login-password").value = "";
@@ -532,7 +532,7 @@ function login() {
     // an error happened.
     });
     
-    document.getElementById('login-username').value = "";
+    document.getElementById('register-username').value = "";
     showLogin();
 }*/
 // ********************
@@ -544,7 +544,7 @@ function logOut() {
     firebase.auth().signOut();
     
     hideElement("menu");
-    hideElement("username");
+    hideElement("register");
     showElement("login");
 }
 
@@ -729,7 +729,7 @@ function hideMenu() {
     "use strict";
     
     hideElement("menu");
-    hideElement("username");
+    hideElement("register");
     showElement("login");
 }
 
@@ -816,7 +816,8 @@ function speak(elementID) {
         "the thing about arsenal is they always try to walk it in",
         "i love this. i feel so social",
         "the beastie boys fought and possibly died for my right to party",
-        "i know i may look like a real person, but i'm not actually a real person",
+        "i know i may look like a real person" +
+            ", but i'm not actually a real person",
         "all in the game...",
         "i thought kraft punk were playin' tonight",
         "the thing about the old days: they the old days",
@@ -874,14 +875,62 @@ function speak(elementID) {
     }
 }
 
+// ******************************************************************
+// initial startup functions
+// ******************************************************************
 
-// ******************************************************************
-// initial startup function
-// ******************************************************************
+// tab to next input field/submit form when enter is pressed
+function formEnter() {
+    "use strict";
+    
+    var loginEmail = document.getElementById("login-email"),
+        loginPassword = document.getElementById("login-password"),
+        registerEmail = document.getElementById("register-email"),
+        registerPassword = document.getElementById("register-password"),
+        registerUsername = document.getElementById("register-password");
+    
+    loginEmail.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("login-password").focus();
+        }
+    });
+    
+    loginPassword.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            login();
+        }
+    });
+    
+    registerEmail.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("register-password").focus();
+        }
+    });
+    
+    registerPassword.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("register-username").focus();
+        }
+    });
+    
+    registerUsername.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            register();
+        }
+    });
+}
+
 function start() {
     "use strict";
     
     var i;
+    
+    formEnter();
     
     // load game objects
     for (i = 0; i < levelObjects.length; i = i + 1) {

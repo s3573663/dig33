@@ -50,6 +50,7 @@ footer p {
     width: 100%;
     text-align: center;
     font-size: 2vmin;
+    font-family: 'Share Tech Mono', monospace;
     line-height: 3vmin;
     user-select: none;
     -ms-user-select: none;
@@ -130,7 +131,8 @@ footer p {
         0.3vmin 0 black, 0 -0.3vmin black;
 }
 
-#login-username, #login-password, #login-email, #register-password, #register-email {
+#login-email, #login-password, #register-email,
+#register-password, #register-username {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
@@ -153,7 +155,7 @@ footer p {
     user-select: none;
 }
 
-#login-text {
+#login-text, #register-text {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;

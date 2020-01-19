@@ -81,7 +81,7 @@
             <button class="menu-button" onclick="login()">
                 LOGIN
             </button>
-            <button class="menu-button" onclick="showUsername()">
+            <button class="menu-button" onclick="showRegister()">
                 REGISTER
             </button>
             <button class="menu-button" onclick="resetPassword()">
@@ -90,15 +90,16 @@
         </div>
         
         <!-- register -->
-        <div id="username" class="menu-box" style="display:none">
-            <div id="login-text">
-                Please enter email, password and a unique username.
+        <div id="register" class="menu-box" style="display:none">
+            <div id="register-text">
+                Please enter a valid email address,
+                password and a unique username.
             </div>
-             <input type="text" name="email" id="register-email"
+            <input type="text" name="email" id="register-email"
                    placeholder="EMAIL" required="">
             <input type="password" name="password" id="register-password"
                    placeholder="PASSWORD" required="">
-            <input type="text" name="username" id="login-username"
+            <input type="text" name="username" id="register-username"
                    placeholder="USERNAME" required="">
             <button class="menu-button" onclick="register()">
                 REGISTER
@@ -205,7 +206,7 @@
         </div>
         
         <footer>
-            <p>v0.33</p>
+            <p>v0.50</p>
             <!-- Authors: Aaron Bramich (19366050),
                           Brendan O'Keefe (19363873) -->
         </footer>
