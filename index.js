@@ -191,36 +191,10 @@ function hideElement(elementID) {
     
     document.getElementById(elementID).style.display = "none";
 }
+
 // ******************************************************************
 // game functions
 // ******************************************************************
-
-// start animation of element (and adds interval to intervals array)
-function animationStart(elementID, startIndex, endIndex) {
-    "use strict";
-    
-    // example usage:
-    // walking SW: animationStart(elementID, 0, -18);
-    // walking NW: animationStart(elementID, -27, -45);
-    // walking SE: animationStart(elementID, -54, -72);
-    // walking NE: animationStart(elementID, -81, -99);
-    // dancing SW: animationStart(elementID, -108, -126);
-    // dancing NW: animationStart(elementID, -135, -153);
-    // dancing SE: animationStart(elementID, -162, -180);
-    // dancing Ne: animationStart(elementID, -189, -198);
-    
-    var position = parseInt(startIndex, 10);
-    
-    animated.push(elementID);
-    intervals.push(setInterval(function () {
-        position = position - startIndex;
-        if (position === endIndex) {
-            position = startIndex;
-        }
-        document.getElementById(elementID).style.backgroundPositionX =
-            position + "vmin";
-    }, 200));
-}
 
 // stop animation of element (and removes interval from intervals array)
 function animationStop(elementID) {
@@ -233,8 +207,67 @@ function animationStop(elementID) {
     intervals.splice(i, 1);
 }
 
+// start animation of element (and adds interval to intervals array)
+function animationStart(elementID, action, direction) {
+    "use strict";
+    
+    // sprite frame reference:
+    // walking SW: animationStart(elementID, 0, 2);
+    // walking NW: animationStart(elementID, 3, 5);
+    // walking SE: animationStart(elementID, 6, 8);
+    // walking NE: animationStart(elementID, 9, 11);
+    // dancing SW: animationStart(elementID, 12, 18);
+    // dancing SE: animationStart(elementID, 19, 25);
+    
+    var startFrame, frame, endFrame, frameWidth = -9;
+    
+    if (action === "walk") {
+        if (direction === "SW") {
+            startFrame = 0;
+            endFrame = 2 * frameWidth;
+        } else if (direction === "NW") {
+            startFrame = 3 * frameWidth;
+            endFrame = 5 * frameWidth;
+        } else if (direction === "SE") {
+            startFrame = 6 * frameWidth;
+            endFrame = 8 * frameWidth;
+        } else if (direction === "NE") {
+            startFrame = 9 * frameWidth;
+            endFrame = 11 * frameWidth;
+        }
+    } else if (action === "dance") {
+        if (direction === "SW") {
+            startFrame = 12 * frameWidth;
+            endFrame = 18 * frameWidth;
+        } else if (direction === "SE") {
+            startFrame = 19 * frameWidth;
+            endFrame = 25 * frameWidth;
+        }
+    }
+    
+    frame = startFrame;
+    
+    animated.push(elementID);
+    intervals.push(setInterval(function () {
+        
+        frame = frame + frameWidth;
+        
+        if (frame === endFrame) {
+            if (action === "dance") {
+                frame = startFrame;
+            } else {
+                animationStop(elementID);
+            }
+        }
+        
+        document.getElementById(elementID).style.backgroundPositionX =
+            frame + "vmin";
+        
+    }, 200));
+}
+
 // show element by id in cell x y
-function showElementInCell(xPos, yPos, elementID, facing) {
+function showElementInCell(xPos, yPos, elementID, direction) {
     "use strict";
     
     var zlayer, i;
@@ -245,13 +278,13 @@ function showElementInCell(xPos, yPos, elementID, facing) {
         document.getElementById(elementID).style.zIndex = zlayer.toString();
         
         // set the direction that the element faces (SW, SE, NW, NE)
-        if (facing === "NW") {
+        if (direction === "NW") {
             document.getElementById(elementID).style.backgroundPositionX =
                 "-27vmin";
-        } else if (facing === "NE") {
+        } else if (direction === "NE") {
             document.getElementById(elementID).style.backgroundPositionX =
                 "-81vmin";
-        } else if (facing === "SE") {
+        } else if (direction === "SE") {
             document.getElementById(elementID).style.backgroundPositionX =
                 "-54vmin";
         } else {
@@ -262,7 +295,7 @@ function showElementInCell(xPos, yPos, elementID, facing) {
         // DEBUG MODE
         if (getParameter("debug") === "true") {
             console.log(elementID + ": x" + xPos + ", y" + yPos +
-                        ", facing " + facing);
+                        ", direction " + direction);
         }
         
         // a "game-cell" element is a cell highlight, which is only 20px high
@@ -341,6 +374,7 @@ function getPos(e) {
 // ******************************************************************
 // disclaimer functions
 // ******************************************************************
+
 function showLogin() {
     "use strict";
     
@@ -366,6 +400,7 @@ function showDisclaimer() {
 // ******************************************************************
 // login functions
 // ******************************************************************
+
 function showRegister() {
     "use strict";
     
@@ -642,6 +677,7 @@ function shareScores() {
 // ******************************************************************
 // main menu functions
 // ******************************************************************
+
 function finishGame() {
     "use strict";
     
@@ -672,7 +708,7 @@ function resetTimer() {
     
     // set the default round length in minutes and seconds
     if (getParameter("debug") === "true") {
-        minutes = 1;
+        minutes = 5;
         seconds = 0;
     } else {
         minutes = 5;
@@ -728,6 +764,10 @@ function playGame() {
     // set/reset and start game timer
     resetTimer();
     startTimer();
+    
+    // start animation test
+    animationStart("dj01", "dance", "SW");
+    // end animation test
 }
 
 function hideMenu() {
@@ -741,6 +781,7 @@ function hideMenu() {
 // ******************************************************************
 // game functions
 // ******************************************************************
+
 function showQuit() {
     "use strict";
     
