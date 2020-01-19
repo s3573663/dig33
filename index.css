@@ -130,7 +130,7 @@ footer p {
         0.3vmin 0 black, 0 -0.3vmin black;
 }
 
-#login-username, #login-password, #login-email {
+#login-username, #login-password, #login-email, #register-password, #register-email {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
