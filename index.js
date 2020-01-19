@@ -661,7 +661,6 @@ function showScores() {
         showElement("transparency");
 
         if (check === true) {
-            hideElement("transparency");
             showElement("scores");
             clearInterval(interval);
         }
