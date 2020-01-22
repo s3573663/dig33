@@ -755,11 +755,18 @@ function startTimer() {
 function playGame() {
     "use strict";
     
+    var i;
+    
     hideElement("menu");
     hideElement("transparency");
     
     showElement("game");
     showElement("game-controls");
+    
+    // clear animations
+    for (i = 0; i < animated.length; i = i + 1) {
+        animationStop(animated[i]);
+    }
     
     // set/reset and start game timer
     resetTimer();
