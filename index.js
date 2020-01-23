@@ -103,7 +103,7 @@ var levelSprites = [
     [17, 35, "patron01", "NW"]
 ];
 
-// *TEST* patron01 path
+// sprite path - bartender walks to start position
 var bartenderPath = [
     ["bartender01", "walk", "NW"],
     ["bartender01", "walk", "NW"],
