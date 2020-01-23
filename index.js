@@ -97,10 +97,18 @@ var gameSprites = [
 // sprites in current level
 var levelSprites = [
     [3, 11, "dj01", "SE"],
-    [15, 13, "bartender01", "SW"],
+    [19, 15, "bartender01", "NW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
-    [10, 20, "patron01", "SE"]
+    [17, 35, "patron01", "NW"]
+];
+
+// *TEST* patron01 path
+var bartenderPath = [
+    ["bartender01", "walk", "NW"],
+    ["bartender01", "walk", "NW"],
+    ["bartender01", "walk", "NW"],
+    ["bartender01", "walk", "SW"]
 ];
 
 // sprite currently selected by player
@@ -208,32 +216,25 @@ function showElementInCell(xPos, yPos, elementID, direction) {
         zlayer = parseInt(yPos, 10) + 9;
         document.getElementById(elementID).style.zIndex = zlayer.toString();
         
-        // set the direction that the element faces (SW, SE, NW, NE)
-        if (direction === "NW") {
+        // set the direction that the element faces (SW, NW, SE, NE)
+        if (direction === "SW") {
+            document.getElementById(elementID).style.backgroundPositionX =
+                "0vmin";
+        } else if (direction === "NW") {
             document.getElementById(elementID).style.backgroundPositionX =
                 "-27vmin";
-        } else if (direction === "NE") {
-            document.getElementById(elementID).style.backgroundPositionX =
-                "-81vmin";
         } else if (direction === "SE") {
             document.getElementById(elementID).style.backgroundPositionX =
                 "-54vmin";
-        } else {
+        } else if (direction === "NE") {
             document.getElementById(elementID).style.backgroundPositionX =
-                "0vmin";
-        }
-        
-        // DEBUG MODE
-        if (getParameter("debug") === "true") {
-            console.log(elementID + ": x" + xPos + ", y" + yPos +
-                        ", direction " + direction);
+                "-81vmin";
         }
         
         // a "game-cell" element is a cell highlight, which is only 20px high
         if (elementID === "game-cell") {
             xPos = (xPos * 4.5) - 4.5;
             yPos = (yPos * 2.25) - 2.25;
-            
         // a standard sprite object (40px x 40px)
         } else {
             xPos = (xPos * 4.5) - 4.5;
@@ -261,7 +262,7 @@ function getCell(boardXvmin, boardYvmin) {
         console.log("selected cell: x" + xPos + ", y" + yPos);
     }
     
-    return [xPos, yPos];
+    return [parseInt(xPos, 10), parseInt(yPos, 10)];
 }
 
 // get click/tap position (debug mode function)
@@ -328,7 +329,7 @@ function animationStart(elementID, action, direction) {
     // dancing SE: animationStart(elementID, 23, 18);
     
     var startFrame, frame, endFrame, frameWidth = -9,
-        xPos, yPos, xPosInt, yPosInt, cell = [], zlayer, offest;
+        xPos, yPos, xPosInt, yPosInt, cell = [], zlayer;
     
     if (action === "walk") {
         if (direction === "SW") {
@@ -356,6 +357,17 @@ function animationStart(elementID, action, direction) {
     
     frame = startFrame;
     
+    xPos = document.getElementById(elementID).style.left;
+    yPos = document.getElementById(elementID).style.top;
+            
+    xPos = xPos.slice(0, -4);
+    yPos = yPos.slice(0, -4);
+            
+    xPosInt = parseInt(xPos, 10);
+    yPosInt = parseInt(yPos, 10);
+    
+    cell = getCell(xPosInt, yPosInt);
+    
     animated.push(elementID);
     intervals.push(setInterval(function () {
         
@@ -365,70 +377,25 @@ function animationStart(elementID, action, direction) {
         // move sprite if walking
         if (action === "walk") {
             
-            xPos = document.getElementById(elementID).style.left;
-            yPos = document.getElementById(elementID).style.top;
-            
-            xPos = xPos.slice(0, -4);
-            yPos = yPos.slice(0, -4);
-            
-            xPosInt = parseInt(xPos, 10);
-            yPosInt = parseInt(yPos, 10);
-            
-            cell = getCell(xPosInt, yPosInt);
-            cell[0] = parseInt(cell[0], 10) + parseInt(1, 10);
-            cell[1] = parseInt(cell[1], 10) + parseInt(4, 10);
-            
             if (direction === "SW") {
-                if (frame === startFrame) {
-                    cell[0] = parseInt(cell[0], 10) - parseFloat(0.33);
-                    cell[1] = parseInt(cell[1], 10) + parseFloat(0.33);
-                } else if (frame === endFrame) {
-                    cell[0] = parseInt(cell[0], 10);
-                    cell[1] = parseInt(cell[1], 10) + parseFloat(1.0);
-                } else {
-                    cell[0] = parseInt(cell[0], 10) - parseFloat(0.66);
-                    cell[1] = parseInt(cell[1], 10) + parseFloat(0.66);
-                }
+                cell[0] = cell[0] - 0.33;
+                cell[1] = cell[1] + 0.33;
             } else if (direction === "NW") {
-                if (frame === startFrame) {
-                    cell[0] = parseInt(cell[0], 10) - parseFloat(0.33);
-                    cell[1] = parseInt(cell[1], 10) - parseFloat(0.33);
-                } else if (frame === endFrame) {
-                    cell[0] = parseInt(cell[0], 10);
-                    cell[1] = parseInt(cell[1], 10);
-                } else {
-                    cell[0] = parseInt(cell[0], 10) - parseFloat(0.66);
-                    cell[1] = parseInt(cell[1], 10) - parseFloat(0.66);
-                }
+                cell[0] = cell[0] - 0.33;
+                cell[1] = cell[1] - 0.33;
             } else if (direction === "SE") {
-                if (frame === startFrame) {
-                    cell[0] = parseInt(cell[0], 10) + parseFloat(0.33);
-                    cell[1] = parseInt(cell[1], 10) + parseFloat(0.33);
-                } else if (frame === endFrame) {
-                    cell[0] = parseInt(cell[0], 10);
-                    cell[1] = parseInt(cell[1], 10) + parseFloat(1.0);
-                } else {
-                    cell[0] = parseInt(cell[0], 10) + parseFloat(0.66);
-                    cell[1] = parseInt(cell[1], 10) + parseFloat(0.66);
-                }
+                cell[0] = cell[0] + 0.33;
+                cell[1] = cell[1] + 0.33;
             } else if (direction === "NE") {
-                if (frame === startFrame) {
-                    cell[0] = parseInt(cell[0], 10) + parseFloat(0.33);
-                    cell[1] = parseInt(cell[1], 10) - parseFloat(0.33);
-                } else if (frame === endFrame) {
-                    cell[0] = parseInt(cell[0], 10);
-                    cell[1] = parseInt(cell[1], 10);
-                } else {
-                    cell[0] = parseInt(cell[0], 10) + parseFloat(0.66);
-                    cell[1] = parseInt(cell[1], 10) - parseFloat(0.66);
-                }
+                cell[0] = cell[0] + 0.33;
+                cell[1] = cell[1] - 0.33;
             }
             
-            xPosInt = (cell[0] * 4.5) - 4.5;
-            yPosInt = (cell[1] * 2.25) - 9;
+            xPosInt = (cell[0] * 4.5).toFixed(2);
+            yPosInt = (cell[1] * 2.25).toFixed(2);
             
             // update zlayer
-            zlayer = parseInt(yPos, 10) + 9;
+            zlayer = parseInt(cell[1], 10) + 9;
             document.getElementById(elementID).style.zIndex =
                 zlayer.toString();
             
@@ -441,7 +408,6 @@ function animationStart(elementID, action, direction) {
             
             document.getElementById(elementID).style.left = xPosInt + "vmin";
             document.getElementById(elementID).style.top = yPosInt + "vmin";
-            
         }
         
         if (frame === endFrame) {
@@ -455,6 +421,24 @@ function animationStart(elementID, action, direction) {
         frame = frame - frameWidth;
         
     }, 200));
+}
+
+// execute animations in order
+function sequenceStart(sequence) {
+    "use strict";
+    
+    var i = 0, interval;
+    
+    interval = setInterval(function () {
+        if (i < sequence.length) {
+            animationStart(sequence[i][0],
+                           sequence[i][1],
+                           sequence[i][2]);
+            i = i + 1;
+        } else {
+            clearInterval(interval);
+        }
+    }, 650);
 }
 
 // ******************************************************************
@@ -858,10 +842,10 @@ function playGame() {
     resetTimer();
     startTimer();
     
-    // start animation test
+    // ***** test *****
     animationStart("dj01", "dance", "SW");
-    animationStart("patron01", "walk", "SE");
-    // end animation test
+    sequenceStart(bartenderPath);
+    // ***** test *****
 }
 
 function hideMenu() {
