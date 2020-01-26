@@ -102,7 +102,6 @@ var levelSprites = [
     [15, 35, "bouncer02", "SE"],
     [17, 35, "patron01", "NW"]
 ];
-
 // sprite path - bartender walks to start position
 var bartenderPath = [
     ["bartender01", "walk", "NW"],
@@ -929,52 +928,88 @@ function speak(elementID) {
         "i don't have any change!",
         "this is ectoplasm!!",
         "i thought this was america.",
+        "oh my god, they took my job!",
+        "what seems to be the officer, problem?",
         "found me.",
-        "hmmm what is my name again? wally or waldo?",
+        "wally or waldo?",
+        "where's that dastardly odlaw?",
         "that wizard whitebeard is a hunk!",
         "where's my walking stick?!",
         "no, louis theroux is not my long lost brother.",
         "i'm too sexy for my walking stick.",
         "where is everyone?",
+        "tonight i'm going to dance with the devil.",
+        "praise desperados!",
+        "too old...",
+        "why it's a miracle!",
         "tequila + beer = good times.",
+        "the thing about the old days: they the old days.",
+        "oooooh this is a banger!",
+        "freestyler, rock the microphone.",
+        "imma bust a move.",
         "say, this is the best beer i've ever had.",
+        "did you know desperados beer was first created 20 years ago?",
+        "woop woop.",
+        "one tequila, two tequila, three tequila, floor...",
+        "i know i may look like a real person" +
+            ", but i'm not actually a real person.",
         "it's easier to pull the trigger than play the guitar.",
         "you know saragosa? they serve beer...not quite as good as this!",
         "i came here to drink beer and kick ass...and i've finished my beer.",
-        "if you type 'google' into google, you can break the internet.",
         "did you see that ludicrous display last night.",
-        "man, its so loud in here.",
         "the thing about arsenal is they always try to walk it in.",
         "i love this. i feel so social.",
+        "if you type 'google' into google, you can break the internet.",
+        "mmmmm desperados.",
+        "..you do the hokey pokey and turn yourself around...",
+        "i would like another alocohol.",
+        "man, its so loud in here.",
         "the beastie boys fought and possibly died for my right to party.",
-        "i know i may look like a real person" +
-            ", but i'm not actually a real person.",
         "all in the game...",
         "i thought kraft punk were playin' tonight.",
-        "the thing about the old days: they the old days.",
         "loud noises!",
-        "mmmmm desperados.",
-        "did you know desperados beer was first created 20 years ago?",
+        "it's the cold ok!",
+        "just blend in like you belong...",
+        "i feel so alive!!!",
+        "is this a nightmare?",
+        "good thing i'm invisible haha.",
         "you all took a life here today. the life of the party.",
         "i'm not superstitious, but i'm a little stitious.",
         "if i can't scuba, then what's this been all about?",
         "do you like fish sticks?",
-        "oooooh this is a banger!",
-        "freestyler, rock the microphone.",
         "a fire at a sea parks?",
         "99 bottles of desperados on a wall.",
         "desperados time!",
         "no guts, no glory!",
         "i am not impressed by your performance.",
         "ooooh, dance friend.",
-        "imma bust a move.",
-        "woop woop.",
+        "i'm a barbie girl in a barbie world.",
+        "omg the dj is so cute!",
+        "disposable cameras are fun, although it does seem wasteful." +
+            "and you don’t ever get to see your pictures.",
+        "this girl was really rude to me at the mall.",
+        "i am one of the few people who looks hot eating a cupcake.",
         "why tequila? why not!",
         "created in france...",
         "smooth beer, smooth tunes.",
-        "..you do the hokey pokey and turn yourself around...",
         "it's party time.",
-        "one tequila, two tequila, three tequila, floor..."
+        "it'sss timmmmeeee",
+        "we’re not just here to take part. we’re here to take over.",
+        "i keep having vivid dreams of success. then it’s time to sleep.",
+        "life's a rollercoaster. You're up one minute; you're down one minute." +
+            "But who doesn't like rollercoasters?",
+        "you can call me mystic mac",
+        "winners focus on winning. losers focus on winners.",
+        "i'm still waiting for the drop...",
+        "ahhh! refreshing.",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank"
     ];
     
     showElement("bubble-large");
@@ -998,11 +1033,75 @@ function speak(elementID) {
     } else if (elementID === "patron01") {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(17, 22)];
+            ": " + phrases[getRandomInt(17, 24)];
+    } else if (elementID === "patron02") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(24, 30)];
+    } else if (elementID === "patron03") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(30, 35)];
+    } else if (elementID === "patron04") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(35, 40)];
+    } else if (elementID === "patron05") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(40, 45)];
+    } else if (elementID === "patron06") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(45, 50)];
+    } else if (elementID === "patron07") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(50, 55)];
+    } else if (elementID === "patron08") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(55, 60)];
+    } else if (elementID === "patron09") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(60, 65)];
+    } else if (elementID === "patron10") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(65, 70)];
+    } else if (elementID === "patron11") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(70, 75)];
+    } else if (elementID === "patron12") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(75, 80)];
+    } else if (elementID === "patron13") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(80, 85)];
+    } else if (elementID === "patron14") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(85, 90)];
+    } else if (elementID === "patron15") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(90, 95)];
+    } else if (elementID === "patron16") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(95, 100)];
+    } else if (elementID === "patron17") {
+        document.getElementById("bubble-large").innerHTML =
+            elementID.substring(0, elementID.length - 2) +
+            ": " + phrases[getRandomInt(100, 105)];
     } else {
         document.getElementById("bubble-large").innerHTML =
             elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(22, 60)];
+            ": " + phrases[getRandomInt(35, 70)];
     }
 }
 
