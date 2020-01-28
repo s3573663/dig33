@@ -100,7 +100,8 @@ var levelSprites = [
     [19, 15, "bartender01", "NW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
-    [17, 35, "patron01", "NW"]
+    [17, 35, "patron01", "NW"],
+    [10, 26, "patron02", "SE"]
 ];
 // sprite path - bartender walks to start position
 var bartenderPath = [
@@ -108,6 +109,26 @@ var bartenderPath = [
     ["bartender01", "walk", "NW"],
     ["bartender01", "walk", "NW"],
     ["bartender01", "walk", "SW"]
+];
+// sprite path - patron walks through entrance
+var patronPath = [
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NE"],
+    ["patron01", "walk", "NE"],
+    ["patron01", "walk", "SE"],
+    ["patron01", "walk", "SE"],
+    ["patron01", "walk", "SW"],
+    ["patron01", "walk", "SW"],
+    ["patron01", "walk", "NW"],
+    ["patron01", "walk", "NW"]
 ];
 
 // sprite currently selected by player
@@ -212,7 +233,20 @@ function showElementInCell(xPos, yPos, elementID, direction) {
     
     // an elementID must be given to this function
     if (elementID !== undefined) {
-        zlayer = parseInt(yPos, 10) + 9;
+        
+        // adjust zlayer for entrance sign
+        if (elementID === "wallentrance70") {
+            zlayer = 43;
+        } else if (elementID === "wallcorner56") {
+            zlayer = 38;
+        } else if (elementID === "wallcornerright38") {
+            zlayer = 38;
+        } else if (elementID === "wallright39") {
+            zlayer = 43;
+        // zlayer default
+        } else {
+            zlayer = parseInt(yPos, 10) + 9;
+        }
         document.getElementById(elementID).style.zIndex = zlayer.toString();
         
         // set the direction that the element faces (SW, NW, SE, NE)
@@ -394,7 +428,7 @@ function animationStart(elementID, action, direction) {
             yPosInt = (cell[1] * 2.25).toFixed(2);
             
             // update zlayer
-            zlayer = parseInt(cell[1], 10) + 9;
+            zlayer = parseInt(cell[1], 10) + 13;
             document.getElementById(elementID).style.zIndex =
                 zlayer.toString();
             
@@ -851,6 +885,7 @@ function playGame() {
     // ***** test *****
     animationStart("dj01", "dance", "SW");
     sequenceStart(bartenderPath);
+    sequenceStart(patronPath);
     // ***** test *****
 }
 
