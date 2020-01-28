@@ -362,8 +362,9 @@ function animationStart(elementID, action, direction) {
     // dancing SE: animationStart(elementID, 23, 18);
     
     var startFrame, frame, endFrame, frameWidth = -9,
-        xPos, yPos, xPosInt, yPosInt, cell = [], zlayer;
+        xPos, yPos, xPosInt, yPosInt, cell = [], zlayer, i;
     
+    // determine frame offset
     if (action === "walk") {
         if (direction === "SW") {
             startFrame = 2 * frameWidth;
@@ -390,24 +391,23 @@ function animationStart(elementID, action, direction) {
     
     frame = startFrame;
     
+    // get elementID coords
     xPos = document.getElementById(elementID).style.left;
     yPos = document.getElementById(elementID).style.top;
-            
     xPos = xPos.slice(0, -4);
     yPos = yPos.slice(0, -4);
-            
     xPosInt = parseInt(xPos, 10);
     yPosInt = parseInt(yPos, 10);
-    
     cell = getCell(xPosInt, yPosInt);
     
+    // begin animation
     animated.push(elementID);
     intervals.push(setInterval(function () {
         
         document.getElementById(elementID).style.backgroundPositionX =
             frame + "vmin";
         
-        // move sprite if walking
+        // move sprite position if walking
         if (action === "walk") {
             
             if (direction === "SW") {
@@ -432,25 +432,52 @@ function animationStart(elementID, action, direction) {
             document.getElementById(elementID).style.zIndex =
                 zlayer.toString();
             
+            // debug mode animation information
             if (getParameter("debug") === "true") {
-                console.log("xPosInt = " + xPosInt +
-                        ", yPosInt = " + yPosInt +
-                        ", zlayer = " + zlayer +
-                        ", frame = " + frame);
+                console.log(elementID +
+                            ": xPosInt = " + xPosInt +
+                            ", yPosInt = " + yPosInt +
+                            ", zlayer = " + zlayer +
+                            ", frame = " + frame);
             }
             
             document.getElementById(elementID).style.left = xPosInt + "vmin";
             document.getElementById(elementID).style.top = yPosInt + "vmin";
         }
         
+        // last frame reached
         if (frame === endFrame) {
+            
+            // loop animation if dancing
             if (action === "dance") {
                 frame = startFrame;
+                
+            // stop animation
             } else {
                 animationStop(elementID);
+                
+                // update sprite position in levelSprites array
+                for (i = 0; i < levelSprites.length; i = i + 1) {
+                    if (levelSprites[i][2] === elementID) {
+                        if (direction === "SW") {
+                            levelSprites[i][0] = levelSprites[i][0] - 1;
+                            levelSprites[i][1] = levelSprites[i][1] + 1;
+                        } else if (direction === "NW") {
+                            levelSprites[i][0] = levelSprites[i][0] - 1;
+                            levelSprites[i][1] = levelSprites[i][1] - 1;
+                        } else if (direction === "SE") {
+                            levelSprites[i][0] = levelSprites[i][0] + 1;
+                            levelSprites[i][1] = levelSprites[i][1] + 1;
+                        } else if (direction === "NE") {
+                            levelSprites[i][0] = levelSprites[i][0] + 1;
+                            levelSprites[i][1] = levelSprites[i][1] - 1;
+                        }
+                    }
+                }
             }
         }
         
+        // next frame
         frame = frame - frameWidth;
         
     }, 200));
