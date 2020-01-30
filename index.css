@@ -319,7 +319,7 @@ footer p {
 
 #bubble-large {
     z-index: 50;
-    width: 40vmin;
+    width: 50vmin;
     height: 20vmin;
     position: absolute;
     margin: 1vmin;
@@ -328,11 +328,57 @@ footer p {
     background-color: white;
     border: 0.5vmin solid black;
     border-radius: 2vmin;
-    font-size: 3vmin;
-    font-family: 'Share Tech Mono', monospace;
-    text-align: left;
     user-select: none;
     padding: 1vmin;
+}
+
+#bubble-large-image {
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 2vmin;
+    top: 0;
+    left: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#bubble-large-text {
+    width: 35vmin;
+    height: 8.5vmin;
+    position: absolute;
+    margin: 2vmin;
+    top: 0;
+    right: 0;
+    font-size: 2.5vmin;
+    font-family: 'Share Tech Mono', monospace;
+    text-align: left;
+    overflow: hidden;
+}
+
+.bubble-button {
+    position: absolute;
+    padding: 1vmin;
+    margin: 1vmin;
+    background-color: rgb(225,225,225);
+    border: 0.5vmin solid black;
+    text-align: center;
+    width: 17vmin;
+    font-size: 3vmin;
+    font-family: 'Share Tech Mono', monospace;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+}
+
+.bubble-button:hover, .bubble-button:active {
+    background-color: black;
+    color: white;
+}
+
+#bubble-large-ok {
+    bottom: 1vmin;
+    right: 1vmin;
 }
 
 /*

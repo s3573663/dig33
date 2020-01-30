@@ -14,11 +14,14 @@ var firebase;         // google firebase
 var timer;            // game timer interval
 var minutes;          // game timer (minutes left in game)
 var seconds;          // game timer (seconds left in game)
+var counter;          // game counter interval
 
 var score;            // game score (number of patrons in club)
 
 var intervals = [];   // for sprite animation (interval)
 var animated = [];    // for sprite animation (elementID)
+var sequences = [];   // for sprite animation sequences (interval)
+var paths = [];       // for sprite animation sequences (elementID)
 
 // library of objects available (walls etc)
 var gameObjects = [
@@ -71,10 +74,10 @@ var levelObjects = [
 
 // library of sprites available
 var gameSprites = [
-    [3, 11, "dj01", "SE"],
-    [15, 11, "bartender01", "SW"],
-    [17, 33, "bouncer01", "SE"],
-    [15, 35, "bouncer02", "SE"],
+    [3, 11, "dj01", "SE", "work", "work", "work"],
+    [19, 15, "bartender01", "NW", "work", "work", "work"],
+    [17, 33, "bouncer01", "SE", "work", "work", "work"],
+    [15, 35, "bouncer02", "SE", "work", "work", "work"],
     [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
@@ -95,14 +98,8 @@ var gameSprites = [
 ];
 
 // sprites in current level
-var levelSprites = [
-    [3, 11, "dj01", "SE"],
-    [19, 15, "bartender01", "NW"],
-    [17, 33, "bouncer01", "SE"],
-    [15, 35, "bouncer02", "SE"],
-    [17, 35, "patron01", "NW"],
-    [10, 26, "patron02", "SE"]
-];
+var levelSprites = [];
+
 // sprite path - bartender walks to start position
 var bartenderPath = [
     ["bartender01", "walk", "NW"],
@@ -110,29 +107,6 @@ var bartenderPath = [
     ["bartender01", "walk", "NW"],
     ["bartender01", "walk", "SW"]
 ];
-// sprite path - patron walks through entrance
-var patronPath = [
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NE"],
-    ["patron01", "walk", "NE"],
-    ["patron01", "walk", "SE"],
-    ["patron01", "walk", "SE"],
-    ["patron01", "walk", "SW"],
-    ["patron01", "walk", "SW"],
-    ["patron01", "walk", "NW"],
-    ["patron01", "walk", "NW"]
-];
-
-// sprite currently selected by player
-var selectedSprite = [];
 
 // create a DOM element for game object
 function newObject(objectName) {
@@ -181,13 +155,32 @@ function getParameter(parameter) {
     }
 }
 
-// returns a random integer between max and min (including min)
+// returns a random integer between min and max (including min)
 function getRandomInt(min, max) {
     "use strict";
     
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
+}
+
+// return index of random sprite in gameSprites that is not in levelSprites
+function getSprite() {
+    "use strict";
+    
+    var i, match = true, randomInt = getRandomInt(4, gameSprites.length);
+    
+    while (match === true) {
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] !== gameSprites[randomInt][2]) {
+                match = false;
+            } else {
+                randomInt = getRandomInt(4, gameSprites.length);
+            }
+        }
+    }
+    
+    return randomInt;
 }
 
 // returns today's UTC date in yyyy-mm-dd format
@@ -362,7 +355,7 @@ function animationStart(elementID, action, direction) {
     // dancing SE: animationStart(elementID, 23, 18);
     
     var startFrame, frame, endFrame, frameWidth = -9,
-        xPos, yPos, xPosInt, yPosInt, cell = [], zlayer, i;
+        xPos, yPos, xPosInt, yPosInt, cell = [], zlayer;
     
     // determine frame offset
     if (action === "walk") {
@@ -455,25 +448,6 @@ function animationStart(elementID, action, direction) {
             // stop animation
             } else {
                 animationStop(elementID);
-                
-                // update sprite position in levelSprites array
-                for (i = 0; i < levelSprites.length; i = i + 1) {
-                    if (levelSprites[i][2] === elementID) {
-                        if (direction === "SW") {
-                            levelSprites[i][0] = levelSprites[i][0] - 1;
-                            levelSprites[i][1] = levelSprites[i][1] + 1;
-                        } else if (direction === "NW") {
-                            levelSprites[i][0] = levelSprites[i][0] - 1;
-                            levelSprites[i][1] = levelSprites[i][1] - 1;
-                        } else if (direction === "SE") {
-                            levelSprites[i][0] = levelSprites[i][0] + 1;
-                            levelSprites[i][1] = levelSprites[i][1] + 1;
-                        } else if (direction === "NE") {
-                            levelSprites[i][0] = levelSprites[i][0] + 1;
-                            levelSprites[i][1] = levelSprites[i][1] - 1;
-                        }
-                    }
-                }
             }
         }
         
@@ -483,22 +457,83 @@ function animationStart(elementID, action, direction) {
     }, 200));
 }
 
+// stop animation of element (and removes interval from intervals array)
+function sequenceStop(elementID) {
+    "use strict";
+    
+    var i = paths.indexOf(elementID);
+    
+    paths.splice(i, 1);
+    clearInterval(sequences[i]);
+    sequences.splice(i, 1);
+}
+
 // execute animations in order
 function sequenceStart(sequence) {
     "use strict";
     
-    var i = 0, interval;
+    var i = 0;
     
-    interval = setInterval(function () {
+    //begin sequence
+    paths.push(sequence[0][0]);
+    sequences.push(setInterval(function () {
         if (i < sequence.length) {
             animationStart(sequence[i][0],
                            sequence[i][1],
                            sequence[i][2]);
             i = i + 1;
         } else {
-            clearInterval(interval);
+            sequenceStop(sequence[0][0]);
         }
-    }, 650);
+    }, 650));
+}
+
+// spawn a new sprite
+function spawnSprite(sprite) {
+    "use strict";
+    
+    var i, empty, xPos, yPos, elementID, direction;
+    
+    xPos = sprite[0];
+    yPos = sprite[1];
+    elementID = sprite[2];
+    direction = sprite[3];
+    
+    // check if cell is occupied
+    empty = true;
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        if (levelSprites[i][0] === xPos && levelSprites[i][1] === yPos) {
+            empty = false;
+        }
+    }
+    
+    // spawn sprite if cell empty
+    if (empty === true) {
+        levelSprites.push(sprite);
+        newSprite(elementID);
+        showElementInCell(xPos, yPos, elementID, direction);
+        return true;
+        
+    // deny all future spawn attepts with that sprite
+    } else {
+        levelSprites.push(sprite);
+        return false;
+    }
+}
+
+// remove a sprite element from DOM and levelSprites array
+function removeSprite(elementID) {
+    "use strict";
+    
+    var i, sprite = document.getElementById(elementID);
+    
+    sprite.remove();
+    
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        if (levelSprites[i][2] === elementID) {
+            levelSprites.splice(i, 1);
+        }
+    }
 }
 
 // ******************************************************************
@@ -885,7 +920,7 @@ function startTimer() {
 function playGame() {
     "use strict";
     
-    var i;
+    var i, ii, interval, gameSprite;
     
     hideElement("menu");
     hideElement("transparency");
@@ -893,27 +928,58 @@ function playGame() {
     showElement("game");
     showElement("game-controls");
     
-    // clear animations
-    for (i = 0; i < animated.length; i = i + 1) {
-        animationStop(animated[i]);
+    // clear counter
+    clearInterval(counter);
+    
+    // clear sequences
+    while (sequences.length > 0) {
+        sequenceStop(paths[0]);
     }
     
-    // load sprite objects
-    for (i = 0; i < levelSprites.length; i = i + 1) {
-        newSprite(levelSprites[i][2]);
-        showElementInCell(levelSprites[i][0], levelSprites[i][1],
-                          levelSprites[i][2], levelSprites[i][3]);
+    // clear animations
+    while (animated.length > 0) {
+        animationStop(animated[0]);
+    }
+    
+    // clear sprites
+    while (levelSprites.length > 0) {
+        removeSprite(levelSprites[0][2]);
+    }
+    
+    // load starting gameSprites
+    for (i = 0; i < 4; i = i + 1) {
+        spawnSprite(gameSprites[i]);
     }
     
     // set/reset and start game timer
     resetTimer();
     startTimer();
     
-    // ***** test *****
+    // starting animations
     animationStart("dj01", "dance", "SW");
     sequenceStart(bartenderPath);
-    sequenceStart(patronPath);
-    // ***** test *****
+    
+    // timed animations
+    i = 0;
+    counter = setInterval(function () {
+        i = i + 1;
+        
+        gameSprite = gameSprites[getSprite()];
+        if (spawnSprite(gameSprite) === true) {
+            
+            
+            
+            // test - remove later
+            console.log("spawn " + gameSprite[2] + " successful");
+        } else {
+            // test - remove later
+            console.log("spawn " + gameSprite[2] + " failed (cell occupied)");
+        }
+        
+        if (i === 30) {
+            clearInterval(counter);
+        }
+    }, 10000);
 }
 
 function hideMenu() {
@@ -957,8 +1023,25 @@ function hideQuit() {
 function getMove(elementID) {
     "use strict";
     
-    document.getElementById("bubble-large").innerHTML =
-        "you have clicked on a choice bubble!";
+    if (elementID === "bubble-entrance") {
+        console.log("getMove() triggered by " + elementID);
+        
+    } else if (elementID === "bubble-bar") {
+        console.log("getMove() triggered by " + elementID);
+        
+    } else if (elementID === "bubble-dancefloor") {
+        console.log("getMove() triggered by " + elementID);
+        
+    } else if (elementID === "bubble-large-ok") {
+        console.log("getMove() triggered by " + elementID);
+        hideElement("bubble-large");
+        
+        
+        
+    } else {
+        console.log("getMove() triggered by " + elementID);
+        
+    }
 }
 
 // this function is triggered when the player clicks on a sprite.
@@ -1072,96 +1155,100 @@ function speak(elementID) {
         "blank",
         "blank",
         "blank"
-    ];
+    ], imageURL = window.getComputedStyle(document.getElementById(elementID),
+                                          '').getPropertyValue('background-image');
+    
+    document.getElementById("bubble-large-image").style.backgroundImage = imageURL;
     
     showElement("bubble-large");
+    showElement("bubble-large-ok");
     
     if (elementID === "dj01") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(0, 5)];
     } else if (elementID === "bartender01") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(5, 10)];
     } else if (elementID === "bouncer01") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(10, 14)];
     } else if (elementID === "bouncer02") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(14, 17)];
     } else if (elementID === "patron01") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(17, 24)];
     } else if (elementID === "patron02") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(24, 30)];
     } else if (elementID === "patron03") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(30, 35)];
     } else if (elementID === "patron04") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(35, 40)];
     } else if (elementID === "patron05") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(40, 45)];
     } else if (elementID === "patron06") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(45, 50)];
     } else if (elementID === "patron07") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(50, 55)];
     } else if (elementID === "patron08") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(55, 60)];
     } else if (elementID === "patron09") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(60, 65)];
     } else if (elementID === "patron10") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(65, 70)];
     } else if (elementID === "patron11") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(70, 75)];
     } else if (elementID === "patron12") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(75, 80)];
     } else if (elementID === "patron13") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(80, 85)];
     } else if (elementID === "patron14") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(85, 90)];
     } else if (elementID === "patron15") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(90, 95)];
     } else if (elementID === "patron16") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(95, 100)];
     } else if (elementID === "patron17") {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(100, 105)];
     } else {
-        document.getElementById("bubble-large").innerHTML =
+        document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(35, 70)];
     }

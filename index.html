@@ -165,13 +165,39 @@
             </div>
             
             <div id="bubble-entrance" class="bubble" style="display:none"
-                 onclick="getMove('bubble-entrance')"></div>
+                 onclick="getMove('bubble-entrance')">...</div>
             <div id="bubble-bar" class="bubble" style="display:none"
-                 onclick="getMove('bubble-bar1')"></div>
+                 onclick="getMove('bubble-bar')">...</div>
             <div id="bubble-dancefloor" class="bubble" style="display:none"
-                 onclick="getMove('bubble-dancefloor1')"></div>
-            <div id="bubble-large" style="display:none"
-                 onclick="getMove('bubble-large')">
+                 onclick="getMove('bubble-dancefloor')">!</div>
+            <div id="bubble-large" style="display:none">
+                <p id="bubble-large-image"></p>
+                <div id="bubble-large-text"></div>
+                <button id="bubble-large-ok" class="bubble-button"
+                        onclick="getMove('bubble-large-ok')"
+                        style="display:none">
+                    OK
+                </button>
+                <button id="bubble-large-admit" class="bubble-button"
+                        onclick="getMove('bubble-large-admit')"
+                        style="display:none">
+                    ADMIT
+                </button>
+                <button id="bubble-large-bounce" class="bubble-button"
+                        onclick="getMove('bubble-large-bounce')"
+                        style="display:none">
+                    BOUNCE
+                </button>
+                <button id="bubble-large-serve" class="bubble-button"
+                        onclick="getMove('bubble-large-serve')"
+                        style="display:none">
+                    SERVE
+                </button>
+                <button id="bubble-large-clean" class="bubble-button"
+                        onclick="getMove('bubble-large-clean')"
+                        style="display:none">
+                    CLEAN
+                </button>
             </div>
             
             <img id="game-background" alt="background.png"
@@ -206,7 +232,7 @@
         </div>
         
         <footer>
-            <p>v0.60</p>
+            <p>v0.65</p>
             <!-- Authors: Aaron Bramich (19366050),
                           Brendan O'Keefe (19363873) -->
         </footer>
