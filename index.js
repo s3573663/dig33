@@ -74,10 +74,10 @@ var levelObjects = [
 
 // library of sprites available
 var gameSprites = [
-    [3, 11, "dj01", "SE", "work", "work", "work"],
-    [19, 15, "bartender01", "NW", "work", "work", "work"],
-    [17, 33, "bouncer01", "SE", "work", "work", "work"],
-    [15, 35, "bouncer02", "SE", "work", "work", "work"],
+    [3, 11, "dj01", "SE"],
+    [19, 15, "bartender01", "NW"],
+    [17, 33, "bouncer01", "SE"],
+    [15, 35, "bouncer02", "SE"],
     [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
     [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
@@ -514,9 +514,8 @@ function spawnSprite(sprite) {
         showElementInCell(xPos, yPos, elementID, direction);
         return true;
         
-    // deny all future spawn attepts with that sprite
+    // cannot spawn because cell is already occupied
     } else {
-        levelSprites.push(sprite);
         return false;
     }
 }
@@ -976,10 +975,10 @@ function playGame() {
             console.log("spawn " + gameSprite[2] + " failed (cell occupied)");
         }
         
-        if (i === 30) {
+        if (i === 50) {
             clearInterval(counter);
         }
-    }, 10000);
+    }, 5000);
 }
 
 function hideMenu() {
@@ -1130,7 +1129,7 @@ function speak(elementID) {
         "ooooh, dance friend.",
         "i'm a barbie girl in a barbie world.",
         "omg the dj is so cute!",
-        "disposable cameras are fun, although it does seem wasteful." +
+        "disposable cameras seem wasteful " +
             "and you don’t ever get to see your pictures.",
         "this girl was really rude to me at the mall.",
         "i am one of the few people who looks hot eating a cupcake.",
@@ -1141,18 +1140,18 @@ function speak(elementID) {
         "it'sss timmmmeeee",
         "we’re not just here to take part. we’re here to take over.",
         "i keep having vivid dreams of success. then it’s time to sleep.",
-        "life's a rollercoaster. You're up one minute; you're down one minute." +
+        "life's a rollercoaster. You're up, then you're down." +
             "But who doesn't like rollercoasters?",
         "you can call me mystic mac",
         "winners focus on winning. losers focus on winners.",
         "i'm still waiting for the drop...",
         "ahhh! refreshing.",
-        "blank",
-        "blank",
-        "blank",
-        "blank",
-        "blank",
-        "blank",
+        "i would have wore a turtle neck, but i'm out of fresh towels",
+        "you don't pick scientology, scientology picks winners",
+        "but when did you get the text?",
+        "laaaa laa laaa, wait till i get my money right",
+        "when life gives you lemons, be lebron",
+        "it all just feels so urban",
         "blank",
         "blank"
     ], imageURL = window.getComputedStyle(document.getElementById(elementID),
