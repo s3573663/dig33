@@ -78,23 +78,23 @@ var gameSprites = [
     [19, 15, "bartender01", "NW"],
     [17, 33, "bouncer01", "SE"],
     [15, 35, "bouncer02", "SE"],
-    [17, 35, "patron01", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron02", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron03", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron04", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron05", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron06", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron07", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron08", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron09", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron10", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron11", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron12", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron13", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron14", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron15", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron16", "NW", "Desperados", "dance", "social"],
-    [17, 35, "patron17", "NW", "Desperados", "dance", "social"]
+    [17, 35, "patron01", "NW", "yo let me in!"],
+    [17, 35, "patron02", "NW", "yo let me in!"],
+    [17, 35, "patron03", "NW", "yo let me in!"],
+    [17, 35, "patron04", "NW", "yo let me in!"],
+    [17, 35, "patron05", "NW", "yo let me in!"],
+    [17, 35, "patron06", "NW", "yo let me in!"],
+    [17, 35, "patron07", "NW", "yo let me in!"],
+    [17, 35, "patron08", "NW", "yo let me in!"],
+    [17, 35, "patron09", "NW", "yo let me in!"],
+    [17, 35, "patron10", "NW", "yo let me in!"],
+    [17, 35, "patron11", "NW", "yo let me in!"],
+    [17, 35, "patron12", "NW", "yo let me in!"],
+    [17, 35, "patron13", "NW", "yo let me in!"],
+    [17, 35, "patron14", "NW", "yo let me in!"],
+    [17, 35, "patron15", "NW", "yo let me in!"],
+    [17, 35, "patron16", "NW", "yo let me in!"],
+    [17, 35, "patron17", "NW", "yo let me in!"]
 ];
 
 // sprites in current level
@@ -106,6 +106,28 @@ var bartenderPath = [
     ["bartender01", "walk", "NW"],
     ["bartender01", "walk", "NW"],
     ["bartender01", "walk", "SW"]
+];
+
+var patronPath1 = [
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NE"],
+    ["", "walk", "NE"],
+    ["", "walk", "NE"],
+    ["", "walk", "NE"],
+    ["", "walk", "NE"],
+    ["", "walk", "NE"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NW"],
+    ["", "walk", "NE"]
 ];
 
 // create a DOM element for game object
@@ -236,25 +258,28 @@ function showElementInCell(xPos, yPos, elementID, direction) {
             zlayer = 38;
         } else if (elementID === "wallright39") {
             zlayer = 43;
+        } else if (elementID === "bubble-entrance") {
+            zlayer = 50;
+        
         // zlayer default
         } else {
             zlayer = parseInt(yPos, 10) + 9;
         }
         document.getElementById(elementID).style.zIndex = zlayer.toString();
         
-        // set the direction that the element faces (SW, NW, SE, NE)
-        if (direction === "SW") {
+        // set the direction that the element faces (NE, SE, NW, SW)
+        if (direction === "NE") {
             document.getElementById(elementID).style.backgroundPositionX =
-                "0vmin";
-        } else if (direction === "NW") {
-            document.getElementById(elementID).style.backgroundPositionX =
-                "-27vmin";
+                "-81vmin";
         } else if (direction === "SE") {
             document.getElementById(elementID).style.backgroundPositionX =
                 "-54vmin";
-        } else if (direction === "NE") {
+        } else if (direction === "NW") {
             document.getElementById(elementID).style.backgroundPositionX =
-                "-81vmin";
+                "-27vmin";
+        } else {
+            document.getElementById(elementID).style.backgroundPositionX =
+                "0vmin";
         }
         
         // a "game-cell" element is a cell highlight, which is only 20px high
@@ -965,14 +990,15 @@ function playGame() {
         
         gameSprite = gameSprites[getSprite()];
         if (spawnSprite(gameSprite) === true) {
-            
-            
+            showElementInCell(17.5, 32, "bubble-entrance");
             
             // test - remove later
-            console.log("spawn " + gameSprite[2] + " successful");
+            console.log("spawned " + gameSprite[2] + " at " +
+                        document.getElementById("game-timer").innerHTML);
         } else {
             // test - remove later
-            console.log("spawn " + gameSprite[2] + " failed (cell occupied)");
+            console.log("failed to spawn " + gameSprite[2] +
+                        " (cell occupied)");
         }
         
         if (i === 50) {
@@ -1014,33 +1040,6 @@ function hideQuit() {
     
     // resume timer
     startTimer();
-}
-
-// this function is triggered when the player clicks on a speech bubble.
-// it will present in-game choices in the "bubble-large" element and
-// then move the characters accordingly once a choice is chosen.
-function getMove(elementID) {
-    "use strict";
-    
-    if (elementID === "bubble-entrance") {
-        console.log("getMove() triggered by " + elementID);
-        
-    } else if (elementID === "bubble-bar") {
-        console.log("getMove() triggered by " + elementID);
-        
-    } else if (elementID === "bubble-dancefloor") {
-        console.log("getMove() triggered by " + elementID);
-        
-    } else if (elementID === "bubble-large-ok") {
-        console.log("getMove() triggered by " + elementID);
-        hideElement("bubble-large");
-        
-        
-        
-    } else {
-        console.log("getMove() triggered by " + elementID);
-        
-    }
 }
 
 // this function is triggered when the player clicks on a sprite.
@@ -1146,21 +1145,29 @@ function speak(elementID) {
         "winners focus on winning. losers focus on winners.",
         "i'm still waiting for the drop...",
         "ahhh! refreshing.",
-        "i would have wore a turtle neck, but i'm out of fresh towels",
-        "you don't pick scientology, scientology picks winners",
+        "i would have wore a turtle neck, but i'm out of fresh towels.",
+        "you don't pick scientology, scientology picks winners.",
         "but when did you get the text?",
-        "laaaa laa laaa, wait till i get my money right",
-        "when life gives you lemons, be lebron",
-        "it all just feels so urban",
+        "laaaa laa laaa, wait till i get my money right.",
+        "when life gives you lemons, be lebron.",
+        "it all just feels so urban.",
         "blank",
         "blank"
-    ], imageURL = window.getComputedStyle(document.getElementById(elementID),
-                                          '').getPropertyValue('background-image');
+    ], imageURL = window.getComputedStyle(
+        document.getElementById(elementID),
+        ''
+    ).getPropertyValue('background-image');
     
-    document.getElementById("bubble-large-image").style.backgroundImage = imageURL;
+    document.getElementById("bubble-large-image").style.backgroundImage =
+        imageURL;
     
     showElement("bubble-large");
     showElement("bubble-large-ok");
+    hideElement("bubble-large-admit");
+    hideElement("bubble-large-deny");
+    hideElement("bubble-large-serve");
+    hideElement("bubble-large-clean");
+    hideElement("bubble-large-bounce");
     
     if (elementID === "dj01") {
         document.getElementById("bubble-large-text").innerHTML =
@@ -1250,6 +1257,77 @@ function speak(elementID) {
         document.getElementById("bubble-large-text").innerHTML =
             elementID.substring(0, elementID.length - 2) +
             ": " + phrases[getRandomInt(35, 70)];
+    }
+}
+
+// this function is triggered when the player clicks on a speech bubble.
+// it will present in-game choices in the "bubble-large" element and
+// then move the characters accordingly once a choice is chosen.
+function getMove(elementID) {
+    "use strict";
+    
+    var i, spriteID, spriteImageURL, spriteText;
+    
+    // sprite requesting entry
+    if (elementID === "bubble-entrance") {
+        spriteID = document.getElementById("game").lastChild.id;
+        
+        //get and display spriteImage
+        spriteImageURL = window.getComputedStyle(
+            document.getElementById(spriteID),
+            ''
+        ).getPropertyValue('background-image');
+        document.getElementById("bubble-large-image").style.backgroundImage =
+            spriteImageURL;
+        
+        // get and display spriteText
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === spriteID) {
+                spriteText = levelSprites[i][4];
+            }
+        }
+        document.getElementById("bubble-large-text").innerHTML =
+            spriteID.substring(0, spriteID.length - 2) +
+            ": " + spriteText;
+        
+        // hide/display options
+        showElement("bubble-large");
+        hideElement("bubble-large-ok");
+        hideElement("bubble-large-serve");
+        hideElement("bubble-large-clean");
+        showElement("bubble-large-admit");
+        showElement("bubble-large-deny");
+        
+    // sprite entry granted
+    } else if (elementID === "bubble-large-admit") {
+        hideElement("bubble-large");
+        
+        // walk to bar
+        // ask for drink
+        
+    // sprite entry denied
+    } else if (elementID === "bubble-large-deny") {
+        spriteID = document.getElementById("game").lastChild.id;
+        removeSprite(spriteID);
+        hideElement("bubble-large");
+        hideElement("bubble-entrance");
+        
+    // sprite requesting a drink
+    } else if (elementID === "bubble-bar") {
+        console.log("getMove() triggered by " + elementID);
+        
+    // sprite altercation
+    } else if (elementID === "bubble-dancefloor") {
+        console.log("getMove() triggered by " + elementID);
+        
+    // close sprite speak
+    } else if (elementID === "bubble-large-ok") {
+        hideElement("bubble-large");
+        
+    // to be determined
+    } else {
+        console.log("getMove() triggered by " + elementID);
+        
     }
 }
 
