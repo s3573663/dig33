@@ -16,7 +16,7 @@ var minutes;          // game timer (minutes left in game)
 var seconds;          // game timer (seconds left in game)
 var counter;          // game counter interval
 
-var score;            // game score (number of patrons in club)
+var score = 0;        // game score (number of patrons in club)
 
 var intervals = [];   // for sprite animation (interval)
 var animated = [];    // for sprite animation (elementID)
@@ -1358,45 +1358,40 @@ function getMove(elementID) {
             cell = getEmptyCell("bar");
             if (cell !== undefined) {
                 showElementInCell(cell[0], cell[1], spriteID, "NE");
-                hideElement("bubble-large");
-                hideElement("bubble-entrance");
             } else {
                 cell = getEmptyCell("dancefloor");
                 if (cell !== undefined) {
                     showElementInCell(cell[0], cell[1], spriteID, "NW");
-                    
                     if (getRandomInt(0, 2) === 0) {
                         animationStart(spriteID, "dance", "SE");
                     } else {
                         animationStart(spriteID, "dance", "SW");
                     }
-                    
-                    hideElement("bubble-large");
-                    hideElement("bubble-entrance");
                 }
             }
         } else {
             cell = getEmptyCell("dancefloor");
             if (cell !== undefined) {
                 showElementInCell(cell[0], cell[1], spriteID, "NW");
-                
                 if (getRandomInt(0, 2) === 0) {
                     animationStart(spriteID, "dance", "SE");
                 } else {
                     animationStart(spriteID, "dance", "SW");
                 }
-                
-                hideElement("bubble-large");
-                hideElement("bubble-entrance");
             } else {
                 cell = getEmptyCell("bar");
                 if (cell !== undefined) {
                     showElementInCell(cell[0], cell[1], spriteID, "NE");
-                    hideElement("bubble-large");
-                    hideElement("bubble-entrance");
                 }
             }
         }
+        
+        hideElement("bubble-large");
+        hideElement("bubble-entrance");
+        
+        // increase score
+        score = score + 1;
+        document.getElementById("game-score").innerHTML = score;
         
         // ask for drink
         
