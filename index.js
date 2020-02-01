@@ -108,28 +108,6 @@ var bartenderPath = [
     ["bartender01", "walk", "SW"]
 ];
 
-var patronPath1 = [
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NE"],
-    ["", "walk", "NE"],
-    ["", "walk", "NE"],
-    ["", "walk", "NE"],
-    ["", "walk", "NE"],
-    ["", "walk", "NE"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NW"],
-    ["", "walk", "NE"]
-];
-
 // create a DOM element for game object
 function newObject(objectName) {
     "use strict";
@@ -282,6 +260,14 @@ function showElementInCell(xPos, yPos, elementID, direction) {
                 "0vmin";
         }
         
+        // update levelSprites array
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                levelSprites[i][0] = xPos;
+                levelSprites[i][1] = yPos;
+            }
+        }
+        
         // a "game-cell" element is a cell highlight, which is only 20px high
         if (elementID === "game-cell") {
             xPos = (xPos * 4.5) - 4.5;
@@ -296,6 +282,80 @@ function showElementInCell(xPos, yPos, elementID, direction) {
         document.getElementById(elementID).style.top = yPos + "vmin";
         showElement(elementID);
     }
+}
+
+// return object in cell
+function getElementInCell(cellX, cellY) {
+    "use strict";
+    
+    var i, elementID;
+    
+    // check for sprites
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        if (levelSprites[i][0] === cellX && levelSprites[i][1] === cellY) {
+            elementID = levelSprites[i][2];
+        }
+    }
+    
+    // no sprites: check for objects (walls etc.)
+    if (elementID === undefined) {
+        for (i = 0; i < levelObjects.length; i = i + 1) {
+            if (levelObjects[i][0] === cellX && levelObjects[i][1] === cellY) {
+                elementID = levelObjects[i][2];
+            }
+        }
+    }
+    
+    // no sprites or objects: return empty
+    if (elementID === undefined) {
+        return "empty";
+        
+    // return sprite or onject ID
+    } else {
+        return elementID;
+    }
+}
+
+// return random empty cell at the bar or on the dancefloor
+function getEmptyCell(area) {
+    "use strict";
+    
+    var i, cell = [], cells = [];
+    
+    if (area === "bar") {
+        cells = [
+            [11, 13], [12, 14], [13, 15], [14, 16], [15, 17],
+            [16, 18], [17, 19]
+        ];
+    } else if (area === "dancefloor") {
+        cells = [
+            [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
+            [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
+            [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
+            [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
+            [7, 21], [8, 20], [9, 19], [10, 18], [11, 17]
+        ];
+    }
+    
+    // check coords in cells array for empty positions
+    for (i = 0; i < cells.length; i = i + 1) {
+        if (getElementInCell(cells[i][0], cells[i][1]) === "empty") {
+            cell.push([cells[i][0], cells[i][1]]);
+        }
+    }
+    
+    // return random empty cell coords (if any)
+    if (cell.length > 0) {
+        i = getRandomInt(0, cell.length);
+        return cell[i];
+    }
+}
+
+// return sprite path to destination
+function getPath(startX, startY, endX, endY) {
+    "use strict";
+    
+    
 }
 
 // get cell number (debug mode function)
@@ -517,23 +577,15 @@ function sequenceStart(sequence) {
 function spawnSprite(sprite) {
     "use strict";
     
-    var i, empty, xPos, yPos, elementID, direction;
+    var i, xPos, yPos, elementID, direction;
     
     xPos = sprite[0];
     yPos = sprite[1];
     elementID = sprite[2];
     direction = sprite[3];
     
-    // check if cell is occupied
-    empty = true;
-    for (i = 0; i < levelSprites.length; i = i + 1) {
-        if (levelSprites[i][0] === xPos && levelSprites[i][1] === yPos) {
-            empty = false;
-        }
-    }
-    
     // spawn sprite if cell empty
-    if (empty === true) {
+    if (getElementInCell(xPos, yPos) === "empty") {
         levelSprites.push(sprite);
         newSprite(elementID);
         showElementInCell(xPos, yPos, elementID, direction);
@@ -603,6 +655,10 @@ function showMenu() {
     hideElement("login");
     hideElement("scores");
     hideElement("quit");
+    hideElement("bubble-entrance");
+    hideElement("bubble-bar");
+    hideElement("bubble-dancefloor");
+    hideElement("bubble-large");
     showElement("transparency");
     showElement("menu");
 }
@@ -872,6 +928,9 @@ function finishGame() {
     
     // close game screen
     hideElement("game-controls");
+    hideElement("bubble-entrance");
+    hideElement("bubble-bar");
+    hideElement("bubble-dancefloor");
     hideElement("bubble-large");
     showElement("transparency");
     
@@ -991,17 +1050,10 @@ function playGame() {
         gameSprite = gameSprites[getSprite()];
         if (spawnSprite(gameSprite) === true) {
             showElementInCell(17.5, 32, "bubble-entrance");
-            
-            // test - remove later
-            console.log("spawned " + gameSprite[2] + " at " +
-                        document.getElementById("game-timer").innerHTML);
-        } else {
-            // test - remove later
-            console.log("failed to spawn " + gameSprite[2] +
-                        " (cell occupied)");
         }
         
-        if (i === 50) {
+        // i = total number spawn attempts
+        if (i === 30) {
             clearInterval(counter);
         }
     }, 5000);
@@ -1151,8 +1203,8 @@ function speak(elementID) {
         "laaaa laa laaa, wait till i get my money right.",
         "when life gives you lemons, be lebron.",
         "it all just feels so urban.",
-        "blank",
-        "blank"
+        "tequila and beer = tango and cash.",
+        "i'm not a business man, i'm a 'business' man."
     ], imageURL = window.getComputedStyle(
         document.getElementById(elementID),
         ''
@@ -1266,7 +1318,7 @@ function speak(elementID) {
 function getMove(elementID) {
     "use strict";
     
-    var i, spriteID, spriteImageURL, spriteText;
+    var i, spriteID, spriteImageURL, spriteText, cell;
     
     // sprite requesting entry
     if (elementID === "bubble-entrance") {
@@ -1300,9 +1352,52 @@ function getMove(elementID) {
         
     // sprite entry granted
     } else if (elementID === "bubble-large-admit") {
-        hideElement("bubble-large");
+        spriteID = document.getElementById("game").lastChild.id;
         
-        // walk to bar
+        if (getRandomInt(0, 2) === 0) {
+            cell = getEmptyCell("bar");
+            if (cell !== undefined) {
+                showElementInCell(cell[0], cell[1], spriteID, "NE");
+                hideElement("bubble-large");
+                hideElement("bubble-entrance");
+            } else {
+                cell = getEmptyCell("dancefloor");
+                if (cell !== undefined) {
+                    showElementInCell(cell[0], cell[1], spriteID, "NW");
+                    
+                    if (getRandomInt(0, 2) === 0) {
+                        animationStart(spriteID, "dance", "SE");
+                    } else {
+                        animationStart(spriteID, "dance", "SW");
+                    }
+                    
+                    hideElement("bubble-large");
+                    hideElement("bubble-entrance");
+                }
+            }
+        } else {
+            cell = getEmptyCell("dancefloor");
+            if (cell !== undefined) {
+                showElementInCell(cell[0], cell[1], spriteID, "NW");
+                
+                if (getRandomInt(0, 2) === 0) {
+                    animationStart(spriteID, "dance", "SE");
+                } else {
+                    animationStart(spriteID, "dance", "SW");
+                }
+                
+                hideElement("bubble-large");
+                hideElement("bubble-entrance");
+            } else {
+                cell = getEmptyCell("bar");
+                if (cell !== undefined) {
+                    showElementInCell(cell[0], cell[1], spriteID, "NE");
+                    hideElement("bubble-large");
+                    hideElement("bubble-entrance");
+                }
+            }
+        }
+        
         // ask for drink
         
     // sprite entry denied
