@@ -329,11 +329,6 @@ footer p {
     -moz-animation: bounce 2.5s infinite;
 }
 
-.bubble:hover {
-    background-color: black;
-    color: white;
-}
-
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-2vmin); }
@@ -419,6 +414,21 @@ footer p {
 #bubble-large-deny {
     bottom: 1vmin;
     right: 1vmin;
+}
+
+#bubble-large-serve {
+    bottom: 1vmin;
+    right: 1vmin;
+}
+
+#bubble-large-clean {
+    bottom: 1vmin;
+    right: 1vmin;
+}
+
+#bubble-large-bounce {
+    bottom: 1vmin;
+    left: 1vmin;
 }
 
 /*

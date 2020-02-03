@@ -74,31 +74,338 @@ var levelObjects = [
 
 // library of sprites available
 var gameSprites = [
-    [3, 11, "dj01", "SE"],
-    [19, 15, "bartender01", "NW"],
-    [17, 33, "bouncer01", "SE"],
-    [15, 35, "bouncer02", "SE"],
-    [17, 35, "patron01", "NW", "yo let me in!"],
-    [17, 35, "patron02", "NW", "yo let me in!"],
-    [17, 35, "patron03", "NW", "yo let me in!"],
-    [17, 35, "patron04", "NW", "yo let me in!"],
-    [17, 35, "patron05", "NW", "yo let me in!"],
-    [17, 35, "patron06", "NW", "yo let me in!"],
-    [17, 35, "patron07", "NW", "yo let me in!"],
-    [17, 35, "patron08", "NW", "yo let me in!"],
-    [17, 35, "patron09", "NW", "yo let me in!"],
-    [17, 35, "patron10", "NW", "yo let me in!"],
-    [17, 35, "patron11", "NW", "yo let me in!"],
-    [17, 35, "patron12", "NW", "yo let me in!"],
-    [17, 35, "patron13", "NW", "yo let me in!"],
-    [17, 35, "patron14", "NW", "yo let me in!"],
-    [17, 35, "patron15", "NW", "yo let me in!"],
-    [17, 35, "patron16", "NW", "yo let me in!"],
-    [17, 35, "patron17", "NW", "yo let me in!"]
+    [3, 11, "dj01", "SE",
+        // entrance
+        "na",
+        // bar
+        "na",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "it's going to be a fun night!",
+        "i love my job!",
+        "wait for the drop...",
+        "i've got some real bangers lined up.",
+        "stop bothering me!"],
+    [19, 15, "bartender01", "NW",
+        // entrance
+        "na",
+        // bar
+        "na",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "the glass is half full when i pour it.",
+        "when i drink, i can almost remember what happy felt like.",
+        "ever wonder why that desperados beer is so tasty?",
+        "yes the glasses have been dried thoroughly.",
+        "no, i only make these 3 cocktails."],
+    [17, 33, "bouncer01", "SE",
+        // entrance
+        "na",
+        // bar
+        "na",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "i'm cold.",
+        "ID please.",
+        "sorry, no cudas."],
+    [15, 35, "bouncer02", "SE",
+        // entrance
+        "na",
+        // bar
+        "na",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "i don't know any jokes.",
+        "no it's not a backpack, i got that wagon on me.",
+        "if you can still turn your head, your traps aren't big enough.",
+        "when i need calcium, i just rub milk all over my legs."],
+    [17, 35, "patron01", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "i am lorde, ya ya ya!",
+        "staaaaaan.",
+        "i don't have any change!",
+        "this is ectoplasm!!",
+        "i thought this was america.",
+        "oh my god, they took my job!",
+        "what seems to be the officer, problem?"],
+    [17, 35, "patron02", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "found me.",
+        "wally or waldo?",
+        "where's that dastardly odlaw?",
+        "that wizard whitebeard is a hunk!",
+        "where's my walking stick?!",
+        "no, louis theroux is not my long lost brother.",
+        "i'm too sexy for my walking stick."],
+    [17, 35, "patron03", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "where is everyone?",
+        "tonight i'm going to dance with the devil.",
+        "praise desperados!",
+        "too old...",
+        "why it's a miracle!"],
+    [17, 35, "patron04", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "tequila + beer = good times.",
+        "the thing about the old days: they the old days.",
+        "oooooh this is a banger!",
+        "freestyler, rock the microphone.",
+        "imma bust a move."],
+    [17, 35, "patron05", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "this might be the best beer i've ever had.",
+        "did you know desperados beer was first created 20 years ago?",
+        "woop woop.",
+        "one tequila, two tequila, three tequila, floor...",
+        "i know i may look like a real person" +
+            ", but i'm not actually a real person."],
+    [17, 35, "patron06", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "it's easier to pull the trigger than play the guitar.",
+        "you know saragosa? they serve beer...not quite as good as this!",
+        "i came here to drink beer and kick ass...and i've finished my beer.",
+        "did you see that ludicrous display last night.",
+        "the thing about arsenal is they always try to walk it in."],
+    [17, 35, "patron07", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "i love this. i feel so social.",
+        "if you type 'google' into google, you can break the internet.",
+        "mmmmm desperados.",
+        "..you do the hokey pokey and turn yourself around...",
+        "i would like another alocohol."],
+    [17, 35, "patron08", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "man, its so loud in here.",
+        "the beastie boys fought and possibly died for my right to party.",
+        "all in the game...",
+        "i thought kraft punk were playin' tonight.",
+        "loud noises!"],
+    [17, 35, "patron09", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "it's the cold ok!",
+        "just blend in like you belong...",
+        "i feel so alive!!!",
+        "is this a nightmare?",
+        "good thing i'm invisible haha."],
+    [17, 35, "patron10", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "you all took a life here today. the life of the party.",
+        "i'm not superstitious, but i'm a little stitious.",
+        "if i can't scuba, then what's this been all about?",
+        "do you like fish sticks?",
+        "a fire at a sea parks?"],
+    [17, 35, "patron11", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "99 bottles of desperados on a wall.",
+        "desperados time!",
+        "no guts, no glory!",
+        "i am not impressed by your performance.",
+        "ooooh, dance friend."],
+    [17, 35, "patron12", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "i'm a barbie girl in a barbie world.",
+        "omg the dj is so cute!",
+        "disposable cameras seem wasteful " +
+            "and you don’t ever get to see your pictures.",
+        "this girl was really rude to me at the mall.",
+        "i am one of the few people who looks hot eating a cupcake."],
+    [17, 35, "patron13", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "why tequila? why not!",
+        "created in france...",
+        "smooth beer, smooth tunes.",
+        "it's party time.",
+        "it'sss timmmmeeee"],
+    [17, 35, "patron14", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "we’re not just here to take part. we’re here to take over.",
+        "i keep having vivid dreams of success. then it’s time to sleep.",
+        "life's a rollercoaster. You're up, then you're down." +
+            "But who doesn't like rollercoasters?",
+        "you can call me mystic mac",
+        "winners focus on winning. losers focus on winners."],
+    [17, 35, "patron15", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "i'm still waiting for the drop...",
+        "ahhh! refreshing.",
+        "i would have wore a turtle neck, but i'm out of fresh towels.",
+        "you don't pick scientology, scientology picks winners.",
+        "but when did you get the text?"],
+    [17, 35, "patron16", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "laaaa laa laaa, wait till i get my money right.",
+        "when life gives you lemons, be lebron.",
+        "it all just feels so urban.",
+        "tequila and beer = tango and cash.",
+        "i'm not a business man, i'm a 'business' man."],
+    [17, 35, "patron17", "NW",
+        // entrance
+        "yo let me in!",
+        // bar
+        "yo can i get a drink over here!",
+        // has a drink
+        false,
+        // has a problem
+        false,
+        // speech
+        "blank",
+        "blank",
+        "blank",
+        "blank",
+        "blank"]
 ];
 
 // sprites in current level
 var levelSprites = [];
+
+// sprite needing assistance (entrance)
+var spriteEntrance;
+
+// sprite needing assistance (bar)
+var spriteBar;
+
+// sprite needing assistance (dancefloor)
+var spriteDancefloor;
 
 // sprite path - bartender walks to start position
 var bartenderPath = [
@@ -132,7 +439,7 @@ function newSprite(spriteName) {
     levelSprite.setAttribute("id", spriteName);
     levelSprite.setAttribute("class", "game-sprite");
     levelSprite.setAttribute("style", "display:none");
-    levelSprite.setAttribute("onclick", "speak('" +
+    levelSprite.setAttribute("onclick", "getMove('" +
                              spriteName + "')");
     
     document.getElementById("game").appendChild(levelSprite);
@@ -236,7 +543,7 @@ function showElementInCell(xPos, yPos, elementID, direction) {
             zlayer = 38;
         } else if (elementID === "wallright39") {
             zlayer = 43;
-        } else if (elementID === "bubble-entrance") {
+        } else if (elementID === "bubble-alert") {
             zlayer = 50;
         
         // zlayer default
@@ -356,6 +663,71 @@ function getPath(startX, startY, endX, endY) {
     "use strict";
     
     
+}
+
+// returns the area in which a sprite is located (entrance/bar/dancefloor)
+function getSpriteLocation(elementID) {
+    "use strict";
+    
+    var i, cell, cells = [
+        // entrance
+        [17, 35],
+        //bar
+        [11, 13], [12, 14], [13, 15], [14, 16], [15, 17],
+        [16, 18], [17, 19],
+        // dancefloor
+        [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
+        [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
+        [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
+        [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
+        [7, 21], [8, 20], [9, 19], [10, 18], [11, 17]
+    ];
+    
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        if (levelSprites[i][2] === elementID) {
+            for (cell = 0; cell < cells.length; cell = cell + 1) {
+                if (cells[cell][0] === levelSprites[i][0] &&
+                        cells[cell][1] === levelSprites[i][1]) {
+                    
+                    if (cell === 0) {
+                        return "entrance";
+                    } else if (cell > 0 && cell < 8) {
+                        return "bar";
+                    } else if (cell > 7 && cell < cells.length) {
+                        return "dancefloor";
+                    } else {
+                        console.log("getSpriteLocation(elementID): " +
+                                    elementID + " is out of bounds");
+                        return false;
+                    }
+                }
+            }
+            
+            // sprite must be staff
+            return "staff";
+        }
+    }
+}
+
+// return sprite text field (entry/bar/speak)
+function getSpriteText(elementID, textType) {
+    "use strict";
+    
+    var i, field;
+    
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        if (levelSprites[i][2] === elementID) {
+            
+            if (textType === "entry") {
+                return levelSprites[i][4];
+            } else if (textType === "bar") {
+                return levelSprites[i][5];
+            } else {
+                field = getRandomInt(8, levelSprites[i].length);
+                return levelSprites[i][field];
+            }
+        }
+    }
 }
 
 // get cell number (debug mode function)
@@ -655,9 +1027,7 @@ function showMenu() {
     hideElement("login");
     hideElement("scores");
     hideElement("quit");
-    hideElement("bubble-entrance");
-    hideElement("bubble-bar");
-    hideElement("bubble-dancefloor");
+    hideElement("bubble-alert");
     hideElement("bubble-large");
     showElement("transparency");
     showElement("menu");
@@ -928,9 +1298,7 @@ function finishGame() {
     
     // close game screen
     hideElement("game-controls");
-    hideElement("bubble-entrance");
-    hideElement("bubble-bar");
-    hideElement("bubble-dancefloor");
+    hideElement("bubble-alert");
     hideElement("bubble-large");
     showElement("transparency");
     
@@ -1048,8 +1416,10 @@ function playGame() {
         i = i + 1;
         
         gameSprite = gameSprites[getSprite()];
-        if (spawnSprite(gameSprite) === true) {
-            showElementInCell(17.5, 32, "bubble-entrance");
+        if (getEmptyCell("bar") !== undefined) {
+            if (spawnSprite(gameSprite) === true) {
+                showElementInCell(17.5, 32, "bubble-alert");
+            }
         }
         
         // i = total number spawn attempts
@@ -1095,344 +1465,172 @@ function hideQuit() {
 }
 
 // this function is triggered when the player clicks on a sprite.
-// It will display a random message from the sprite in the
-// "bubble-large" element
-function speak(elementID) {
-    "use strict";
-    
-    var phrases = [
-        "it's going to be a fun night!",
-        "i love my job!",
-        "wait for the drop...",
-        "i've got some real bangers lined up.",
-        "stop bothering me!",
-        "the glass is half full when i pour it.",
-        "when i drink, i can almost remember what happy felt like.",
-        "ever wonder why that desperados beer is so tasty?",
-        "yes the glasses have been dried thoroughly.",
-        "no, i only make these 3 cocktails.",
-        "i'm cold.",
-        "ID please.",
-        "sorry, no cudas.",
-        "i don't know any jokes.",
-        "no it's not a backpack, i got that wagon on me.",
-        "if you can still turn your head, your traps aren't big enough.",
-        "when i need calcium, i just rub milk all over my legs.",
-        "i am lorde, ya ya ya!",
-        "staaaaaan.",
-        "i don't have any change!",
-        "this is ectoplasm!!",
-        "i thought this was america.",
-        "oh my god, they took my job!",
-        "what seems to be the officer, problem?",
-        "found me.",
-        "wally or waldo?",
-        "where's that dastardly odlaw?",
-        "that wizard whitebeard is a hunk!",
-        "where's my walking stick?!",
-        "no, louis theroux is not my long lost brother.",
-        "i'm too sexy for my walking stick.",
-        "where is everyone?",
-        "tonight i'm going to dance with the devil.",
-        "praise desperados!",
-        "too old...",
-        "why it's a miracle!",
-        "tequila + beer = good times.",
-        "the thing about the old days: they the old days.",
-        "oooooh this is a banger!",
-        "freestyler, rock the microphone.",
-        "imma bust a move.",
-        "say, this is the best beer i've ever had.",
-        "did you know desperados beer was first created 20 years ago?",
-        "woop woop.",
-        "one tequila, two tequila, three tequila, floor...",
-        "i know i may look like a real person" +
-            ", but i'm not actually a real person.",
-        "it's easier to pull the trigger than play the guitar.",
-        "you know saragosa? they serve beer...not quite as good as this!",
-        "i came here to drink beer and kick ass...and i've finished my beer.",
-        "did you see that ludicrous display last night.",
-        "the thing about arsenal is they always try to walk it in.",
-        "i love this. i feel so social.",
-        "if you type 'google' into google, you can break the internet.",
-        "mmmmm desperados.",
-        "..you do the hokey pokey and turn yourself around...",
-        "i would like another alocohol.",
-        "man, its so loud in here.",
-        "the beastie boys fought and possibly died for my right to party.",
-        "all in the game...",
-        "i thought kraft punk were playin' tonight.",
-        "loud noises!",
-        "it's the cold ok!",
-        "just blend in like you belong...",
-        "i feel so alive!!!",
-        "is this a nightmare?",
-        "good thing i'm invisible haha.",
-        "you all took a life here today. the life of the party.",
-        "i'm not superstitious, but i'm a little stitious.",
-        "if i can't scuba, then what's this been all about?",
-        "do you like fish sticks?",
-        "a fire at a sea parks?",
-        "99 bottles of desperados on a wall.",
-        "desperados time!",
-        "no guts, no glory!",
-        "i am not impressed by your performance.",
-        "ooooh, dance friend.",
-        "i'm a barbie girl in a barbie world.",
-        "omg the dj is so cute!",
-        "disposable cameras seem wasteful " +
-            "and you don’t ever get to see your pictures.",
-        "this girl was really rude to me at the mall.",
-        "i am one of the few people who looks hot eating a cupcake.",
-        "why tequila? why not!",
-        "created in france...",
-        "smooth beer, smooth tunes.",
-        "it's party time.",
-        "it'sss timmmmeeee",
-        "we’re not just here to take part. we’re here to take over.",
-        "i keep having vivid dreams of success. then it’s time to sleep.",
-        "life's a rollercoaster. You're up, then you're down." +
-            "But who doesn't like rollercoasters?",
-        "you can call me mystic mac",
-        "winners focus on winning. losers focus on winners.",
-        "i'm still waiting for the drop...",
-        "ahhh! refreshing.",
-        "i would have wore a turtle neck, but i'm out of fresh towels.",
-        "you don't pick scientology, scientology picks winners.",
-        "but when did you get the text?",
-        "laaaa laa laaa, wait till i get my money right.",
-        "when life gives you lemons, be lebron.",
-        "it all just feels so urban.",
-        "tequila and beer = tango and cash.",
-        "i'm not a business man, i'm a 'business' man."
-    ], imageURL = window.getComputedStyle(
-        document.getElementById(elementID),
-        ''
-    ).getPropertyValue('background-image');
-    
-    document.getElementById("bubble-large-image").style.backgroundImage =
-        imageURL;
-    
-    showElement("bubble-large");
-    showElement("bubble-large-ok");
-    hideElement("bubble-large-admit");
-    hideElement("bubble-large-deny");
-    hideElement("bubble-large-serve");
-    hideElement("bubble-large-clean");
-    hideElement("bubble-large-bounce");
-    
-    if (elementID === "dj01") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(0, 5)];
-    } else if (elementID === "bartender01") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(5, 10)];
-    } else if (elementID === "bouncer01") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(10, 14)];
-    } else if (elementID === "bouncer02") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(14, 17)];
-    } else if (elementID === "patron01") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(17, 24)];
-    } else if (elementID === "patron02") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(24, 30)];
-    } else if (elementID === "patron03") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(30, 35)];
-    } else if (elementID === "patron04") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(35, 40)];
-    } else if (elementID === "patron05") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(40, 45)];
-    } else if (elementID === "patron06") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(45, 50)];
-    } else if (elementID === "patron07") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(50, 55)];
-    } else if (elementID === "patron08") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(55, 60)];
-    } else if (elementID === "patron09") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(60, 65)];
-    } else if (elementID === "patron10") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(65, 70)];
-    } else if (elementID === "patron11") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(70, 75)];
-    } else if (elementID === "patron12") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(75, 80)];
-    } else if (elementID === "patron13") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(80, 85)];
-    } else if (elementID === "patron14") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(85, 90)];
-    } else if (elementID === "patron15") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(90, 95)];
-    } else if (elementID === "patron16") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(95, 100)];
-    } else if (elementID === "patron17") {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(100, 105)];
-    } else {
-        document.getElementById("bubble-large-text").innerHTML =
-            elementID.substring(0, elementID.length - 2) +
-            ": " + phrases[getRandomInt(35, 70)];
-    }
-}
-
-// this function is triggered when the player clicks on a speech bubble.
 // it will present in-game choices in the "bubble-large" element and
-// then move the characters accordingly once a choice is chosen.
+// then move the characters accordingly once a choice is chosen. if
+// no moves are possible, it will display a random message.
 function getMove(elementID) {
     "use strict";
     
-    var i, spriteID, spriteImageURL, spriteText, cell;
+    var i, spriteID, spriteImageURL, spriteText, spriteLocation, cell;
     
-    // sprite requesting entry
-    if (elementID === "bubble-entrance") {
-        spriteID = document.getElementById("game").lastChild.id;
+    // get sprites current location (entrance/bar/dancefloor)
+    spriteLocation = getSpriteLocation(elementID);
+    
+    // sprite name (without id number)
+    spriteID = elementID.substring(0, elementID.length - 2);
+    
+    // get and display spriteImage
+    spriteImageURL = window.getComputedStyle(
+        document.getElementById(elementID),
+        ''
+    ).getPropertyValue('background-image');
+    document.getElementById("bubble-large-image").style.backgroundImage =
+        spriteImageURL;
+    
+    // entry granted
+    if (elementID === "bubble-large-admit") {
         
-        //get and display spriteImage
-        spriteImageURL = window.getComputedStyle(
-            document.getElementById(spriteID),
-            ''
-        ).getPropertyValue('background-image');
-        document.getElementById("bubble-large-image").style.backgroundImage =
-            spriteImageURL;
-        
-        // get and display spriteText
-        for (i = 0; i < levelSprites.length; i = i + 1) {
-            if (levelSprites[i][2] === spriteID) {
-                spriteText = levelSprites[i][4];
-            }
-        }
-        document.getElementById("bubble-large-text").innerHTML =
-            spriteID.substring(0, spriteID.length - 2) +
-            ": " + spriteText;
-        
-        // hide/display options
-        showElement("bubble-large");
-        hideElement("bubble-large-ok");
-        hideElement("bubble-large-serve");
-        hideElement("bubble-large-clean");
-        showElement("bubble-large-admit");
-        showElement("bubble-large-deny");
-        
-    // sprite entry granted
-    } else if (elementID === "bubble-large-admit") {
-        spriteID = document.getElementById("game").lastChild.id;
-        
-        if (getRandomInt(0, 2) === 0) {
-            cell = getEmptyCell("bar");
+        elementID = spriteEntrance;
+        cell = getEmptyCell("bar");
             
-            if (cell !== undefined) {
-                showElementInCell(cell[0], cell[1], spriteID, "NE");
+        if (cell !== undefined) {
+            showElementInCell(cell[0], cell[1], elementID, "NE");
                 
-                hideElement("bubble-large");
-                hideElement("bubble-entrance");
-                
-            } else {
-                cell = getEmptyCell("dancefloor");
-                if (cell !== undefined) {
-                    showElementInCell(cell[0], cell[1], spriteID, "NW");
-                    
-                    if (getRandomInt(0, 2) === 0) {
-                        animationStart(spriteID, "dance", "SE");
-                    } else {
-                        animationStart(spriteID, "dance", "SW");
-                    }
-                    
-                    hideElement("bubble-large");
-                    hideElement("bubble-entrance");
-                }
-            }
-        } else {
-            cell = getEmptyCell("dancefloor");
-            
-            if (cell !== undefined) {
-                showElementInCell(cell[0], cell[1], spriteID, "NW");
-                
-                if (getRandomInt(0, 2) === 0) {
-                    animationStart(spriteID, "dance", "SE");
-                } else {
-                    animationStart(spriteID, "dance", "SW");
-                }
-                
-                hideElement("bubble-large");
-                hideElement("bubble-entrance");
-                
-            } else {
-                cell = getEmptyCell("bar");
-                if (cell !== undefined) {
-                    showElementInCell(cell[0], cell[1], spriteID, "NE");
-                    
-                    hideElement("bubble-large");
-                    hideElement("bubble-entrance");
-                }
-            }
+            hideElement("bubble-large");
+            hideElement("bubble-alert");
         }
+        
+        spriteEntrance = undefined;
+        spriteBar = elementID;
         
         // increase score
         score = score + 1;
         document.getElementById("game-score").innerHTML = score;
         
-        // ask for drink
+        // display alert above bar tender
         
-    // sprite entry denied
+    // entry denied
     } else if (elementID === "bubble-large-deny") {
-        spriteID = document.getElementById("game").lastChild.id;
-        removeSprite(spriteID);
+        
+        elementID = spriteEntrance;
+        removeSprite(elementID);
         hideElement("bubble-large");
-        hideElement("bubble-entrance");
+        hideElement("bubble-alert");
         
-    // sprite requesting a drink
-    } else if (elementID === "bubble-bar") {
-        console.log("getMove() triggered by " + elementID);
+        spriteEntrance = undefined;
         
-    // sprite altercation
-    } else if (elementID === "bubble-dancefloor") {
-        console.log("getMove() triggered by " + elementID);
+    // serve drink
+    } else if (elementID === "bubble-large-serve") {
+        alert("under construction");
+        hideElement("bubble-large");
         
-    // close sprite speak
+    // cleanup mess
+    } else if (elementID === "bubble-large-clean") {
+        alert("under construction");
+        hideElement("bubble-large");
+        
+    // bounce sprite
+    } else if (elementID === "bubble-large-bounce") {
+        alert("under construction");
+        hideElement("bubble-large");
+        
+    // close speech window
     } else if (elementID === "bubble-large-ok") {
         hideElement("bubble-large");
         
-    // to be determined
-    } else {
-        console.log("getMove() triggered by " + elementID);
+    // sprite is staff
+    } else if (spriteLocation === "staff") {
         
+        // get and display spriteText
+        document.getElementById("bubble-large-text").innerHTML =
+            spriteID + ": " + getSpriteText(elementID);
+        
+        // hide/display options
+        showElement("bubble-large");
+        showElement("bubble-large-ok");
+        hideElement("bubble-large-admit");
+        hideElement("bubble-large-deny");
+        hideElement("bubble-large-serve");
+        hideElement("bubble-large-clean");
+        hideElement("bubble-large-bounce");
+    
+    // sprite at entrance
+    } else if (spriteLocation === "entrance") {
+        
+        // get and display spriteText
+        document.getElementById("bubble-large-text").innerHTML =
+            spriteID + ": " + getSpriteText(elementID, "entry");
+        
+        // hide/display options
+        showElement("bubble-large");
+        hideElement("bubble-large-ok");
+        showElement("bubble-large-admit");
+        showElement("bubble-large-deny");
+        hideElement("bubble-large-serve");
+        hideElement("bubble-large-clean");
+        hideElement("bubble-large-bounce");
+        
+        spriteEntrance = elementID;
+        
+    // sprite at bar
+    } else if (spriteLocation === "bar") {
+        
+        if (elementID === spriteBar) {
+            document.getElementById("bubble-large-text").innerHTML =
+                spriteID + ": " + getSpriteText(elementID, "bar");
+            
+            // hide/display options
+            showElement("bubble-large");
+            hideElement("bubble-large-ok");
+            hideElement("bubble-large-admit");
+            hideElement("bubble-large-deny");
+            showElement("bubble-large-serve");
+            hideElement("bubble-large-clean");
+            showElement("bubble-large-bounce");
+            
+        } else {
+            document.getElementById("bubble-large-text").innerHTML =
+                spriteID + ": " + getSpriteText(elementID);
+            
+            // hide/display options
+            showElement("bubble-large");
+            showElement("bubble-large-ok");
+            hideElement("bubble-large-admit");
+            hideElement("bubble-large-deny");
+            hideElement("bubble-large-serve");
+            hideElement("bubble-large-clean");
+            hideElement("bubble-large-bounce");
+        }
+        
+    // sprite on dancefloor
+    } else if (spriteLocation === "dancefloor") {
+        
+        if (elementID === spriteDancefloor) {
+            document.getElementById("bubble-large-text").innerHTML =
+                spriteID + ": " + getSpriteText(elementID, "dancefloor");
+            
+            // hide/display options
+            showElement("bubble-large");
+            hideElement("bubble-large-ok");
+            hideElement("bubble-large-admit");
+            hideElement("bubble-large-deny");
+            hideElement("bubble-large-serve");
+            showElement("bubble-large-clean");
+            showElement("bubble-large-bounce");
+            
+        } else {
+            document.getElementById("bubble-large-text").innerHTML =
+                spriteID + ": " + getSpriteText(elementID);
+            
+            // hide/display options
+            showElement("bubble-large");
+            showElement("bubble-large-ok");
+            hideElement("bubble-large-admit");
+            hideElement("bubble-large-deny");
+            hideElement("bubble-large-serve");
+            hideElement("bubble-large-clean");
+            hideElement("bubble-large-bounce");
+        }
     }
 }
 
