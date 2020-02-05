@@ -23,6 +23,11 @@ var animated = [];    // for sprite animation (elementID)
 var sequences = [];   // for sprite animation sequences (interval)
 var paths = [];       // for sprite animation sequences (elementID)
 
+
+var gameMusic = document.getElementById("music");
+
+
+
 // library of objects available (walls etc)
 var gameObjects = [
     [0, 0, "wall"],
@@ -1290,6 +1295,31 @@ function shareScores() {
 }
 
 // ******************************************************************
+// audio functions
+// ******************************************************************
+
+function playMusic() {
+    "use strict";
+    
+    gameMusic.currentTime = 0;
+    gameMusic.play();
+    gameMusic.volume = 0.1;
+}
+
+function pauseMusic() {
+    "use strict";
+    
+    gameMusic.pause();
+}
+
+function resumeMusic() {
+    "use strict";
+    
+    gameMusic.pause();
+}
+
+
+// ******************************************************************
 // main menu functions
 // ******************************************************************
 
@@ -1402,9 +1432,15 @@ function playGame() {
         spawnSprite(gameSprites[i]);
     }
     
+
+    
     // set/reset and start game timer
     resetTimer();
     startTimer();
+    
+    // start playing game music
+    playMusic();
+   
     
     // starting animations
     animationStart("dj01", "dance", "SW");
@@ -1451,6 +1487,8 @@ function showQuit() {
     
     // pause game timer
     stopTimer();
+    // pause game music
+    pauseMusic();
 }
 
 function hideQuit() {
@@ -1462,6 +1500,8 @@ function hideQuit() {
     
     // resume timer
     startTimer();
+    // resume playing music
+    resumeMusic();
 }
 
 // this function is triggered when the player clicks on a sprite.
