@@ -1097,23 +1097,6 @@ function showMenu() {
     showElement("menu");
 }
 
-// not in use
-// ********************
-/*function sendEmailVerification() {
-    "use strict";
-    
-    // [START sendemailverification]
-    firebase.auth().currentUser.sendEmailVerification().then(function () {
-        // [START_EXCLUDE]
-        alert('Email verification sent.');
-        // [END_EXCLUDE]
-    });
-    
-    // [END sendemailverification]
-    document.getElementById('quickstart-verify-email').hidden = false;
-}*/
-// ********************
-
 // link a username with email account
 function registerUsername(user) {
     "use strict";
@@ -1128,7 +1111,7 @@ function registerUsername(user) {
         // username linked to email account
         hideElement("register");
         document.getElementById('register-username').value = "";
-        showElement("menu");
+        showMenu();
     }, function (error) {
         // an error occured.
         console.log(error.message);
@@ -1237,25 +1220,6 @@ function login() {
     });
 }
 
-// if user does not complete registration, remove the email from firebase
-// not currently in use
-// ********************
-/*function deleteUser() {
-    "use strict";
-    
-    var user = firebase.auth().currentUser;
-    
-    user.delete().then(function () {
-    // user deleted.
-    }).catch(function (error) {
-    // an error happened.
-    });
-    
-    document.getElementById('register-username').value = "";
-    showLogin();
-}*/
-// ********************
-
 // log user out of game
 function logOut() {
     "use strict";
@@ -1325,14 +1289,23 @@ function showScores() {
     
     pauseIntro();
     
-    var scores, interval, i = 10, check = false,
+    var scores, interval, user, i = 10, check = false,
         ref = firebase.database().ref();
     
+    user = firebase.auth().currentUser;
+
     ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
         snapshot.forEach(function (data) {
-            document.getElementById("pos" + i).innerHTML =
-                '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
-            i = i - 1;
+            // bold the current user high scores
+            if (user.displayName === data.val().username) {
+                document.getElementById("pos" + i).innerHTML =
+                    '#' + i + '  ' + '<b>' + data.val().username + '</b>' + ' (' + data.val().score + ')';
+                i = i - 1;
+            } else {
+                document.getElementById("pos" + i).innerHTML =
+                    '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+                i = i - 1;
+            }
         });
         check = true;
     });
