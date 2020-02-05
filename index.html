@@ -24,8 +24,12 @@
         <!-- div to hide page behind while loading -->
         <div id="hide"></div>
         
-        <audio id="music">
+        <audio id="gameMusic">
             <source src="audio/Mixed_Track.mp3" type="audio/mpeg">
+        </audio>
+        
+        <audio id="introMusic">
+            <source src="audio/Intro.mp3" type="audio/mpeg">
         </audio>
         
         <!-- firebase SDK -->
@@ -118,6 +122,7 @@
             <div id="menu-title">
                 DESPERADOS EL JUEGO
             </div>
+            <img id="mute" src="images/audio.png" onclick="soundOnOff(this)">
             <button class="menu-button" onclick="playGame()">
                 PLAY
             </button>

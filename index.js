@@ -23,8 +23,11 @@ var animated = [];    // for sprite animation (elementID)
 var sequences = [];   // for sprite animation sequences (interval)
 var paths = [];       // for sprite animation sequences (elementID)
 
+var gameMusic;
+var introMusic;
 
-var gameMusic = document.getElementById("music");
+gameMusic = document.getElementById("gameMusic");
+introMusic = document.getElementById("introMusic");
 
 
 
@@ -990,6 +993,60 @@ function removeSprite(elementID) {
 }
 
 // ******************************************************************
+// audio functions
+// ******************************************************************
+
+function playMusic() {
+    "use strict";
+    introMusic.pause();
+    gameMusic.currentTime = 0;
+    gameMusic.play();
+    gameMusic.volume = 0.1;
+}
+
+function pauseMusic() {
+    "use strict";
+    
+    gameMusic.pause();
+}
+
+function resumeMusic() {
+    "use strict";
+    
+    gameMusic.play();
+}
+
+function playIntro() {
+    "use strict";
+    
+    introMusic.currentTime = 0;
+    introMusic.loop = true;
+    introMusic.volume = 0.3;
+    introMusic.play();
+}
+
+function pauseIntro() {
+    "use strict";
+    
+    introMusic.pause();
+}
+
+function soundOnOff(audioControl) {
+    "use strict";
+    
+    // switch audio image
+    audioControl.src = audioControl.bool ? "images/audio.png" : "images/mute.png";
+    audioControl.bool = !audioControl.bool;
+    
+    // either mute or un-mute audio
+    if (audioControl.bool === true) {
+        introMusic.muted = true;
+    } else {
+        introMusic.muted = false;
+    }
+}
+
+// ******************************************************************
 // disclaimer functions
 // ******************************************************************
 
@@ -1028,6 +1085,8 @@ function showRegister() {
 
 function showMenu() {
     "use strict";
+    
+    playIntro();
     
     hideElement("login");
     hideElement("scores");
@@ -1202,7 +1261,7 @@ function logOut() {
     "use strict";
     
     firebase.auth().signOut();
-    
+    pauseIntro();
     hideElement("menu");
     hideElement("register");
     showElement("login");
@@ -1264,6 +1323,8 @@ function saveScore() {
 function showScores() {
     "use strict";
     
+    pauseIntro();
+    
     var scores, interval, i = 10, check = false,
         ref = firebase.database().ref();
     
@@ -1294,29 +1355,7 @@ function shareScores() {
     alert("URL copied to clipboard (not really!)");
 }
 
-// ******************************************************************
-// audio functions
-// ******************************************************************
 
-function playMusic() {
-    "use strict";
-    
-    gameMusic.currentTime = 0;
-    gameMusic.play();
-    gameMusic.volume = 0.1;
-}
-
-function pauseMusic() {
-    "use strict";
-    
-    gameMusic.pause();
-}
-
-function resumeMusic() {
-    "use strict";
-    
-    gameMusic.pause();
-}
 
 
 // ******************************************************************
@@ -1731,6 +1770,7 @@ function start() {
     
     formEnter();
     
+ 
     // load game objects
     for (i = 0; i < levelObjects.length; i = i + 1) {
         newObject(levelObjects[i][2]);

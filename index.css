@@ -99,6 +99,17 @@ footer p {
     text-align: center;
 }
 
+#mute {
+    position: absolute;
+    padding:5px;
+    top: 0px;
+    right: 0px;     
+}
+
+#mute:hover{
+    cursor:pointer;
+}
+
 .menu-button {
     padding: 1vmin;
     margin: 1vmin;
