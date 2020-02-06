@@ -16,22 +16,20 @@ var minutes;          // game timer (minutes left in game)
 var seconds;          // game timer (seconds left in game)
 var counter;          // game counter interval
 
-var score = 0;        // game score (number of patrons in club)
-
 var intervals = [];   // for sprite animation (interval)
 var animated = [];    // for sprite animation (elementID)
 var sequences = [];   // for sprite animation sequences (interval)
 var paths = [];       // for sprite animation sequences (elementID)
+var wait = [];        // wait for previous seqence to end (interval)
 
-var gameMusic;
-var introMusic;
-var beerSound;
-var negSound;
+var score = 0;             // game score (number of patrons in club)
+var levelSprites = [];     // sprites in current level
+var spriteSelected;        // sprite selected by player click/tap
 
-gameMusic = document.getElementById("gameMusic");
-introMusic = document.getElementById("introMusic");
-beerSound = document.getElementById("serveSound");
-negSound = document.getElementById("bouncedSound");
+var gameMusic = document.getElementById("gameMusic");
+var introMusic = document.getElementById("introMusic");
+var beerSound = document.getElementById("serveSound");
+var negSound = document.getElementById("bouncedSound");
 
 
 // library of objects available (walls etc)
@@ -406,18 +404,6 @@ var gameSprites = [
         "blank"]
 ];
 
-// sprites in current level
-var levelSprites = [];
-
-// sprite needing assistance (entrance)
-var spriteEntrance;
-
-// sprite needing assistance (bar)
-var spriteBar;
-
-// sprite needing assistance (dancefloor)
-var spriteDancefloor;
-
 // sprite path - bartender walks to start position
 var bartenderPath = [
     ["bartender01", "walk", "NW"],
@@ -669,13 +655,6 @@ function getEmptyCell(area) {
     }
 }
 
-// return sprite path to destination
-function getPath(startX, startY, endX, endY) {
-    "use strict";
-    
-    
-}
-
 // returns the area in which a sprite is located (entrance/bar/dancefloor)
 function getSpriteLocation(elementID) {
     "use strict";
@@ -822,7 +801,7 @@ function animationStart(elementID, action, direction) {
     // dancing SW: animationStart(elementID, 17, 12);
     // dancing SE: animationStart(elementID, 23, 18);
     
-    var startFrame, frame, endFrame, frameWidth = -9,
+    var i, startFrame, frame, endFrame, frameWidth = -9,
         xPos, yPos, xPosInt, yPosInt, cell = [], zlayer;
     
     // determine frame offset
@@ -995,6 +974,109 @@ function removeSprite(elementID) {
     }
 }
 
+// walk sprite along calculated path to destination
+function walkPath(elementID, area, cell) {
+    "use strict";
+    
+    var i, path = [], click, cells = [
+        // entrance
+        [17, 35],
+        //bar
+        [11, 13], [12, 14], [13, 15], [14, 16], [15, 17],
+        [16, 18], [17, 19],
+        // dancefloor
+        [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
+        [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
+        [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
+        [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
+        [7, 21], [8, 20], [9, 19], [10, 18], [11, 17]
+    ];
+    
+    if (area === "bar") {
+        
+        // NW 7 cells
+        for (i = 0; i < 8; i = i + 1) {
+            path.push([elementID, "walk", "NW"]);
+        }
+        
+        // NE 7 cells
+        for (i = 0; i < 7; i = i + 1) {
+            path.push([elementID, "walk", "NE"]);
+        }
+        
+        // NW n cells
+        for (i = 7; i > 0; i = i - 1) {
+            
+            if (cell !== cells[i][0] && cell[1] !== cells[i][1]) {
+                path.push([elementID, "walk", "NW"]);
+            } else {
+                i = 0;
+            }
+        }
+        
+        // NE 1 cell
+        path.push([elementID, "walk", "NE"]);
+        
+        // update sprite coords
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                levelSprites[i][0] = cell[0];
+                levelSprites[i][1] = cell[1];
+            }
+        }
+        
+        // disable click while walking
+        click = document.getElementById(elementID).onclick;
+        document.getElementById(elementID).onclick = "";
+        wait.push(setTimeout(function () {
+            document.getElementById(elementID).onclick = click;
+        }, path.length * 700));
+        
+        sequenceStart(path);
+        
+    } else if (area === "dancefloor") {
+        
+        // SW 1 cell
+        path.push([elementID, "walk", "SW"]);
+        
+        // update sprite coords
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                levelSprites[i][0] = levelSprites[i][0] - 1;
+                levelSprites[i][1] = levelSprites[i][1] + 1;
+                
+                while (levelSprites[i][0] !== 10 &&
+                        levelSprites[i][1] !== 14) {
+                    path.push([elementID, "walk", "NW"]);
+                    levelSprites[i][0] = levelSprites[i][0] - 1;
+                    levelSprites[i][1] = levelSprites[i][1] - 1;
+                }
+                
+                path.push([elementID, "walk", "SW"]);
+                levelSprites[i][0] = levelSprites[i][0] - 1;
+                levelSprites[i][1] = levelSprites[i][1] + 1;
+                path.push([elementID, "walk", "SW"]);
+                levelSprites[i][0] = levelSprites[i][0] - 1;
+                levelSprites[i][1] = levelSprites[i][1] + 1;
+                path.push([elementID, "walk", "SW"]);
+                levelSprites[i][0] = levelSprites[i][0] - 1;
+                levelSprites[i][1] = levelSprites[i][1] + 1;
+                
+                
+            }
+        }
+        
+        // disable click while walking
+        click = document.getElementById(elementID).onclick;
+        document.getElementById(elementID).onclick = "";
+        wait.push(setTimeout(function () {
+            document.getElementById(elementID).onclick = click;
+        }, path.length * 700));
+        
+        sequenceStart(path);
+    }
+}
+
 // ******************************************************************
 // audio functions
 // ******************************************************************
@@ -1044,7 +1126,8 @@ function soundOnOff(audioControl) {
     "use strict";
     
     // switch audio image
-    audioControl.src = audioControl.bool ? "images/audio.png" : "images/mute.png";
+    audioControl.src =
+        audioControl.bool ? "images/audio.png" : "images/mute.png";
     audioControl.bool = !audioControl.bool;
     
     // either mute or un-mute audio
@@ -1158,8 +1241,8 @@ function register() {
     }
     
     // create a new user with a valid email address and password.
-    firebase.auth().createUserWithEmailAndPassword(email,
-                                                   password).then(function (user) {
+    firebase.auth(
+    ).createUserWithEmailAndPassword(email, password).then(function (user) {
         user = firebase.auth().currentUser;
         registerUsername(user);
         document.getElementById('register-email').value = "";
@@ -1309,16 +1392,19 @@ function showScores() {
                 // bold the current user high scores
                 if (user.displayName === data.val().username) {
                     document.getElementById("pos" + i).innerHTML =
-                        '#' + i + '  ' + '<b>' + data.val().username + '</b>' + ' (' + data.val().score + ')';
+                        '#' + i + '  ' + '<b>' + data.val().username +
+                        '</b>' + ' (' + data.val().score + ')';
                     i = i - 1;
                 } else {
                     document.getElementById("pos" + i).innerHTML =
-                        '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+                        '#' + i + '  ' + data.val().username +
+                        ' (' + data.val().score + ')';
                     i = i - 1;
                 }
             } else {
                 document.getElementById("pos" + i).innerHTML =
-                        '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+                        '#' + i + '  ' + data.val().username +
+                        ' (' + data.val().score + ')';
                 i = i - 1;
             }
         });
@@ -1471,15 +1557,12 @@ function playGame() {
         spawnSprite(gameSprites[i]);
     }
     
-
-    
     // set/reset and start game timer
     resetTimer();
     startTimer();
     
     // start playing game music
     playMusic();
-   
     
     // starting animations
     animationStart("dj01", "dance", "SW");
@@ -1550,7 +1633,7 @@ function hideQuit() {
 function getMove(elementID) {
     "use strict";
     
-    var i, spriteID, spriteImageURL, spriteText, spriteLocation, cell;
+    var i, spriteID, spriteImageURL, spriteText, spriteLocation, cell, path;
     
     // get sprites current location (entrance/bar/dancefloor)
     spriteLocation = getSpriteLocation(elementID);
@@ -1569,18 +1652,14 @@ function getMove(elementID) {
     // entry granted
     if (elementID === "bubble-large-admit") {
         
-        elementID = spriteEntrance;
+        elementID = spriteSelected;
         cell = getEmptyCell("bar");
             
         if (cell !== undefined) {
-            showElementInCell(cell[0], cell[1], elementID, "NE");
-                
+            walkPath(elementID, "bar", cell);
             hideElement("bubble-large");
             hideElement("bubble-alert");
         }
-        
-        spriteEntrance = undefined;
-        spriteBar = elementID;
         
         // increase score
         score = score + 1;
@@ -1591,19 +1670,34 @@ function getMove(elementID) {
     // entry denied
     } else if (elementID === "bubble-large-deny") {
         
-        playSound(negSound);
-        elementID = spriteEntrance;
+        elementID = spriteSelected;
         removeSprite(elementID);
+        
         hideElement("bubble-large");
         hideElement("bubble-alert");
-        
-        spriteEntrance = undefined;
+        playSound(negSound);
         
     // serve drink
     } else if (elementID === "bubble-large-serve") {
-        playSound(beerSound);
-        alert("under construction");
+        
+        elementID = spriteSelected;
+        
+        // assign drink to sprite
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                levelSprites[i][6] = true;
+            }
+        }
+        
+        cell = getEmptyCell("dancefloor");
+            
+        if (cell !== undefined) {
+            walkPath(elementID, "dancefloor", cell);
+            hideElement("bubble-large");
+        }
+        
         hideElement("bubble-large");
+        playSound(beerSound);
         
     // cleanup mess
     } else if (elementID === "bubble-large-clean") {
@@ -1612,9 +1706,11 @@ function getMove(elementID) {
         
     // bounce sprite
     } else if (elementID === "bubble-large-bounce") {
-        playSound(negSound);
-        alert("under construction");
+        elementID = spriteSelected;
+        removeSprite(elementID);
+        
         hideElement("bubble-large");
+        playSound(negSound);
         
     // close speech window
     } else if (elementID === "bubble-large-ok") {
@@ -1623,7 +1719,7 @@ function getMove(elementID) {
     // sprite is staff
     } else if (spriteLocation === "staff") {
         
-        // get and display spriteText
+        // random speak
         document.getElementById("bubble-large-text").innerHTML =
             spriteID + ": " + getSpriteText(elementID);
         
@@ -1639,7 +1735,9 @@ function getMove(elementID) {
     // sprite at entrance
     } else if (spriteLocation === "entrance") {
         
-        // get and display spriteText
+        spriteSelected = elementID;
+        
+        // show id
         document.getElementById("bubble-large-text").innerHTML =
             spriteID + ": " + getSpriteText(elementID, "entry");
         
@@ -1652,66 +1750,89 @@ function getMove(elementID) {
         hideElement("bubble-large-clean");
         hideElement("bubble-large-bounce");
         
-        spriteEntrance = elementID;
-        
     // sprite at bar
     } else if (spriteLocation === "bar") {
         
-        if (elementID === spriteBar) {
-            document.getElementById("bubble-large-text").innerHTML =
-                spriteID + ": " + getSpriteText(elementID, "bar");
+        spriteSelected = elementID;
+        
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                
+                // no drink
+                if (levelSprites[i][6] === false) {
+                    
+                    // order a drink
+                    document.getElementById("bubble-large-text").innerHTML =
+                        spriteID + ": " + getSpriteText(elementID, "bar");
             
-            // hide/display options
-            showElement("bubble-large");
-            hideElement("bubble-large-ok");
-            hideElement("bubble-large-admit");
-            hideElement("bubble-large-deny");
-            showElement("bubble-large-serve");
-            hideElement("bubble-large-clean");
-            showElement("bubble-large-bounce");
-            
-        } else {
-            document.getElementById("bubble-large-text").innerHTML =
-                spriteID + ": " + getSpriteText(elementID);
-            
-            // hide/display options
-            showElement("bubble-large");
-            showElement("bubble-large-ok");
-            hideElement("bubble-large-admit");
-            hideElement("bubble-large-deny");
-            hideElement("bubble-large-serve");
-            hideElement("bubble-large-clean");
-            hideElement("bubble-large-bounce");
+                    // hide/display options
+                    showElement("bubble-large");
+                    hideElement("bubble-large-ok");
+                    hideElement("bubble-large-admit");
+                    hideElement("bubble-large-deny");
+                    showElement("bubble-large-serve");
+                    hideElement("bubble-large-clean");
+                    showElement("bubble-large-bounce");
+                    
+                // has drink
+                } else {
+                    
+                    // random speak
+                    document.getElementById("bubble-large-text").innerHTML =
+                        spriteID + ": " + getSpriteText(elementID);
+                    
+                    // hide/display options
+                    showElement("bubble-large");
+                    showElement("bubble-large-ok");
+                    hideElement("bubble-large-admit");
+                    hideElement("bubble-large-deny");
+                    hideElement("bubble-large-serve");
+                    hideElement("bubble-large-clean");
+                    hideElement("bubble-large-bounce");
+                }
+            }
         }
         
     // sprite on dancefloor
     } else if (spriteLocation === "dancefloor") {
         
-        if (elementID === spriteDancefloor) {
-            document.getElementById("bubble-large-text").innerHTML =
-                spriteID + ": " + getSpriteText(elementID, "dancefloor");
-            
-            // hide/display options
-            showElement("bubble-large");
-            hideElement("bubble-large-ok");
-            hideElement("bubble-large-admit");
-            hideElement("bubble-large-deny");
-            hideElement("bubble-large-serve");
-            showElement("bubble-large-clean");
-            showElement("bubble-large-bounce");
-            
-        } else {
-            document.getElementById("bubble-large-text").innerHTML =
-                spriteID + ": " + getSpriteText(elementID);
-            
-            // hide/display options
-            showElement("bubble-large");
-            showElement("bubble-large-ok");
-            hideElement("bubble-large-admit");
-            hideElement("bubble-large-deny");
-            hideElement("bubble-large-serve");
-            hideElement("bubble-large-clean");
-            hideElement("bubble-large-bounce");
+        spriteSelected = elementID;
+        
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                
+                // no problem
+                if (levelSprites[i][7] === false) {
+                    
+                    // random speak
+                    document.getElementById("bubble-large-text").innerHTML =
+                        spriteID + ": " + getSpriteText(elementID);
+                    
+                    // hide/display options
+                    showElement("bubble-large");
+                    showElement("bubble-large-ok");
+                    hideElement("bubble-large-admit");
+                    hideElement("bubble-large-deny");
+                    hideElement("bubble-large-serve");
+                    hideElement("bubble-large-clean");
+                    hideElement("bubble-large-bounce");
+                    
+                // problem
+                } else {
+                    document.getElementById("bubble-large-text").innerHTML =
+                        spriteID + ": " +
+                        getSpriteText(elementID, "dancefloor");
+                    
+                    // hide/display options
+                    showElement("bubble-large");
+                    hideElement("bubble-large-ok");
+                    hideElement("bubble-large-admit");
+                    hideElement("bubble-large-deny");
+                    hideElement("bubble-large-serve");
+                    showElement("bubble-large-clean");
+                    showElement("bubble-large-bounce");
+                }
+            }
         }
     }
 }
