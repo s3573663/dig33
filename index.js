@@ -1305,14 +1305,20 @@ function showScores() {
 
     ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
         snapshot.forEach(function (data) {
-            // bold the current user high scores
-            if (user.displayName === data.val().username) {
-                document.getElementById("pos" + i).innerHTML =
-                    '#' + i + '  ' + '<b>' + data.val().username + '</b>' + ' (' + data.val().score + ')';
-                i = i - 1;
+            if (user) {
+                // bold the current user high scores
+                if (user.displayName === data.val().username) {
+                    document.getElementById("pos" + i).innerHTML =
+                        '#' + i + '  ' + '<b>' + data.val().username + '</b>' + ' (' + data.val().score + ')';
+                    i = i - 1;
+                } else {
+                    document.getElementById("pos" + i).innerHTML =
+                        '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+                    i = i - 1;
+                }
             } else {
                 document.getElementById("pos" + i).innerHTML =
-                    '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
+                        '#' + i + '  ' + data.val().username + ' (' + data.val().score + ')';
                 i = i - 1;
             }
         });
@@ -1331,10 +1337,22 @@ function showScores() {
     }, 1000);
 }
 
+// copy link for the game scoreboard to clipboard
 function shareScores() {
     "use strict";
+    var link, textArea;
     
-    alert("URL copied to clipboard (not really!)");
+    link = window.location.href + "?scores=true";
+    
+    textArea = document.createElement("textarea");
+    document.body.appendChild(textArea);
+    textArea.value = link;
+    textArea.select();
+    document.execCommand("copy");
+    alert("URL copied to clipboard " + textArea.value);
+    document.body.removeChild(textArea);
+    
+    alert("URL copied to clipboard");
 }
 
 
@@ -1751,7 +1769,7 @@ function formEnter() {
 function start() {
     "use strict";
     
-    var i;
+    var i, removeShare, removeMenu;
     
     formEnter();
     
@@ -1769,6 +1787,15 @@ function start() {
         hideElement("hide");
         hideElement("disclaimer");
         playGame();
+    } else if (getParameter("scores") === "true") {
+        //document.addEventListener("click", showScores, false);
+        hideElement("hide");
+        hideElement("disclaimer");
+        removeMenu = document.getElementById("menuBtn");
+        removeShare = document.getElementById("shareBtn");
+        removeMenu.parentNode.removeChild(removeMenu);
+        removeShare.parentNode.removeChild(removeShare);
+        showScores();
     } else {
         //start normally
         hideElement("game-controls");
