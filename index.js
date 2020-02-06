@@ -25,10 +25,13 @@ var paths = [];       // for sprite animation sequences (elementID)
 
 var gameMusic;
 var introMusic;
+var beerSound;
+var negSound;
 
 gameMusic = document.getElementById("gameMusic");
 introMusic = document.getElementById("introMusic");
-
+beerSound = document.getElementById("serveSound");
+negSound = document.getElementById("bouncedSound");
 
 
 // library of objects available (walls etc)
@@ -1031,6 +1034,12 @@ function pauseIntro() {
     introMusic.pause();
 }
 
+function playSound(sound) {
+    "use strict";
+    
+    sound.play();
+}
+
 function soundOnOff(audioControl) {
     "use strict";
     
@@ -1564,6 +1573,7 @@ function getMove(elementID) {
     // entry denied
     } else if (elementID === "bubble-large-deny") {
         
+        playSound(negSound);
         elementID = spriteEntrance;
         removeSprite(elementID);
         hideElement("bubble-large");
@@ -1573,6 +1583,7 @@ function getMove(elementID) {
         
     // serve drink
     } else if (elementID === "bubble-large-serve") {
+        playSound(beerSound);
         alert("under construction");
         hideElement("bubble-large");
         
@@ -1583,6 +1594,7 @@ function getMove(elementID) {
         
     // bounce sprite
     } else if (elementID === "bubble-large-bounce") {
+        playSound(negSound);
         alert("under construction");
         hideElement("bubble-large");
         
