@@ -1055,15 +1055,64 @@ function walkPath(elementID, area, cell) {
                 path.push([elementID, "walk", "SW"]);
                 levelSprites[i][0] = levelSprites[i][0] - 1;
                 levelSprites[i][1] = levelSprites[i][1] + 1;
-                path.push([elementID, "walk", "SW"]);
-                levelSprites[i][0] = levelSprites[i][0] - 1;
-                levelSprites[i][1] = levelSprites[i][1] + 1;
-                path.push([elementID, "walk", "SW"]);
-                levelSprites[i][0] = levelSprites[i][0] - 1;
-                levelSprites[i][1] = levelSprites[i][1] + 1;
                 
-                
+                while (levelSprites[i][0] !== cell[0] &&
+                        levelSprites[i][1] !== cell[1]) {
+                    
+                    // NW 1 cell
+                    if (levelSprites[i][0] - 1 === cell[0] &&
+                            levelSprites[i][1] - 1 === cell[1]) {
+                        
+                        path.push([elementID, "walk", "NW"]);
+                        levelSprites[i][0] = levelSprites[i][0] - 1;
+                        levelSprites[i][1] = levelSprites[i][1] - 1;
+                        
+                    // NW 2 cells
+                    } else if (levelSprites[i][0] - 2 === cell[0] &&
+                            levelSprites[i][1] - 2 === cell[1]) {
+                        
+                        path.push([elementID, "walk", "NW"]);
+                        levelSprites[i][0] = levelSprites[i][0] - 1;
+                        levelSprites[i][1] = levelSprites[i][1] - 1;
+                        path.push([elementID, "walk", "NW"]);
+                        levelSprites[i][0] = levelSprites[i][0] - 1;
+                        levelSprites[i][1] = levelSprites[i][1] - 1;
+                        
+                    // SE 1 cell
+                    } else if (levelSprites[i][0] + 1 === cell[0] &&
+                            levelSprites[i][1] + 1 === cell[1]) {
+                        
+                        path.push([elementID, "walk", "SE"]);
+                        levelSprites[i][0] = levelSprites[i][0] + 1;
+                        levelSprites[i][1] = levelSprites[i][1] + 1;
+                        
+                    // SE 2 cells
+                    } else if (levelSprites[i][0] + 2 === cell[0] &&
+                            levelSprites[i][1] + 2 === cell[1]) {
+                        
+                        path.push([elementID, "walk", "SE"]);
+                        levelSprites[i][0] = levelSprites[i][0] + 1;
+                        levelSprites[i][1] = levelSprites[i][1] + 1;
+                        path.push([elementID, "walk", "SE"]);
+                        levelSprites[i][0] = levelSprites[i][0] + 1;
+                        levelSprites[i][1] = levelSprites[i][1] + 1;
+                        
+                    // SW 1 cell
+                    } else {
+                        path.push([elementID, "walk", "SW"]);
+                        levelSprites[i][0] = levelSprites[i][0] - 1;
+                        levelSprites[i][1] = levelSprites[i][1] + 1;
+                    }
+                }
             }
+        }
+        
+        // start dancing
+        i = getRandomInt(0, 2);
+        if (i === 0) {
+            path.push([elementID, "dance", "SW"]);
+        } else {
+            path.push([elementID, "dance", "SE"]);
         }
         
         // disable click while walking
@@ -1441,9 +1490,6 @@ function shareScores() {
     alert("URL copied to clipboard");
 }
 
-
-
-
 // ******************************************************************
 // main menu functions
 // ******************************************************************
@@ -1659,13 +1705,11 @@ function getMove(elementID) {
             walkPath(elementID, "bar", cell);
             hideElement("bubble-large");
             hideElement("bubble-alert");
+            
+            // increase score
+            score = score + 1;
+            document.getElementById("game-score").innerHTML = score;
         }
-        
-        // increase score
-        score = score + 1;
-        document.getElementById("game-score").innerHTML = score;
-        
-        // display alert above bar tender
         
     // entry denied
     } else if (elementID === "bubble-large-deny") {
@@ -1690,14 +1734,12 @@ function getMove(elementID) {
         }
         
         cell = getEmptyCell("dancefloor");
-            
+        
         if (cell !== undefined) {
             walkPath(elementID, "dancefloor", cell);
             hideElement("bubble-large");
+            playSound(beerSound);
         }
-        
-        hideElement("bubble-large");
-        playSound(beerSound);
         
     // cleanup mess
     } else if (elementID === "bubble-large-clean") {
