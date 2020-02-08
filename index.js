@@ -140,304 +140,268 @@ var gameSprites = [
         "no it's not a backpack, i got that wagon on me.",
         "if you can still turn your head, your traps aren't big enough.",
         "when i need calcium, i just rub milk all over my legs."],
-    [17, 35, "randy01", "NW", "12/03/1974",
-        // is a good character
-        true,
+    [17, 35, "randy01", "NW",
         // entrance
-        "i am lorde, ya ya ya!",
-        // has a drink
-        false,
+        "(born 12/03/1974) says: i am lorde, ya ya ya!",
         // bar
         "desperados original please.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "that hit the spot.",
         "i thought this was america.",
         "staaaaaan.",
         "i don't have any change!",
         "this is ectoplasm!!"],
-    [17, 35, "john02", "NW", "19/07/1987",
-        // is a good character
-        true,
+    [17, 35, "john02", "NW",
         // entrance
-        "the champ's here.",
-        // has a drink
-        false,
+        "(born 19/07/1987) says: the champ's here.",
         // bar
         "desperados original please.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "low calories…nice!",
         "i might tap out.",
         "fitness really changed my life.",
         "i'm not scared of anything.",
         "the higher the risk, the higher the reward."],
-    [17, 35, "peter03", "NW", "30/12/1959",
-        // is a good character
-        true,
+    [17, 35, "peter03", "NW",
         // entrance
-        "part the doors please.",
-        // has a drink
-        false,
+        "(born 30/12/1959) says: part the doors please.",
         // bar
         "desperados lime please.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "tasty citrus flavour!",
         "i need a miracle.",
         "praise desperados!",
         "i'm going to dance with the devil.",
         "the drink of the gods."],
-    [17, 35, "paige04", "NW", "31/02/1983",
-        // is a good character
-        false,
+    [17, 35, "paige04", "NW",
         // entrance
-        "heyyy, let me in!",
+        "(born 31/02/1983) says: heyyy, let me in!",
+        // bar
+        "desperados lime, now!",
         // has a drink
         false,
-        // bar
-        "desperados lime please.",
         // has a problem
-        false,
-        // speech     
+        true,
+        // speech
         "this is what beer tastes like huh.",
         "i wanna go home.",
         "woop woop.",
         "i love this. i feel so social.",
         "man, its so loud in here."],
-    [17, 35, "dwight05", "NW", "12/05/1979",
-        // is a good character
-        false,
+    [17, 35, "dwight05", "NW",
         // entrance
-        "*hiccup* where am i?",
-        // has a drink
-        false,
+        "(born 12/05/1979) says: *hiccup* where am i?",
         // bar
         "got any of that moonshine?",
-        // has a problem
+        // has a drink
         false,
-        // speech     
+        // has a problem
+        true,
+        // speech
         "glug glug glug.",
         "you gotta problem?",
         "mmmm beer.",
         "*burp*",
         "whooaa livin on a prayer."],
-    [17, 35, "shannon06", "NW", "11/12/1992",
-        // is a good character
-        true,
+    [17, 35, "shannon06", "NW",
         // entrance
-        "how are you tonight?",
-        // has a drink
-        false,
+        "(born 11/12/1992) says: how are you tonight?",
         // bar
         "desperados ginger please.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "ginger really adds to the taste.",
         "hmmm I'm bored.",
         "join the desperados revolution!",
         "the beastie boys fought and possibly died for my right to party.",
         "why tequila? why not!"],
-    [17, 35, "roy07", "NW", "22/04/1998",
-        // is a good character
-        true,
+    [17, 35, "roy07", "NW",
         // entrance
-        "let me flippin in…please.",
-        // has a drink
-        false,
+        "(born 22/04/1998) says: let me flippin in…please.",
         // bar
         "desperados ginger please.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "zesty!",
         "ow. four! i mean, five! i mean, fire!",
         "a fire at a sea parks?",
         "i came here to drink beer and kick ass...and i've finished my beer.",
         "did you see that ludicrous display last night?"],
-    [17, 35, "tony08", "NW", "01/01/1997",
-        // is a good character
-        false,
+    [17, 35, "tony08", "NW",
         // entrance
-        "let me in, it's cold out here!",
+        "(born 01/01/1997) says: let me in, it's cold out here!",
+        // bar
+        "desperados original.",
         // has a drink
         false,
-        // bar
-        "desperados original please.",
         // has a problem
-        false,
-        // speech     
+        true,
+        // speech
         "this is the good stuff.",
         "is this a nightmare?",
         "it's the cold ok!",
         "just blend in like you belong...",
         "i feel so alive!!!"],
-    [17, 35, "maria09", "NW", "16/08/2000",
-        // is a good character
-        true,
+    [17, 35, "maria09", "NW",
         // entrance
-        "buenas noches.",
-        // has a drink
-        false,
+        "(born 16/08/200) says: buenas noches.",
         // bar
         "desperados nocturno por favor.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "muchas gracias.",
         "tengo problema.",
         "tengo sed.",
         "necesito desperados.",
         "taco taco buritto buritto."],
-    [17, 35, "kelly10", "NW", "23/11/1895",
-        // is a good character
-        false,
+    [17, 35, "kelly10", "NW",
         // entrance
-        "hi, i'm 25.",
+        "(born 23/11/1895) says: hi, i'm 25.",
+        // bar
+        "one alcohol please",
         // has a drink
         false,
-        // bar
-        "desperados nocturno please.",
         // has a problem
-        false,
-        // speech     
+        true,
+        // speech
         "hehe I feel so rebellious.",
         "loud noises!",
         "ooooh, dance friend.",
         "i thought kraft punk were playin' tonight.",
         "omg the dj is so cute!"],
-    [17, 35, "holly11", "NW", "12/02/1985",
-        // is a good character
-        true,
+    [17, 35, "dolly11", "NW",
         // entrance
-        "grrr i hate waiting in line...",
-        // has a drink
-        false,
+        "(born 12/02/1985) says: grrr i hate waiting in line...",
         // bar
         "desperados red thanks.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "guarana gives me a lift!",
         "i'm giving this experience a zero star rating.",
         "i'm a barbie girl in a barbie world.",
         "i am one of the few people who looks hot eating a cupcake.",
         "ooh this would look good on instagram."],
-    [17, 35, "colin12", "NW", "07/09/1990",
-        // is a good character
-        true,
+    [17, 35, "colin12", "NW",
         // entrance
-        "you can call me mystic mac.",
-        // has a drink
-        false,
+        "(born 07/09/1990) says: you can call me mystic mac.",
         // bar
         "desperados mojito please.",
-        // has a problem
-        false,
-        // speech     
-        "mint.",
-        "i feel like throwing a trolley.",
-        "we're rich baby!",
-        "we’re not just here to take part. we’re here to take over.",
-        "desperados taking over the beer industry."],
-    [17, 35, "alberto13", "NW", "15/10/2000",
-        // is a good character
-        false,
-        // entrance
-        "i'm looking for a fight.",
         // has a drink
         false,
+        // has a problem
+        false,
+        // speech
+        "mint.",
+        "get off the bus.",
+        "we're rich baby!",
+        "that's a nice jacket donald",
+        "desperados taking over the beer industry."],
+    [17, 35, "alberto13", "NW",
+        // entrance
+        "(born 15/10/2000) says: i'm looking for a fight.",
         // bar
         "*slams bar* gimme a beer",
-        // has a problem
+        // has a drink
         false,
-        // speech     
+        // has a problem
+        true,
+        // speech
         "did you just bump into me!",
-        "do you wanna take it outside?",
-        "what are you looking at?",
+        "wanna take it outside?",
+        "what ya looking at muppet?",
         "everybody was kung fu fighting!",
         "neck up ya parrot."],
-    [17, 35, "cedric14", "NW", "23/02/1979",
-        // is a good character
-        true,
+    [17, 35, "cedric14", "NW",
         // entrance
-        "good evening sir.",
+        "(born 23/02/1979) says: good evening sir.",
+        // bar
+        "my good man, might i trouble you for a desperados mojito?",
         // has a drink
         false,
-        // bar
-        "desperados mojito please.",
         // has a problem
         false,
-        // speech     
-        "this is a refreshing beer.",
-        "sorry for the disurbance.",
+        // speech
+        "my word, this is a refreshing beverage!",
+        "pardon me.",
         "created in france…interesting.",
         "you don't pick scientology, scientology picks winners.",
-        "it all just feels so urban."],
-    [17, 35, "waldo15", "NW", "01/09/1987",
-        // is a good character
-        true,
+        "this does feel very urban."],
+    [17, 35, "waldo15", "NW",
         // entrance
-        "found me.",
-        // has a drink
-        false,
+        "(born 01/09/1987) says: you found me.",
         // bar
         "desperados sangre thank you.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "you can taste the spices!",
         "where's my walking stick?!",
         "that wizard whitebeard is a hunk!",
         "don't let that dastardly odlaw inside!",
         "no, louis theroux is not my long lost brother."],
-    [17, 35, "zyeasha16", "NW", "26/12/1997",
-        // is a good character
-        true,
+    [17, 35, "zyeasha16", "NW",
         // entrance
-        "i'm ready to party!",
-        // has a drink
-        false,
+        "(born 26/12/1997) says: i'm ready to party!",
         // bar
         "desperados sangre thank you.",
+        // has a drink
+        false,
         // has a problem
         false,
-        // speech     
+        // speech
         "there's red grapes in this? wow",
         "na-ah i do what i want.",
         "tequila + beer = good times.",
         "did you know desperados beer was first created 20 years ago?",
         "freestyler, rock the microphone."],
-    [17, 35, "pierre17", "NW", "21/13/2001",
-        // is a good character
-        false,
+    [17, 35, "pierre17", "NW",
         // entrance
-        "bonjour!",
-        // has a drink
-        false,
+        "(born 21/13/2001) says: bonjour!",
         // bar
         "desperados lime please.",
-        // has a problem
+        // has a drink
         false,
-        // speech     
+        // has a problem
+        true,
+        // speech
         "the lime gives it an extra bite.",
         "i would like to speak to your manager.",
         "do you like fish sticks?",
         "one tequila, two tequila, three tequila, floor...",
         "oooooh this is a banger!"],
-    [17, 35, "alfred18", "NW", "16/09/2000",
-        // is a good character
-        true,
+    [17, 35, "alfred18", "NW,",
         // entrance
-        "yo, let me in!",
-        // has a drink
-        false,
+        "(born 16/09/2000) says: yo, let me in!",
         // bar
         "desperados mojito please.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -446,49 +410,43 @@ var gameSprites = [
         "all in the game...",
         "you know saragosa? they serve beer...not quite as good as this!",
         "it's easier to pull the trigger than play the guitar."],
-    [17, 35, "odlaw19", "NW", "01/09/1987",
-        // is a good character
-        false,
+    [17, 35, "odlaw19", "NW",
         // entrance
-        "i'll be good, I promise hehe",
-        // has a drink
-        false,
+        "(born 01/09/1987) says: i'll be good, I promise *hehehe*",
         // bar
         "just gimme whatever.",
-        // has a problem
+        // has a drink
         false,
+        // has a problem
+        true,
         // speech     
         "this is actually pretty good!",
         "drat, i've been stopped again.",
         "i need wally's magic stick.",
         "where is that wally and his impressive stick?",
         "ok ok I will take my hand off his stick."],
-    [17, 35, "jennifer20", "NW", "25/10/1981",
-        // is a good character
-        false,
+    [17, 35, "jennifer20", "NW",
         // entrance
-        "*hiccup* what year is it?",
-        // has a drink
-        false,
+        "(born 25/10/1981) says: *hiccup* what year is it?",
         // bar
         "i would like another alocohol.",
-        // has a problem
+        // has a drink
         false,
+        // has a problem
+        true,
         // speech     
         "look at the pretty colours.",
         "i need no taxi.",
         "drunk? me no drunk enough.",
         "get outta the way, I need to find a bathroom!",
         "you all took a life here today. the life of the party."],
-    [17, 35, "olga21", "NW", "17/11/1987",
-        // is a good character
-        true,
+    [17, 35, "olga21", "NW",
         // entrance
-        "hello, may i enter?",
-        // has a drink
-        false,
+        "(born 17/11/1987) says: hello, may i enter?",
         // bar
         "desperados ginger please.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -497,15 +455,13 @@ var gameSprites = [
         "glory to arstotzka!",
         "if you type 'google' into google, you can break the internet.",
         "why don't they try mixing beer and vodka?"],
-    [17, 35, "billy22", "NW", "16/12/1996",
-        // is a good character
-        true,
+    [17, 35, "billy22", "NW",
         // entrance
-        "let me in, let me in.",
-        // has a drink
-        false,
+        "(born 16/12/1996) says: let me in, let me in.",
         // bar
         "desperados red thanks.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -514,15 +470,13 @@ var gameSprites = [
         "i'm the bad guy, duh.",
         "if i can't scuba, then what's this been all about?",
         "desperados time!"],
-    [17, 35, "omar23", "NW", "29/02/2000",
-        // is a good character
-        true,
+    [17, 35, "omar23", "NW",
         // entrance
-        "how do you do?",
-        // has a drink
-        false,
+        "(born 29/02/2000) says: how do you do?",
         // bar
         "desperados mojito please.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -531,32 +485,28 @@ var gameSprites = [
         "real men wear pink.",
         "the thing about the old days: they the old days.",
         "drop the bass."],
-    [17, 35, "mike24", "NW", "29/02/1999",
-        // is a good character
-        false,
+    [17, 35, "mike24", "NW",
         // entrance
-        "hi, I'm date mike.",
+        "(born 29/02/1999) says: hi, I'm date mike.",
         // has a drink
         false,
         // bar
         "desperados original please.",
         // has a problem
-        false,
+        true,
         // speech     
         "smooth beer.",
         "you can't talk to me that way!",
         "nice to meet me.",
         "how do you like your eggs in the morning?",
         "let me do my thang."],
-    [17, 35, "lance25", "NW", "14/01/1994",
-        // is a good character
-        true,
+    [17, 35, "lance25", "NW",
         // entrance
-        "Hey, mi casa su casa.",
-        // has a drink
-        false,
+        "(born 14/01/1994) says: mi casa su casa.",
         // bar
         "desperados sangre thank you.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -565,15 +515,13 @@ var gameSprites = [
         "hey, whattya think about trudi?",
         "well, I ain't givin' her the shot! ",
         "don vincenzo. step into my office?"],
-    [17, 35, "julian26", "NW", "23/06/1977",
-        // is a good character
-        true,
+    [17, 35, "julian26", "NW",
         // entrance
-        "how you people doin'?",
-        // has a drink
-        false,
+        "(born 23/06/1977) says: how you people doin'?",
         // bar
         "desperados nocturno please.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -582,15 +530,13 @@ var gameSprites = [
         "a royale with cheese!",
         "you mind if I have some of your tasty beverage?",
         "this is some gourmet beer."],
-    [17, 35, "amanda27", "NW", "14/05/2001",
-        // is a good character
-        true,
+    [17, 35, "amanda27", "NW",
         // entrance
-        "heyyy, let me in!",
-        // has a drink
-        false,
+        "(born 14/05/2001) says: heyyy, let me in!",
         // bar
         "desperados original please.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -599,15 +545,13 @@ var gameSprites = [
         "smooth beer, smooth tunes.",
         "would have wore a turtle neck, but i'm out of fresh towels.",
         "this girl was really rude to me at the mall."],
-    [17, 35, "heather28", "NW", "11/11/1989",
-        // is a good character
-        true,
+    [17, 35, "heather28", "NW",
         // entrance
-        "hello, may i enter?",
-        // has a drink
-        false,
+        "(born 11/11/1989) says: hello, may i enter?",
         // bar
         "desperados red thanks.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -616,15 +560,13 @@ var gameSprites = [
         "why tequila? why not!",
         "i'm not superstitious, but i'm a little stitious.",
         "laaaa laa laaa, wait till i get my money right."],
-    [17, 35, "ernesto29", "NW", "24/07/1968",
-        // is a good character
-        true,
+    [17, 35, "ernesto29", "NW",
         // entrance
-        "i'm ready to party!",
-        // has a drink
-        false,
+        "(born 24/07/1968) says: i'm ready to party!",
         // bar
         "desperados ginger please.",
+        // has a drink
+        false,
         // has a problem
         false,
         // speech     
@@ -633,17 +575,15 @@ var gameSprites = [
         "no guts, no glory!",
         "..you do the hokey pokey and turn yourself around...",
         "tequila and beer = tango and cash."],
-    [17, 35, "kyle30", "NW", "03/00/1999",
-        // is a good character
-        false,
+    [17, 35, "kyle30", "NW",
         // entrance
-        "yo, let me in!",
-        // has a drink
-        false,
+        "(born 03/00/1999) says: yo, let me in!",
         // bar
         "desperados lime please.",
-        // has a problem
+        // has a drink
         false,
+        // has a problem
+        true,
         // speech     
         "i like lime.",
         "i could be drinking in my shed.",
@@ -957,13 +897,11 @@ function getSpriteText(elementID, textType) {
         if (levelSprites[i][2] === elementID) {
             
             if (textType === "entry") {
-                return levelSprites[i][6];
+                return levelSprites[i][4];
             } else if (textType === "bar") {
-                return levelSprites[i][8];
-            } else if (textType === "has_beer") {
-                return levelSprites[i][10];
+                return levelSprites[i][5];
             } else {
-                field = getRandomInt(12, levelSprites[i].length);
+                field = getRandomInt(8, levelSprites[i].length);
                 return levelSprites[i][field];
             }
         }
@@ -1979,7 +1917,7 @@ function getMove(elementID) {
         // assign drink to sprite
         for (i = 0; i < levelSprites.length; i = i + 1) {
             if (levelSprites[i][2] === elementID) {
-                levelSprites[i][7] = true;
+                levelSprites[i][6] = true;
             }
         }
         
@@ -2046,13 +1984,12 @@ function getMove(elementID) {
     } else if (spriteLocation === "bar") {
         
         spriteSelected = elementID;
-        console.log(elementID);
         
         for (i = 0; i < levelSprites.length; i = i + 1) {
             if (levelSprites[i][2] === elementID) {
                 
                 // no drink
-                if (levelSprites[i][7] === false) {
+                if (levelSprites[i][6] === false) {
                     
                     // order a drink
                     document.getElementById("bubble-large-text").innerHTML =
@@ -2069,10 +2006,10 @@ function getMove(elementID) {
                     
                 // has drink
                 } else {
-                    console.log("here");
-                    // beer speak
+                    
+                    // random speak
                     document.getElementById("bubble-large-text").innerHTML =
-                        spriteID + ": " + getSpriteText(elementID, "has_beer");
+                        spriteID + ": " + getSpriteText(elementID);
                     
                     // hide/display options
                     showElement("bubble-large");
@@ -2095,7 +2032,7 @@ function getMove(elementID) {
             if (levelSprites[i][2] === elementID) {
                 
                 // no problem
-                if (levelSprites[i][9] === false) {
+                if (levelSprites[i][7] === false) {
                     
                     // random speak
                     document.getElementById("bubble-large-text").innerHTML =
