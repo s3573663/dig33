@@ -593,104 +593,186 @@ game objects and sprites
     background-size: cover;
 }
 
-#patron01 {
+#randy01 {
     background: url(graphics/sprite-randy-marsh.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron02 {
-    background: url(graphics/sprite-waldo.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#patron03 {
-    background: url(graphics/sprite-black-shirt-vicar.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#patron04 {
+#john02 {
     background: url(graphics/sprite-black-shirt.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron05 {
+#peter03 {
+    background: url(graphics/sprite-black-shirt-vicar.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#paige04 {
     background: url(graphics/sprite-blue-dress-girl.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron06 {
-    background: url(graphics/sprite-blue-shirt-beard.png);
+#dwight05 {
+    background: url(graphics/sprite-black-shirt-beard.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron07 {
+#shannon06 {
     background: url(graphics/sprite-green-dress-girl.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron08 {
+#roy07 {
     background: url(graphics/sprite-green-shirt-blonde-guy.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron09 {
+#tony08 {
     background: url(graphics/sprite-naked-guy.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron10 {
-    background: url(graphics/sprite-navy-dress-girl-ginger.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-#patron11 {
+#maria09 {
     background: url(graphics/sprite-navy-dress-girl.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron12 {
+#kelly10 {
+    background: url(graphics/sprite-navy-dress-girl-ginger.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#holly11 {
     background: url(graphics/sprite-pink-dress-girl.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron13 {
+#colin12 {
     background: url(graphics/sprite-red-shirt-blonde-beard.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron14 {
+#alberto13 {
     background: url(graphics/sprite-red-shirt-blonde-guy.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron15 {
+#cedric14 {
     background: url(graphics/sprite-red-shirt-ginger-beard.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron16 {
+#waldo15 {
+    background: url(graphics/sprite-waldo.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#zyeasha16 {
     background: url(graphics/sprite-white-dress-girl.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-#patron17 {
+#pierre17 {
     background: url(graphics/sprite-white-shirt-ginger-beard.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+#alfred18 {
+    background: url(graphics/sprite-black-shirt-green-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#odlaw19 {
+    background: url(graphics/sprite-odlaw.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#jennifer20 {
+    background: url(graphics/sprite-yellow-dress-girl.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#olga21 {
+    background: url(graphics/sprite-black-dress-blonde-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#billy22 {
+    background: url(graphics/sprite-black-dress-blue-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#omar23 {
+    background: url(graphics/sprite-pink-shirt-blonde-beard.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#mike24 {
+    background: url(graphics/sprite-red-shirt-brown-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#lance25 {
+    background: url(graphics/sprite-lime-shirt-ginger-beard.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#julian26 {
+    background: url(graphics/sprite-black-shirt-beard.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#amanda27 {
+    background: url(graphics/sprite-pink-dress-girl-ginger.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#heather28 {
+    background: url(graphics/sprite-purple-dress-girl-ginger.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#ernesto29 {
+    background: url(graphics/sprite-brown-shirt-brown-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+#kyle30{
+    background: url(graphics/sprite-black-shirt-brown-hair.png);
+    background-repeat: no-repeat;
+    background-size: cover;   
+}
+
+
+
+
