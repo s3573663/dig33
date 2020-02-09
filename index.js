@@ -31,7 +31,6 @@ var introMusic = document.getElementById("introMusic");
 var beerSound = document.getElementById("serveSound");
 var negSound = document.getElementById("bouncedSound");
 
-
 // library of objects available (walls etc)
 var gameObjects = [
     [0, 0, "wall"],
@@ -656,25 +655,6 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-// return index of random sprite in gameSprites that is not in levelSprites
-function getSprite() {
-    "use strict";
-    
-    var i, match = true, randomInt = getRandomInt(4, gameSprites.length);
-    
-    while (match === true) {
-        for (i = 0; i < levelSprites.length; i = i + 1) {
-            if (levelSprites[i][2] !== gameSprites[randomInt][2]) {
-                match = false;
-            } else {
-                randomInt = getRandomInt(4, gameSprites.length);
-            }
-        }
-    }
-    
-    return randomInt;
-}
-
 // returns today's UTC date in yyyy-mm-dd format
 function getDate() {
     "use strict";
@@ -841,6 +821,25 @@ function getEmptyCell(area) {
         i = getRandomInt(0, cell.length);
         return cell[i];
     }
+}
+
+// return index of random sprite in gameSprites that is not in levelSprites
+function getRandomGameSprite() {
+    "use strict";
+    
+    var i, match = true, randomInt = getRandomInt(4, gameSprites.length);
+    
+    while (match === true) {
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] !== gameSprites[randomInt][2]) {
+                match = false;
+            } else {
+                randomInt = getRandomInt(4, gameSprites.length);
+            }
+        }
+    }
+    
+    return randomInt;
 }
 
 // returns the area in which a sprite is located (entrance/bar/dancefloor)
@@ -1163,7 +1162,7 @@ function removeSprite(elementID) {
 }
 
 // walk sprite along calculated path to destination
-function walkPath(elementID, area, cell) {
+function walkPath(elementID, area, startCell, cell) {
     "use strict";
     
     var i, path = [], click, cells = [
@@ -1194,7 +1193,6 @@ function walkPath(elementID, area, cell) {
         
         // NW n cells
         for (i = 7; i > 0; i = i - 1) {
-            
             if (cell !== cells[i][0] && cell[1] !== cells[i][1]) {
                 path.push([elementID, "walk", "NW"]);
             } else {
@@ -1204,14 +1202,6 @@ function walkPath(elementID, area, cell) {
         
         // NE 1 cell
         path.push([elementID, "walk", "NE"]);
-        
-        // update sprite coords
-        for (i = 0; i < levelSprites.length; i = i + 1) {
-            if (levelSprites[i][2] === elementID) {
-                levelSprites[i][0] = cell[0];
-                levelSprites[i][1] = cell[1];
-            }
-        }
         
         // disable click while walking
         click = document.getElementById(elementID).onclick;
@@ -1226,74 +1216,66 @@ function walkPath(elementID, area, cell) {
         
         // SW 1 cell
         path.push([elementID, "walk", "SW"]);
+        startCell[0] = Number(startCell[0]) - 1;
+        startCell[1] = Number(startCell[1]) + 1;
         
-        // update sprite coords
-        for (i = 0; i < levelSprites.length; i = i + 1) {
-            if (levelSprites[i][2] === elementID) {
-                levelSprites[i][0] = levelSprites[i][0] - 1;
-                levelSprites[i][1] = levelSprites[i][1] + 1;
-                
-                while (levelSprites[i][0] !== 10 &&
-                        levelSprites[i][1] !== 14) {
-                    path.push([elementID, "walk", "NW"]);
-                    levelSprites[i][0] = levelSprites[i][0] - 1;
-                    levelSprites[i][1] = levelSprites[i][1] - 1;
-                }
-                
-                path.push([elementID, "walk", "SW"]);
-                levelSprites[i][0] = levelSprites[i][0] - 1;
-                levelSprites[i][1] = levelSprites[i][1] + 1;
-                
-                while (levelSprites[i][0] !== cell[0] &&
-                        levelSprites[i][1] !== cell[1]) {
-                    
-                    // NW 1 cell
-                    if (levelSprites[i][0] - 1 === cell[0] &&
-                            levelSprites[i][1] - 1 === cell[1]) {
-                        
-                        path.push([elementID, "walk", "NW"]);
-                        levelSprites[i][0] = levelSprites[i][0] - 1;
-                        levelSprites[i][1] = levelSprites[i][1] - 1;
-                        
-                    // NW 2 cells
-                    } else if (levelSprites[i][0] - 2 === cell[0] &&
-                            levelSprites[i][1] - 2 === cell[1]) {
-                        
-                        path.push([elementID, "walk", "NW"]);
-                        levelSprites[i][0] = levelSprites[i][0] - 1;
-                        levelSprites[i][1] = levelSprites[i][1] - 1;
-                        path.push([elementID, "walk", "NW"]);
-                        levelSprites[i][0] = levelSprites[i][0] - 1;
-                        levelSprites[i][1] = levelSprites[i][1] - 1;
-                        
-                    // SE 1 cell
-                    } else if (levelSprites[i][0] + 1 === cell[0] &&
-                            levelSprites[i][1] + 1 === cell[1]) {
-                        
-                        path.push([elementID, "walk", "SE"]);
-                        levelSprites[i][0] = levelSprites[i][0] + 1;
-                        levelSprites[i][1] = levelSprites[i][1] + 1;
-                        
-                    // SE 2 cells
-                    } else if (levelSprites[i][0] + 2 === cell[0] &&
-                            levelSprites[i][1] + 2 === cell[1]) {
-                        
-                        path.push([elementID, "walk", "SE"]);
-                        levelSprites[i][0] = levelSprites[i][0] + 1;
-                        levelSprites[i][1] = levelSprites[i][1] + 1;
-                        path.push([elementID, "walk", "SE"]);
-                        levelSprites[i][0] = levelSprites[i][0] + 1;
-                        levelSprites[i][1] = levelSprites[i][1] + 1;
-                        
-                    // SW 1 cell
-                    } else {
-                        path.push([elementID, "walk", "SW"]);
-                        levelSprites[i][0] = levelSprites[i][0] - 1;
-                        levelSprites[i][1] = levelSprites[i][1] + 1;
-                    }
-                }
-            }
+        while (startCell[0] !== 10 && startCell[1] !== 14) {
+            path.push([elementID, "walk", "NW"]);
+            startCell[0] = startCell[0] - 1;
+            startCell[1] = startCell[1] - 1;
         }
+        
+        console.log("* startCell = " + startCell + " cell = " + cell);
+        
+        while ((startCell[0] !== cell[0]) &&
+                (startCell[1] !== cell[1])) {
+            
+            // NW 1 cell
+            if ((startCell[0] - 1 === cell[0]) &&
+                    (startCell[1] - 1 === cell[1])) {
+                console.log("NW 1 cell");
+                path.push([elementID, "walk", "NW"]);
+                startCell[0] = startCell[0] - 1;
+                startCell[1] = startCell[1] - 1;
+                
+            // NW 2 cells
+            } else if ((startCell[0] - 2 === cell[0]) &&
+                    (startCell[1] - 2 === cell[1])) {
+                console.log("NW 2 cells");
+                path.push([elementID, "walk", "NW"]);
+                path.push([elementID, "walk", "NW"]);
+                startCell[0] = startCell[0] - 2;
+                startCell[1] = startCell[1] - 2;
+                
+            // SE 1 cell
+            } else if ((startCell[0] + 1 === cell[0]) &&
+                    (startCell[1] + 1 === cell[1])) {
+                console.log("SE 1 cell");
+                path.push([elementID, "walk", "SE"]);
+                startCell[0] = startCell[0] + 1;
+                startCell[1] = startCell[1] + 1;
+                
+            // SE 2 cells
+            } else if ((startCell[0] + 2 === cell[0]) &&
+                    (startCell[1] + 2 === cell[1])) {
+                console.log("SE 2 cells");
+                path.push([elementID, "walk", "SE"]);
+                path.push([elementID, "walk", "SE"]);
+                startCell[0] = startCell[0] + 2;
+                startCell[1] = startCell[1] + 2;
+                
+            // SW 1 cell
+            } else {
+                console.log("SW 1 cell");
+                path.push([elementID, "walk", "SW"]);
+                startCell[0] = startCell[0] - 1;
+                startCell[1] = startCell[1] + 1;
+            }
+            
+            console.log("** startCell = " + startCell + " cell = " + cell);
+        }
+        
+        console.log("*** startCell = " + startCell + " cell = " + cell);
         
         // start dancing
         i = getRandomInt(0, 2);
@@ -1321,9 +1303,12 @@ function walkPath(elementID, area, cell) {
 function playMusic() {
     "use strict";
     introMusic.pause();
-    gameMusic.currentTime = 0;
-    gameMusic.play();
-    gameMusic.volume = 0.1;
+    
+    if (getParameter("debug") === undefined) {
+        gameMusic.currentTime = 0;
+        gameMusic.play();
+        gameMusic.volume = 0.1;
+    }
 }
 
 function pauseMusic() {
@@ -1405,6 +1390,7 @@ function showDisclaimer() {
 // login functions
 // ******************************************************************
 
+// display player registration menu
 function showRegister() {
     "use strict";
     
@@ -1412,6 +1398,7 @@ function showRegister() {
     showElement("register");
 }
 
+// display main menu
 function showMenu() {
     "use strict";
     
@@ -1500,6 +1487,7 @@ function register() {
     });
 }
 
+// player login
 function login() {
     "use strict";
     
@@ -1549,7 +1537,7 @@ function login() {
     });
 }
 
-// log user out of game
+// player logout
 function logOut() {
     "use strict";
     
@@ -1616,13 +1604,11 @@ function saveScore() {
 function showScores() {
     "use strict";
     
-    pauseIntro();
-    
     var scores, interval, user, i = 10, check = false,
         ref = firebase.database().ref();
     
     user = firebase.auth().currentUser;
-
+    
     ref.orderByChild("score").limitToLast(10).on("value", function (snapshot) {
         snapshot.forEach(function (data) {
             if (user) {
@@ -1807,7 +1793,7 @@ function playGame() {
     counter = setInterval(function () {
         i = i + 1;
         
-        gameSprite = gameSprites[getSprite()];
+        gameSprite = gameSprites[getRandomGameSprite()];
         if (getEmptyCell("bar") !== undefined) {
             if (spawnSprite(gameSprite) === true) {
                 showElementInCell(17.5, 32, "bubble-alert");
@@ -1821,6 +1807,7 @@ function playGame() {
     }, 5000);
 }
 
+// display login menu
 function hideMenu() {
     "use strict";
     
@@ -1833,6 +1820,7 @@ function hideMenu() {
 // game functions
 // ******************************************************************
 
+// display quit game menu
 function showQuit() {
     "use strict";
     
@@ -1847,6 +1835,7 @@ function showQuit() {
     pauseMusic();
 }
 
+// hide quit game menu
 function hideQuit() {
     "use strict";
     
@@ -1867,7 +1856,8 @@ function hideQuit() {
 function getMove(elementID) {
     "use strict";
     
-    var i, spriteID, spriteImageURL, spriteText, spriteLocation, cell, path;
+    var i, spriteID, spriteImageURL, spriteText, spriteLocation,
+        cell, startCell = [0, 0];
     
     // get sprites current location (entrance/bar/dancefloor)
     spriteLocation = getSpriteLocation(elementID);
@@ -1888,9 +1878,19 @@ function getMove(elementID) {
         
         elementID = spriteSelected;
         cell = getEmptyCell("bar");
-            
+        
+        // update sprite coords
+        for (i = 0; i < levelSprites.length; i = i + 1) {
+            if (levelSprites[i][2] === elementID) {
+                startCell[0] = levelSprites[i][0];
+                startCell[1] = levelSprites[i][1];
+                levelSprites[i][0] = cell[0];
+                levelSprites[i][1] = cell[1];
+            }
+        }
+        
         if (cell !== undefined) {
-            walkPath(elementID, "bar", cell);
+            walkPath(elementID, "bar", startCell, cell);
             hideElement("bubble-large");
             hideElement("bubble-alert");
             
@@ -1914,17 +1914,23 @@ function getMove(elementID) {
         
         elementID = spriteSelected;
         
-        // assign drink to sprite
+        cell = getEmptyCell("dancefloor");
+        
+        // update sprite coords
         for (i = 0; i < levelSprites.length; i = i + 1) {
             if (levelSprites[i][2] === elementID) {
+                startCell[0] = levelSprites[i][0];
+                startCell[1] = levelSprites[i][1];
+                levelSprites[i][0] = cell[0];
+                levelSprites[i][1] = cell[1];
+                
+                // assign drink to sprite
                 levelSprites[i][6] = true;
             }
         }
         
-        cell = getEmptyCell("dancefloor");
-        
         if (cell !== undefined) {
-            walkPath(elementID, "dancefloor", cell);
+            walkPath(elementID, "dancefloor", startCell, cell);
             hideElement("bubble-large");
             playSound(beerSound);
         }
@@ -2117,14 +2123,15 @@ function formEnter() {
     });
 }
 
+// first function called when site loads
 function start() {
     "use strict";
     
     var i, removeShare, removeMenu;
     
     formEnter();
+    document.addEventListener("click", getPos, false);
     
- 
     // load game objects
     for (i = 0; i < levelObjects.length; i = i + 1) {
         newObject(levelObjects[i][2]);
@@ -2132,14 +2139,15 @@ function start() {
                           levelObjects[i][2]);
     }
     
+    // start in debug mode (skips all menus)
+    // disregard console error that appears (audio)
     if (getParameter("debug") === "true") {
-        document.addEventListener("click", getPos, false);
-        //start in debug mode (skips all menus)
         hideElement("hide");
         hideElement("disclaimer");
         playGame();
+        
+    // skip to high scores (cannot return to main menu)
     } else if (getParameter("scores") === "true") {
-        //document.addEventListener("click", showScores, false);
         hideElement("hide");
         hideElement("disclaimer");
         removeMenu = document.getElementById("menuBtn");
@@ -2147,8 +2155,9 @@ function start() {
         removeMenu.parentNode.removeChild(removeMenu);
         removeShare.parentNode.removeChild(removeShare);
         showScores();
+        
+    // normal startup (no parameters given)
     } else {
-        //start normally
         hideElement("game-controls");
         showElement("transparency");
         hideElement("hide");
