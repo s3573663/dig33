@@ -1225,65 +1225,9 @@ function walkPath(elementID, area, startCell, cell) {
             startCell[1] = startCell[1] - 1;
         }
         
-        console.log("* startCell = " + startCell + " cell = " + cell);
-        
-        while ((startCell[0] !== cell[0]) &&
-                (startCell[1] !== cell[1])) {
-            
-            // NW 1 cell
-            if ((startCell[0] - 1 === cell[0]) &&
-                    (startCell[1] - 1 === cell[1])) {
-                console.log("NW 1 cell");
-                path.push([elementID, "walk", "NW"]);
-                startCell[0] = startCell[0] - 1;
-                startCell[1] = startCell[1] - 1;
-                
-            // NW 2 cells
-            } else if ((startCell[0] - 2 === cell[0]) &&
-                    (startCell[1] - 2 === cell[1])) {
-                console.log("NW 2 cells");
-                path.push([elementID, "walk", "NW"]);
-                path.push([elementID, "walk", "NW"]);
-                startCell[0] = startCell[0] - 2;
-                startCell[1] = startCell[1] - 2;
-                
-            // SE 1 cell
-            } else if ((startCell[0] + 1 === cell[0]) &&
-                    (startCell[1] + 1 === cell[1])) {
-                console.log("SE 1 cell");
-                path.push([elementID, "walk", "SE"]);
-                startCell[0] = startCell[0] + 1;
-                startCell[1] = startCell[1] + 1;
-                
-            // SE 2 cells
-            } else if ((startCell[0] + 2 === cell[0]) &&
-                    (startCell[1] + 2 === cell[1])) {
-                console.log("SE 2 cells");
-                path.push([elementID, "walk", "SE"]);
-                path.push([elementID, "walk", "SE"]);
-                startCell[0] = startCell[0] + 2;
-                startCell[1] = startCell[1] + 2;
-                
-            // SW 1 cell
-            } else {
-                console.log("SW 1 cell");
-                path.push([elementID, "walk", "SW"]);
-                startCell[0] = startCell[0] - 1;
-                startCell[1] = startCell[1] + 1;
-            }
-            
-            console.log("** startCell = " + startCell + " cell = " + cell);
-        }
-        
-        console.log("*** startCell = " + startCell + " cell = " + cell);
-        
-        // start dancing
-        i = getRandomInt(0, 2);
-        if (i === 0) {
-            path.push([elementID, "dance", "SW"]);
-        } else {
-            path.push([elementID, "dance", "SE"]);
-        }
+        path.push([elementID, "walk", "SW"]);
+        startCell[0] = startCell[0] - 1;
+        startCell[1] = startCell[1] + 1;
         
         // disable click while walking
         click = document.getElementById(elementID).onclick;
@@ -1293,6 +1237,22 @@ function walkPath(elementID, area, startCell, cell) {
         }, path.length * 700));
         
         sequenceStart(path);
+        
+        i = setInterval(function () {
+            if (paths.indexOf(elementID) === -1) {
+                showElementInCell(cell[0], cell[1], elementID, "SW");
+            
+                // start dancing
+                i = getRandomInt(0, 2);
+                if (i === 0) {
+                    animationStart(elementID, "dance", "SW");
+                } else {
+                    animationStart(elementID, "dance", "SE");
+                }
+                
+                clearInterval(i);
+            }
+        }, 1000);
     }
 }
 
@@ -2140,7 +2100,6 @@ function start() {
     }
     
     // start in debug mode (skips all menus)
-    // disregard console error that appears (audio)
     if (getParameter("debug") === "true") {
         hideElement("hide");
         hideElement("disclaimer");
