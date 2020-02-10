@@ -4,27 +4,28 @@
 // globals and helper functions
 // ******************************************************************
 
-var document;         // the web page
-var window;           // the browser
-var alert;            // browser alert messages
-var console;          // browser console (for debug purposes)
-var location;         // link address
-var firebase;         // google firebase
+var document;          // the web page
+var window;            // the browser
+var alert;             // browser alert messages
+var console;           // browser console (for debug purposes)
+var location;          // link address
+var firebase;          // google firebase
 
-var timer;            // game timer interval
-var minutes;          // game timer (minutes left in game)
-var seconds;          // game timer (seconds left in game)
-var counter;          // game counter interval
+var timer;             // game timer interval
+var minutes;           // game timer (minutes left in game)
+var seconds;           // game timer (seconds left in game)
+var counter;           // game counter interval
 
-var intervals = [];   // for sprite animation (interval)
-var animated = [];    // for sprite animation (elementID)
-var sequences = [];   // for sprite animation sequences (interval)
-var paths = [];       // for sprite animation sequences (elementID)
-var wait = [];        // wait for previous seqence to end (interval)
+var intervals = [];    // for sprite animation (interval)
+var animated = [];     // for sprite animation (elementID)
+var sequences = [];    // for sprite animation sequences (interval)
+var paths = [];        // for sprite animation sequences (elementID)
+var wait = [];         // wait for previous seqence to end (interval)
 
-var score = 0;             // game score (number of patrons in club)
-var levelSprites = [];     // sprites in current level
-var spriteSelected;        // sprite selected by player click/tap
+var levelSprites = []; // sprites in current level
+var spriteSelected;    // sprite selected by player click/tap
+var score = 0;         // game score (patrons x area x time spawned)
+var scoreTimer;        // interval used for score refresh
 
 var gameMusic = document.getElementById("gameMusic");
 var introMusic = document.getElementById("introMusic");
@@ -487,10 +488,10 @@ var gameSprites = [
     [17, 35, "mike24", "NW",
         // entrance
         "(born 29/02/1999) says: hi, I'm date mike.",
-        // has a drink
-        false,
         // bar
         "desperados original please.",
+        // has a drink
+        false,
         // has a problem
         true,
         // speech     
@@ -917,11 +918,6 @@ function getCell(boardXvmin, boardYvmin) {
     xPos = (boardXvmin / xWidth).toFixed(0);
     yPos = (boardYvmin / yHeight).toFixed(0);
     
-    // if a valid cell was chosen, calculate what to do next
-    if (xPos > 0 && xPos < 20 && yPos > 0 && yPos < 40) {
-        console.log("selected cell: x" + xPos + ", y" + yPos);
-    }
-    
     return [parseInt(xPos, 10), parseInt(yPos, 10)];
 }
 
@@ -937,7 +933,8 @@ function getPos(e) {
         boardXpx,   // click x position in pixels on game board
         boardYpx,   // click y position in pixels on game board
         boardXvmin, // click x position in viewport min units on game board
-        boardYvmin; // click y position in viewport min units on game board
+        boardYvmin, // click y position in viewport min units on game board
+        cell;       // cell x y
     
     // convert click pixel coordinates into vmin coordinates
     if (window.innerWidth > window.innerHeight) {
@@ -962,18 +959,28 @@ function getPos(e) {
     boardYvmin = boardYpx / vmin;
     
     // determine which board square was selected 
-    getCell(boardXvmin, boardYvmin);
+    cell = getCell(boardXvmin, boardYvmin);
+    
+    // if a valid cell was chosen, display cell in console
+    if (cell[0] > 0 && cell[0] < 20 && cell[1] > 0 && cell[1] < 40) {
+        console.log("selected cell: x" + cell[0] + ", y" + cell[1]);
+        console.log("animations = " + intervals.length +
+                    " sequences = " + paths.length);
+    }
 }
 
 // stop animation of element (and removes interval from intervals array)
 function animationStop(elementID) {
     "use strict";
     
-    var i = animated.indexOf(elementID);
+    var i;
     
-    animated.splice(i, 1);
-    clearInterval(intervals[i]);
-    intervals.splice(i, 1);
+    while (animated.indexOf(elementID) !== -1) {
+        i = animated.indexOf(elementID);
+        animated.splice(i, 1);
+        clearInterval(intervals[i]);
+        intervals.splice(i, 1);
+    }
 }
 
 // start animation of element (and adds interval to intervals array)
@@ -1031,62 +1038,64 @@ function animationStart(elementID, action, direction) {
     animated.push(elementID);
     intervals.push(setInterval(function () {
         
-        document.getElementById(elementID).style.backgroundPositionX =
-            frame + "vmin";
-        
-        // move sprite position if walking
-        if (action === "walk") {
+        if (document.getElementById(elementID) !== null) {
+            document.getElementById(elementID).style.backgroundPositionX =
+                frame + "vmin";
             
-            if (direction === "SW") {
-                cell[0] = cell[0] - 0.33;
-                cell[1] = cell[1] + 0.33;
-            } else if (direction === "NW") {
-                cell[0] = cell[0] - 0.33;
-                cell[1] = cell[1] - 0.33;
-            } else if (direction === "SE") {
-                cell[0] = cell[0] + 0.33;
-                cell[1] = cell[1] + 0.33;
-            } else if (direction === "NE") {
-                cell[0] = cell[0] + 0.33;
-                cell[1] = cell[1] - 0.33;
-            }
-            
-            xPosInt = (cell[0] * 4.5).toFixed(2);
-            yPosInt = (cell[1] * 2.25).toFixed(2);
-            
-            // update zlayer
-            zlayer = parseInt(cell[1], 10) + 13;
-            document.getElementById(elementID).style.zIndex =
-                zlayer.toString();
-            
-            // debug mode animation information
-            if (getParameter("debug") === "true") {
-                console.log(elementID +
-                            ": xPosInt = " + xPosInt +
-                            ", yPosInt = " + yPosInt +
-                            ", zlayer = " + zlayer +
-                            ", frame = " + frame);
-            }
-            
-            document.getElementById(elementID).style.left = xPosInt + "vmin";
-            document.getElementById(elementID).style.top = yPosInt + "vmin";
-        }
-        
-        // last frame reached
-        if (frame === endFrame) {
-            
-            // loop animation if dancing
-            if (action === "dance") {
-                frame = startFrame;
+            // move sprite position if walking
+            if (action === "walk") {
                 
-            // stop animation
-            } else {
-                animationStop(elementID);
+                if (direction === "SW") {
+                    cell[0] = cell[0] - 0.33;
+                    cell[1] = cell[1] + 0.33;
+                } else if (direction === "NW") {
+                    cell[0] = cell[0] - 0.33;
+                    cell[1] = cell[1] - 0.33;
+                } else if (direction === "SE") {
+                    cell[0] = cell[0] + 0.33;
+                    cell[1] = cell[1] + 0.33;
+                } else if (direction === "NE") {
+                    cell[0] = cell[0] + 0.33;
+                    cell[1] = cell[1] - 0.33;
+                }
+                
+                xPosInt = (cell[0] * 4.5).toFixed(2);
+                yPosInt = (cell[1] * 2.25).toFixed(2);
+                
+                // update zlayer
+                zlayer = parseInt(cell[1], 10) + 13;
+                document.getElementById(elementID).style.zIndex =
+                    zlayer.toString();
+                
+                // debug mode animation information
+                /*if (getParameter("debug") === "true") {
+                    console.log(elementID +
+                                ": xPosInt = " + xPosInt +
+                                ", yPosInt = " + yPosInt +
+                                ", zlayer = " + zlayer +
+                                ", frame = " + frame);
+                }*/
+
+                document.getElementById(elementID).style.left = xPosInt + "vmin";
+                document.getElementById(elementID).style.top = yPosInt + "vmin";
             }
+            
+            // last frame reached
+            if (frame === endFrame) {
+                
+                // loop animation if dancing
+                if (action === "dance") {
+                    frame = startFrame;
+                    
+                // stop animation
+                } else {
+                    animationStop(elementID);
+                }
+            }
+            
+            // next frame
+            frame = frame - frameWidth;
         }
-        
-        // next frame
-        frame = frame - frameWidth;
         
     }, 200));
 }
@@ -1095,11 +1104,14 @@ function animationStart(elementID, action, direction) {
 function sequenceStop(elementID) {
     "use strict";
     
-    var i = paths.indexOf(elementID);
+    var i;
     
-    paths.splice(i, 1);
-    clearInterval(sequences[i]);
-    sequences.splice(i, 1);
+    while (paths.indexOf(elementID) !== -1) {
+        i = paths.indexOf(elementID);
+        paths.splice(i, 1);
+        clearInterval(sequences[i]);
+        sequences.splice(i, 1);
+    }
 }
 
 // execute animations in order
@@ -1150,10 +1162,27 @@ function spawnSprite(sprite) {
 function removeSprite(elementID) {
     "use strict";
     
-    var i, sprite = document.getElementById(elementID);
+    var i, sprite = document.getElementById(elementID),
+        startX, startY, startDirection;
     
+    // stop animations
+    sequenceStop(elementID);
+    animationStop(elementID);
+    
+    // reset sprite to default starting position/direction
+    for (i = 0; i < gameSprites.length; i = i + 1) {
+        if (elementID === gameSprites[i][2]) {
+            startX = gameSprites[i][0];
+            startY = gameSprites[i][1];
+            startDirection = gameSprites[i][3];
+        }
+    }
+    showElementInCell(startX, startY, elementID, startDirection);
+    
+    // remove sprite element
     sprite.remove();
     
+    // clear levelSprites array
     for (i = 0; i < levelSprites.length; i = i + 1) {
         if (levelSprites[i][2] === elementID) {
             levelSprites.splice(i, 1);
@@ -1165,7 +1194,7 @@ function removeSprite(elementID) {
 function walkPath(elementID, area, startCell, cell) {
     "use strict";
     
-    var i, path = [], click, cells = [
+    var i, randomInt, path = [], click, cells = [
         // entrance
         [17, 35],
         //bar
@@ -1239,12 +1268,13 @@ function walkPath(elementID, area, startCell, cell) {
         sequenceStart(path);
         
         i = setInterval(function () {
-            if (paths.indexOf(elementID) === -1) {
+            if (paths.indexOf(elementID) === -1 &&
+                    document.getElementById(elementID) !== null) {
                 showElementInCell(cell[0], cell[1], elementID, "SW");
             
                 // start dancing
-                i = getRandomInt(0, 2);
-                if (i === 0) {
+                randomInt = getRandomInt(0, 2);
+                if (randomInt === 0) {
                     animationStart(elementID, "dance", "SW");
                 } else {
                     animationStart(elementID, "dance", "SE");
@@ -1545,9 +1575,8 @@ function resetPassword() {
 // save score to the firebase database
 function saveScore() {
     "use strict";
-    var score, ref, user, newRef;
-       
-    score = levelSprites.length - 4;
+    var ref, user, newRef;
+    
     ref = firebase.database().ref();
     newRef = ref.push();
     user = firebase.auth().currentUser;
@@ -1624,12 +1653,82 @@ function shareScores() {
     alert("URL copied to clipboard");
 }
 
+// reset user score
+function stopScore() {
+    "use strict";
+    
+    clearInterval(scoreTimer);
+    scoreTimer = undefined;
+}
+
+// pause user score accural
+function resetScore() {
+    "use strict";
+    
+    score = 0;
+}
+
+// calculate and display user score (total sprites x area x time spawned)
+function startScore() {
+    "use strict";
+    
+    var i, scoreStart;
+    
+    if (scoreTimer === undefined) {
+        scoreTimer = setInterval(function () {
+            
+            scoreStart = score;
+            
+            for (i = 0; i < levelSprites.length; i = i + 1) {
+                
+                // sprite at bar: + 100 points per second
+                if (getSpriteLocation(levelSprites[i][2]) === "bar") {
+                    
+                    score = score + 100;
+                    
+                // sprite at bar: good = + 500 points per second
+                //                bad = - 1000 points per second
+                } else if (getSpriteLocation(levelSprites[i][2]) ===
+                           "dancefloor") {
+                    
+                    // is good
+                    if (levelSprites[i][7] === false) {
+                        score = score + 500;
+                        
+                    // is bad
+                    } else {
+                        score = score - 1000;
+                    }
+                }
+                
+                // change score colour ('+' = white, '-' = red)
+                if (score > scoreStart || score === scoreStart) {
+                    
+                    // score increasing
+                    document.getElementById("game-score").style.color =
+                        "white";
+                    
+                } else {
+                    
+                    // score decreasing
+                    document.getElementById("game-score").style.color =
+                        "red";
+                }
+                
+                document.getElementById("game-score").innerHTML = score;
+            }
+        }, 1000);
+    }
+}
+
 // ******************************************************************
 // main menu functions
 // ******************************************************************
 
 function finishGame() {
     "use strict";
+    
+    stopScore();
     
     // close game screen
     hideElement("game-controls");
@@ -1659,10 +1758,10 @@ function resetTimer() {
     
     // set the default round length in minutes and seconds
     if (getParameter("debug") === "true") {
-        minutes = 5;
+        minutes = 3;
         seconds = 0;
     } else {
-        minutes = 5;
+        minutes = 3;
         seconds = 0;
     }
 }
@@ -1717,16 +1816,6 @@ function playGame() {
     // clear counter
     clearInterval(counter);
     
-    // clear sequences
-    while (sequences.length > 0) {
-        sequenceStop(paths[0]);
-    }
-    
-    // clear animations
-    while (animated.length > 0) {
-        animationStop(animated[0]);
-    }
-    
     // clear sprites
     while (levelSprites.length > 0) {
         removeSprite(levelSprites[0][2]);
@@ -1741,6 +1830,10 @@ function playGame() {
     resetTimer();
     startTimer();
     
+    //clear then calculate game score
+    resetScore();
+    startScore();
+    
     // start playing game music
     playMusic();
     
@@ -1748,7 +1841,7 @@ function playGame() {
     animationStart("dj01", "dance", "SW");
     sequenceStart(bartenderPath);
     
-    // timed animations
+    // spawn sprites ( 5 seconds apart if room at bar)
     i = 0;
     counter = setInterval(function () {
         i = i + 1;
@@ -1789,8 +1882,10 @@ function showQuit() {
     showElement("transparency");
     showElement("quit");
     
-    // pause game timer
+    // pause game-timer
     stopTimer();
+    // pause game-score
+    stopScore();
     // pause game music
     pauseMusic();
 }
@@ -1803,8 +1898,10 @@ function hideQuit() {
     hideElement("quit");
     showElement("game-controls");
     
-    // resume timer
+    // resume game-timer
     startTimer();
+    // resume game-score
+    startScore();
     // resume playing music
     resumeMusic();
 }
@@ -1853,10 +1950,6 @@ function getMove(elementID) {
             walkPath(elementID, "bar", startCell, cell);
             hideElement("bubble-large");
             hideElement("bubble-alert");
-            
-            // increase score
-            score = score + 1;
-            document.getElementById("game-score").innerHTML = score;
         }
         
     // entry denied
@@ -1895,16 +1988,14 @@ function getMove(elementID) {
             playSound(beerSound);
         }
         
-    // cleanup mess
-    } else if (elementID === "bubble-large-clean") {
-        alert("under construction");
-        hideElement("bubble-large");
+        // bug fix - game timer would stop when drink was served
+        stopTimer();
+        startTimer();
         
     // bounce sprite
     } else if (elementID === "bubble-large-bounce") {
         elementID = spriteSelected;
         removeSprite(elementID);
-        
         hideElement("bubble-large");
         playSound(negSound);
         
@@ -1925,7 +2016,6 @@ function getMove(elementID) {
         hideElement("bubble-large-admit");
         hideElement("bubble-large-deny");
         hideElement("bubble-large-serve");
-        hideElement("bubble-large-clean");
         hideElement("bubble-large-bounce");
     
     // sprite at entrance
@@ -1943,7 +2033,6 @@ function getMove(elementID) {
         showElement("bubble-large-admit");
         showElement("bubble-large-deny");
         hideElement("bubble-large-serve");
-        hideElement("bubble-large-clean");
         hideElement("bubble-large-bounce");
         
     // sprite at bar
@@ -1967,7 +2056,6 @@ function getMove(elementID) {
                     hideElement("bubble-large-admit");
                     hideElement("bubble-large-deny");
                     showElement("bubble-large-serve");
-                    hideElement("bubble-large-clean");
                     showElement("bubble-large-bounce");
                     
                 // has drink
@@ -1983,7 +2071,6 @@ function getMove(elementID) {
                     hideElement("bubble-large-admit");
                     hideElement("bubble-large-deny");
                     hideElement("bubble-large-serve");
-                    hideElement("bubble-large-clean");
                     hideElement("bubble-large-bounce");
                 }
             }
@@ -1997,37 +2084,17 @@ function getMove(elementID) {
         for (i = 0; i < levelSprites.length; i = i + 1) {
             if (levelSprites[i][2] === elementID) {
                 
-                // no problem
-                if (levelSprites[i][7] === false) {
+                // random speak
+                document.getElementById("bubble-large-text").innerHTML =
+                    spriteID + ": " + getSpriteText(elementID);
                     
-                    // random speak
-                    document.getElementById("bubble-large-text").innerHTML =
-                        spriteID + ": " + getSpriteText(elementID);
-                    
-                    // hide/display options
-                    showElement("bubble-large");
-                    showElement("bubble-large-ok");
-                    hideElement("bubble-large-admit");
-                    hideElement("bubble-large-deny");
-                    hideElement("bubble-large-serve");
-                    hideElement("bubble-large-clean");
-                    hideElement("bubble-large-bounce");
-                    
-                // problem
-                } else {
-                    document.getElementById("bubble-large-text").innerHTML =
-                        spriteID + ": " +
-                        getSpriteText(elementID, "dancefloor");
-                    
-                    // hide/display options
-                    showElement("bubble-large");
-                    hideElement("bubble-large-ok");
-                    hideElement("bubble-large-admit");
-                    hideElement("bubble-large-deny");
-                    hideElement("bubble-large-serve");
-                    showElement("bubble-large-clean");
-                    showElement("bubble-large-bounce");
-                }
+                // hide/display options
+                showElement("bubble-large");
+                showElement("bubble-large-ok");
+                hideElement("bubble-large-admit");
+                hideElement("bubble-large-deny");
+                hideElement("bubble-large-serve");
+                showElement("bubble-large-bounce");
             }
         }
     }

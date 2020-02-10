@@ -419,11 +419,6 @@ footer p {
 
 #bubble-large-admit {
     bottom: 1vmin;
-    left: 1vmin;
-}
-
-#bubble-large-deny {
-    bottom: 1vmin;
     right: 1vmin;
 }
 
@@ -432,9 +427,9 @@ footer p {
     right: 1vmin;
 }
 
-#bubble-large-clean {
+#bubble-large-deny {
     bottom: 1vmin;
-    right: 1vmin;
+    left: 1vmin;
 }
 
 #bubble-large-bounce {
