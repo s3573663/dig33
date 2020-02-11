@@ -753,6 +753,7 @@ function showElementInCell(xPos, yPos, elementID, direction) {
         
         document.getElementById(elementID).style.left = xPos + "vmin";
         document.getElementById(elementID).style.top = yPos + "vmin";
+        
         showElement(elementID);
     }
 }
@@ -806,7 +807,8 @@ function getEmptyCell(area) {
             [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
             [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
             [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
-            [7, 21], [8, 20], [9, 19], [10, 18], [11, 17]
+            [7, 21], [8, 20], [9, 19], [10, 18], [11, 17],
+            [8, 22], [9, 21], [10, 20], [11, 19], [12, 18]
         ];
     }
     
@@ -828,15 +830,12 @@ function getEmptyCell(area) {
 function getRandomGameSprite() {
     "use strict";
     
-    var i, match = true, randomInt = getRandomInt(4, gameSprites.length);
+    var i, randomInt = getRandomInt(4, gameSprites.length);
     
-    while (match === true) {
-        for (i = 0; i < levelSprites.length; i = i + 1) {
-            if (levelSprites[i][2] !== gameSprites[randomInt][2]) {
-                match = false;
-            } else {
-                randomInt = getRandomInt(4, gameSprites.length);
-            }
+    for (i = 0; i < levelSprites.length; i = i + 1) {
+        if (levelSprites[i][2] === gameSprites[randomInt][2]) {
+            randomInt = getRandomInt(4, gameSprites.length);
+            i = 0;
         }
     }
     
@@ -858,7 +857,8 @@ function getSpriteLocation(elementID) {
         [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
         [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
         [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
-        [7, 21], [8, 20], [9, 19], [10, 18], [11, 17]
+        [7, 21], [8, 20], [9, 19], [10, 18], [11, 17],
+        [8, 22], [9, 21], [10, 20], [11, 19], [12, 18]
     ];
     
     for (i = 0; i < levelSprites.length; i = i + 1) {
@@ -964,8 +964,6 @@ function getPos(e) {
     // if a valid cell was chosen, display cell in console
     if (cell[0] > 0 && cell[0] < 20 && cell[1] > 0 && cell[1] < 40) {
         console.log("selected cell: x" + cell[0] + ", y" + cell[1]);
-        console.log("animations = " + intervals.length +
-                    " sequences = " + paths.length);
     }
 }
 
@@ -1067,15 +1065,6 @@ function animationStart(elementID, action, direction) {
                 document.getElementById(elementID).style.zIndex =
                     zlayer.toString();
                 
-                // debug mode animation information
-                /*if (getParameter("debug") === "true") {
-                    console.log(elementID +
-                                ": xPosInt = " + xPosInt +
-                                ", yPosInt = " + yPosInt +
-                                ", zlayer = " + zlayer +
-                                ", frame = " + frame);
-                }*/
-
                 document.getElementById(elementID).style.left = xPosInt + "vmin";
                 document.getElementById(elementID).style.top = yPosInt + "vmin";
             }
@@ -1096,7 +1085,6 @@ function animationStart(elementID, action, direction) {
             // next frame
             frame = frame - frameWidth;
         }
-        
     }, 200));
 }
 
@@ -1138,18 +1126,33 @@ function sequenceStart(sequence) {
 function spawnSprite(sprite) {
     "use strict";
     
-    var i, xPos, yPos, elementID, direction;
+    var xPos, yPos, elementID, direction;
     
-    xPos = sprite[0];
-    yPos = sprite[1];
+    xPos = Number(sprite[0]);
+    yPos = Number(sprite[1]);
     elementID = sprite[2];
     direction = sprite[3];
+    
+    // PATCH - DO NOT REMOVE
+    if (levelSprites.length > 4 && xPos !== 17 && yPos !== 35) {
+        xPos = 17;
+        yPos = 35;
+    }
     
     // spawn sprite if cell empty
     if (getElementInCell(xPos, yPos) === "empty") {
         levelSprites.push(sprite);
+        
+        // PATCH - DO NOT REMOVE
+        levelSprites[levelSprites.length - 1][6] = Boolean(false);
+        
         newSprite(elementID);
         showElementInCell(xPos, yPos, elementID, direction);
+        
+        if (getSpriteLocation(elementID) === "entrance") {
+            showElementInCell(17.5, 32, "bubble-alert");
+        }
+        
         return true;
         
     // cannot spawn because cell is already occupied
@@ -1292,6 +1295,7 @@ function walkPath(elementID, area, startCell, cell) {
 
 function playMusic() {
     "use strict";
+    
     introMusic.pause();
     
     if (getParameter("debug") === undefined) {
@@ -1758,10 +1762,10 @@ function resetTimer() {
     
     // set the default round length in minutes and seconds
     if (getParameter("debug") === "true") {
-        minutes = 3;
+        minutes = 5;
         seconds = 0;
     } else {
-        minutes = 3;
+        minutes = 5;
         seconds = 0;
     }
 }
@@ -1847,17 +1851,20 @@ function playGame() {
         i = i + 1;
         
         gameSprite = gameSprites[getRandomGameSprite()];
+        
+        // REMOVE
+        console.log(gameSprite[2] + " x = " + gameSprite[0] +
+                    " y = " + gameSprite[1]);
+        
         if (getEmptyCell("bar") !== undefined) {
-            if (spawnSprite(gameSprite) === true) {
-                showElementInCell(17.5, 32, "bubble-alert");
-            }
+            spawnSprite(gameSprite);
         }
         
         // i = total number spawn attempts
         if (i === 30) {
             clearInterval(counter);
         }
-    }, 5000);
+    }, 10000);
 }
 
 // display login menu
