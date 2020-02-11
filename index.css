@@ -379,6 +379,18 @@ footer p {
     background-size: cover;
 }
 
+#bubble-large-help-image {
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    margin: 2vmin;
+    top: 0;
+    left: 0;
+    background: url(graphics/tip.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 #bubble-large-text {
     width: 35vmin;
     height: 8.5vmin;
@@ -412,6 +424,11 @@ footer p {
     color: white;
 }
 
+#bubble-large-next {
+    bottom: 1vmin;
+    right: 1vmin;
+}
+
 #bubble-large-ok {
     bottom: 1vmin;
     right: 1vmin;
@@ -433,6 +450,11 @@ footer p {
 }
 
 #bubble-large-bounce {
+    bottom: 1vmin;
+    left: 1vmin;
+}
+
+#bubble-large-close {
     bottom: 1vmin;
     left: 1vmin;
 }

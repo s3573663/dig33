@@ -32,6 +32,17 @@ var introMusic = document.getElementById("introMusic");
 var beerSound = document.getElementById("serveSound");
 var negSound = document.getElementById("bouncedSound");
 
+// help text
+var tip;
+var tips = [
+    "1/4: welcome to the 'el mariachi', home of every desperados flavour.",
+    "2/4: we're just about to open, make sure you check id's.",
+    "3/4: promptly serve anyone at the bar. " +
+        "if ther's no room at the bar, no one will come in.",
+    "4/4: anyone underage, drunk or rowdy will kill the vibe. " +
+        "feel free to show them the door."
+];
+
 // library of objects available (walls etc)
 var gameObjects = [
     [0, 0, "wall"],
@@ -688,7 +699,7 @@ function hideElement(elementID) {
 }
 
 // ******************************************************************
-// game functions
+// sprite functions
 // ******************************************************************
 
 // show element by id in cell x y
@@ -803,12 +814,13 @@ function getEmptyCell(area) {
         ];
     } else if (area === "dancefloor") {
         cells = [
-            [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
-            [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
-            [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
-            [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
-            [7, 21], [8, 20], [9, 19], [10, 18], [11, 17],
-            [8, 22], [9, 21], [10, 20], [11, 19], [12, 18]
+            [2, 18], [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
+            [3, 19], [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
+            [4, 20], [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
+            [5, 21], [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
+            [6, 22], [7, 21], [8, 20], [9, 19], [10, 18], [11, 17],
+            [7, 23], [8, 22], [9, 21], [10, 20], [11, 19], [12, 18],
+            [8, 24], [9, 23], [10, 22], [11, 21], [12, 20], [13, 19]
         ];
     }
     
@@ -853,12 +865,13 @@ function getSpriteLocation(elementID) {
         [11, 13], [12, 14], [13, 15], [14, 16], [15, 17],
         [16, 18], [17, 19],
         // dancefloor
-        [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
-        [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
-        [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
-        [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
-        [7, 21], [8, 20], [9, 19], [10, 18], [11, 17],
-        [8, 22], [9, 21], [10, 20], [11, 19], [12, 18]
+        [2, 18], [3, 17], [4, 16], [5, 15], [6, 14], [7, 13],
+        [3, 19], [4, 18], [5, 17], [6, 16], [7, 15], [8, 14],
+        [4, 20], [5, 19], [6, 18], [7, 17], [8, 16], [9, 15],
+        [5, 21], [6, 20], [7, 19], [8, 18], [9, 17], [10, 16],
+        [6, 22], [7, 21], [8, 20], [9, 19], [10, 18], [11, 17],
+        [7, 23], [8, 22], [9, 21], [10, 20], [11, 19], [12, 18],
+        [8, 24], [9, 23], [10, 22], [11, 21], [12, 20], [13, 19]
     ];
     
     for (i = 0; i < levelSprites.length; i = i + 1) {
@@ -1296,8 +1309,6 @@ function walkPath(elementID, area, startCell, cell) {
 function playMusic() {
     "use strict";
     
-    introMusic.pause();
-    
     if (getParameter("debug") === undefined) {
         gameMusic.currentTime = 0;
         gameMusic.play();
@@ -1355,17 +1366,10 @@ function soundOnOff(audioControl) {
 }
 
 // ******************************************************************
-// disclaimer functions
+// menu functions
 // ******************************************************************
 
-function showLogin() {
-    "use strict";
-    
-    hideElement("disclaimer");
-    hideElement("register");
-    showElement("login");
-}
-
+// display exit screen
 function showExit() {
     "use strict";
     
@@ -1373,6 +1377,7 @@ function showExit() {
     showElement("exit");
 }
 
+// display disclaimer choice
 function showDisclaimer() {
     "use strict";
     
@@ -1380,9 +1385,14 @@ function showDisclaimer() {
     showElement("disclaimer");
 }
 
-// ******************************************************************
-// login functions
-// ******************************************************************
+// display login menu
+function showLogin() {
+    "use strict";
+    
+    hideElement("disclaimer");
+    hideElement("register");
+    showElement("login");
+}
 
 // display player registration menu
 function showRegister() {
@@ -1406,6 +1416,19 @@ function showMenu() {
     showElement("transparency");
     showElement("menu");
 }
+
+// display login menu
+function hideMenu() {
+    "use strict";
+    
+    hideElement("menu");
+    hideElement("register");
+    showElement("login");
+}
+
+// ******************************************************************
+// login functions
+// ******************************************************************
 
 // link a username with email account
 function registerUsername(user) {
@@ -1705,18 +1728,21 @@ function startScore() {
                     }
                 }
                 
-                // change score colour ('+' = white, '-' = red)
-                if (score > scoreStart || score === scoreStart) {
-                    
+                // change score colour
+                if (score === scoreStart) {
+                    // score holding
+                    document.getElementById("game-score").style.color =
+                        "rgb(255,255,255)";
+                
+                } else if (score > scoreStart) {
                     // score increasing
                     document.getElementById("game-score").style.color =
-                        "white";
+                        "rgb(0,255,0)";
                     
                 } else {
-                    
                     // score decreasing
                     document.getElementById("game-score").style.color =
-                        "red";
+                        "rgb(255,0,0)";
                 }
                 
                 document.getElementById("game-score").innerHTML = score;
@@ -1726,8 +1752,23 @@ function startScore() {
 }
 
 // ******************************************************************
-// main menu functions
+// game functions
 // ******************************************************************
+
+function showHelp() {
+    "use strict";
+        
+    showElement("bubble-large");
+    showElement("bubble-large-next");
+    showElement("bubble-large-close");
+    
+    if (tip === undefined || tip === tips.length) {
+        tip = 0;
+    }
+    
+    document.getElementById("bubble-large-text").innerHTML = tips[tip];
+    tip = tip + 1;
+}
 
 function finishGame() {
     "use strict";
@@ -1806,55 +1847,25 @@ function startTimer() {
     }
 }
 
-function playGame() {
+function startSpawning() {
     "use strict";
     
-    var i, ii, interval, gameSprite;
+    var i, gameSprite;
     
-    hideElement("menu");
-    hideElement("transparency");
-    
-    showElement("game");
-    showElement("game-controls");
-    
-    // clear counter
-    clearInterval(counter);
-    
-    // clear sprites
-    while (levelSprites.length > 0) {
-        removeSprite(levelSprites[0][2]);
-    }
-    
-    // load starting gameSprites
-    for (i = 0; i < 4; i = i + 1) {
-        spawnSprite(gameSprites[i]);
-    }
-    
-    // set/reset and start game timer
-    resetTimer();
     startTimer();
-    
-    //clear then calculate game score
-    resetScore();
     startScore();
-    
-    // start playing game music
     playMusic();
     
     // starting animations
     animationStart("dj01", "dance", "SW");
     sequenceStart(bartenderPath);
     
-    // spawn sprites ( 5 seconds apart if room at bar)
+    // spawn sprites ( 10 seconds apart if room at bar)
     i = 0;
     counter = setInterval(function () {
         i = i + 1;
         
         gameSprite = gameSprites[getRandomGameSprite()];
-        
-        // REMOVE
-        console.log(gameSprite[2] + " x = " + gameSprite[0] +
-                    " y = " + gameSprite[1]);
         
         if (getEmptyCell("bar") !== undefined) {
             spawnSprite(gameSprite);
@@ -1867,18 +1878,37 @@ function playGame() {
     }, 10000);
 }
 
-// display login menu
-function hideMenu() {
+function playGame() {
     "use strict";
     
+    var i, ii, interval, gameSprite;
+    
     hideElement("menu");
-    hideElement("register");
-    showElement("login");
+    hideElement("transparency");
+    hideElement("bubble-large-image");
+    showElement("game");
+    showElement("game-controls");
+    showElement("bubble-large-help-image");
+    
+    // reset all game counters
+    clearInterval(counter);
+    resetTimer();
+    resetScore();
+    tip = undefined;
+    
+    // clear sprites
+    while (levelSprites.length > 0) {
+        removeSprite(levelSprites[0][2]);
+    }
+    
+    // load starting gameSprites
+    for (i = 0; i < 4; i = i + 1) {
+        spawnSprite(gameSprites[i]);
+    }
+    
+    pauseIntro();
+    showHelp();
 }
-
-// ******************************************************************
-// game functions
-// ******************************************************************
 
 // display quit game menu
 function showQuit() {
@@ -1929,7 +1959,6 @@ function getMove(elementID) {
     // sprite name (without id number)
     spriteID = elementID.substring(0, elementID.length - 2);
     
-    // get and display spriteImage
     spriteImageURL = window.getComputedStyle(
         document.getElementById(elementID),
         ''
@@ -2009,6 +2038,19 @@ function getMove(elementID) {
     // close speech window
     } else if (elementID === "bubble-large-ok") {
         hideElement("bubble-large");
+        
+    // show next helpful tip
+    } else if (elementID === "bubble-large-next") {
+        showHelp();
+        
+    // close help window
+    } else if (elementID === "bubble-large-close") {
+        hideElement("bubble-large-help-image");
+        showElement("bubble-large-image");
+        hideElement("bubble-large-next");
+        hideElement("bubble-large-close");
+        hideElement("bubble-large");
+        startSpawning();
         
     // sprite is staff
     } else if (spriteLocation === "staff") {

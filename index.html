@@ -187,7 +187,8 @@
             </div>
             
             <div id="bubble-large" style="display:none">
-                <p id="bubble-large-image"></p>
+                <p id="bubble-large-image" style="display:none"></p>
+                <p id="bubble-large-help-image"></p>
                 <div id="bubble-large-text"></div>
                 <button id="bubble-large-ok" class="bubble-button"
                         onclick="getMove('bubble-large-ok')"
@@ -213,6 +214,16 @@
                         onclick="getMove('bubble-large-bounce')"
                         style="display:none">
                     BOUNCE
+                </button>
+                <button id="bubble-large-next" class="bubble-button"
+                        onclick="getMove('bubble-large-next')"
+                        style="display:none">
+                    NEXT
+                </button>
+                <button id="bubble-large-close" class="bubble-button"
+                        onclick="getMove('bubble-large-close')"
+                        style="display:none">
+                    CLOSE
                 </button>
             </div>
             
@@ -248,7 +259,7 @@
         </div>
         
         <footer>
-            <p>v0.73</p>
+            <p>v0.75</p>
             <!-- Authors: Aaron Bramich (19366050),
                           Brendan O'Keefe (19363873) -->
         </footer>
