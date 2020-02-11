@@ -1306,6 +1306,7 @@ function walkPath(elementID, area, startCell, cell) {
 // audio functions
 // ******************************************************************
 
+// play game music
 function playMusic() {
     "use strict";
     
@@ -1316,18 +1317,21 @@ function playMusic() {
     }
 }
 
+// pause game music
 function pauseMusic() {
     "use strict";
     
     gameMusic.pause();
 }
 
+// resume game music
 function resumeMusic() {
     "use strict";
     
     gameMusic.play();
 }
 
+// play menu music
 function playIntro() {
     "use strict";
     
@@ -1337,18 +1341,21 @@ function playIntro() {
     introMusic.play();
 }
 
+// pause menu music
 function pauseIntro() {
     "use strict";
     
     introMusic.pause();
 }
 
+// play single sound
 function playSound(sound) {
     "use strict";
     
     sound.play();
 }
 
+// mute sound
 function soundOnOff(audioControl) {
     "use strict";
     
@@ -1755,6 +1762,7 @@ function startScore() {
 // game functions
 // ******************************************************************
 
+// show game tips in bubble-large
 function showHelp() {
     "use strict";
         
@@ -1770,6 +1778,7 @@ function showHelp() {
     tip = tip + 1;
 }
 
+// save score then display high scores
 function finishGame() {
     "use strict";
     
@@ -1791,6 +1800,7 @@ function finishGame() {
     }
 }
 
+// stop game (round) timer
 function stopTimer() {
     "use strict";
     
@@ -1798,6 +1808,7 @@ function stopTimer() {
     timer = undefined;
 }
 
+// reset game (round) timer
 function resetTimer() {
     "use strict";
     
@@ -1811,6 +1822,7 @@ function resetTimer() {
     }
 }
 
+// start game (round) timer
 function startTimer() {
     "use strict";
     
@@ -1847,6 +1859,7 @@ function startTimer() {
     }
 }
 
+// execute timer in game events
 function startSpawning() {
     "use strict";
     
@@ -1878,10 +1891,11 @@ function startSpawning() {
     }, 10000);
 }
 
+// start a new game
 function playGame() {
     "use strict";
     
-    var i, ii, interval, gameSprite;
+    var i;
     
     hideElement("menu");
     hideElement("transparency");
