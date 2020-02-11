@@ -273,7 +273,7 @@ var gameSprites = [
         "i feel so alive!!!"],
     [17, 35, "maria09", "NW",
         // entrance
-        "(born 16/08/200) says: buenas noches.",
+        "(born 16/08/2000) says: buenas noches.",
         // bar
         "desperados nocturno por favor.",
         // has a drink
