@@ -38,7 +38,7 @@ var tips = [
     "1/4: welcome to the 'el mariachi', home of every desperados flavour.",
     "2/4: we're just about to open, make sure you check id's.",
     "3/4: promptly serve anyone at the bar. " +
-        "if ther's no room at the bar, no one will come in.",
+        "if there's no room at the bar, no one will come in.",
     "4/4: anyone underage, drunk or rowdy will kill the vibe. " +
         "feel free to show them the door."
 ];
