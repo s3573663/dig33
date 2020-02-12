@@ -1787,7 +1787,6 @@ function showUserScore() {
     
     document.getElementById("score").innerHTML = score;
     showElement("user-score");
-    
 }
 
 // ******************************************************************
@@ -1937,10 +1936,16 @@ function playGame() {
     showElement("game-controls");
     showElement("bubble-large-help-image");
     
-    // reset all game counters
+    // reset spawn counter
     clearInterval(counter);
+    
+    // reset timer and score display
     resetTimer();
+    document.getElementById("game-timer").innerHTML = "##:##";
     resetScore();
+    document.getElementById("game-score").innerHTML = score;
+    document.getElementById("game-score").style.color = "rgb(255,255,255)";
+    
     tip = undefined;
     
     // clear sprites
