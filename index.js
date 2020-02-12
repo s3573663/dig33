@@ -1688,6 +1688,7 @@ function shareLink() {
     alert("URL copied to clipboard");
 }
 
+// share leaderboard on facebook
 function shareFacebook() {
     "use strict";
     var link;
@@ -1695,6 +1696,16 @@ function shareFacebook() {
     link = window.location.href + "?scores=true";
     
     window.open("https://www.facebook.com/sharer.php?u=" + link);
+}
+
+// share leaderboard on twitter
+function shareTwitter() {
+    "use strict";
+    var link;
+    
+    link = window.location.href + "?scores=true";
+    
+    window.open("https://twitter.com/intent/tweet?url=" + link);  
 }
 
 // reset user score
@@ -1837,8 +1848,8 @@ function resetTimer() {
         minutes = 5;
         seconds = 0;
     } else {
-        minutes = 0;
-        seconds = 10;
+        minutes = 5;
+        seconds = 0;
     }
 }
 
