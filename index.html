@@ -75,7 +75,7 @@
         <!-- disclaimer menu -->
         <div id="disclaimer" class="menu-box" style="display:none">
             <div>
-                <img class="logo" src="images/DESPERADOS_MEDALLION_RGB_Black.png">
+                <img id="disclaimer-logo" src="images/desperados_logo.png">
             </div>
             <div id="disclaimer-text">
                 DISCLAIMER: You must be over the age of 18 to continue.
@@ -130,10 +130,9 @@
         
         <!-- main menu -->
         <div id="menu" class="menu-box" style="display:none">
-            <div id="menu-title">
-                DESPERADOS EL JUEGO
-            </div>
-            <img class="mute" src="images/audio.png" onclick="soundOnOff(this)">
+            <img id="menu-logo" src="images/desperados_el_juego.png">
+            <img class="mute" src="images/audio.png"
+                 onclick="soundOnOff(this)">
             <button class="menu-button" onclick="playGame()">
                 PLAY
             </button>
@@ -147,10 +146,9 @@
         
         <!-- scoreboard menu -->
         <div id="scores" class="menu-box" style="display:none">
-            <div id="scores-title">
-                HIGH SCORES
-            </div>
-            <img class="mute" src="images/audio.png" id="audioIcon" onclick="soundOnOff(this)">
+            <img id="scores-title" src="images/high_scores.png">
+            <img id="audioIcon" class="mute" src="images/audio.png"
+                 onclick="soundOnOff(this)">
             <div id="scores-text">
                 <p id="pos1">#1</p>
                 <p id="pos2">#2</p>
@@ -170,9 +168,11 @@
                 <input type="image" class="icons" id="link" 
                        src="images/icon-link.png" onclick="shareLink()">
                 <input type="image" class="icons" id="facebook" 
-                       src="images/icon-facebook.png" onclick="shareFacebook()">
+                       src="images/icon-facebook.png"
+                       onclick="shareFacebook()">
                 <input type="image" class="icons" id="twitter" 
-                       src="images/icon-twitter.png" onclick="shareTwitter()">
+                       src="images/icon-twitter.png"
+                       onclick="shareTwitter()">
             </div>
          
         </div>
@@ -182,7 +182,8 @@
             <div id="scores-title">
                 Your Score Is:
             </div>
-            <img class="mute" src="images/audio.png" onclick="soundOnOff(this)">
+            <img class="mute" src="images/audio.png"
+                 onclick="soundOnOff(this)">
             <div id="user-score-text">
                 <p id="score"></p>
             </div>

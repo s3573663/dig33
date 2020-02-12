@@ -101,13 +101,16 @@ footer p {
 
 .mute {
     position: absolute;
-    padding:5px;
-    top: 0px;
-    right: 0px;     
+    padding: 1vmin;
+    top: 0;
+    right: 0;
+    width: 5vmin;
+    height: 5vmin;
+    user-select: none;
 }
 
 .mute:hover{
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .menu-button {
@@ -130,21 +133,11 @@ footer p {
     color: white;
 }
 
-#menu-title {
-    font-size: 12vmin;
-    font-family: 'Share Tech Mono', monospace;
-    text-align: center;
-    font-weight: bold;
-    margin-top: 7vmin;
+#menu-logo {
+    margin-top: 5vmin;
     margin-bottom: 3vmin;
-    color: white;
-    text-shadow: -0.3vmin 0 black, 0 0.3vmin black,
-        0.3vmin 0 black, 0 -0.3vmin black;
-}
-
-.logo {
-    max-height: 30vmin;
-    max-width: 30vmin;
+    height: 32vmin;
+    user-select: none;
 }
 
 #login-email, #login-password, #register-email,
@@ -157,6 +150,13 @@ footer p {
     font-size: 4vmin;
     font-family: 'Share Tech Mono', monospace;
     outline: none;
+}
+
+#disclaimer-logo {
+    margin-top: 2vmin;
+    max-height: 30vmin;
+    max-width: 30vmin;
+    user-select: none;
 }
 
 #disclaimer-text {
@@ -197,10 +197,8 @@ footer p {
 }
 
 #scores-title {
-    font-size: 7vmin;
-    font-family: 'Share Tech Mono', monospace;
-    text-align: center;
-    margin-top: 3vmin;
+    margin-top: 5vmin;
+    height: 9vmin;
     user-select: none;
 }
 
@@ -231,12 +229,12 @@ footer p {
 }
 
 .icons {
-    padding:3vmin;
-    width:5vmin;
+    padding: 3vmin;
+    width: 5vmin;
 }
 
 .icons:hover {
-    background-color:rgb(175,175,255);
+    background-color: rgb(175,175,255);
     border-radius: 3vmin;
 }
 
