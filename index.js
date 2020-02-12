@@ -1660,6 +1660,7 @@ function showScores() {
     // display loading animation while retrieving from database
     interval = setInterval(function () {
         hideElement("menu");
+        hideElement("user-score");
         showElement("transparency");
 
         if (check === true) {
@@ -1758,6 +1759,15 @@ function startScore() {
     }
 }
 
+// display final user score
+function showUserScore() {
+    "use strict";
+    
+    document.getElementById("score").innerHTML = score;
+    showElement("user-score");
+    
+}
+
 // ******************************************************************
 // game functions
 // ******************************************************************
@@ -1796,7 +1806,7 @@ function finishGame() {
     // post score to and display score board
     } else {
         saveScore();
-        showScores();
+        showUserScore();
     }
 }
 

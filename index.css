@@ -205,6 +205,14 @@ footer p {
     margin: 1vmin;
 }
 
+#score {
+    text-align: center;
+    font-size: 12vmin;
+    font-family: 'Share Tech Mono', monospace;
+    font-weight:bold;
+    
+}
+
 #game {
     z-index: 5;
     width: 90vmin;
