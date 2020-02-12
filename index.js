@@ -1705,7 +1705,7 @@ function shareTwitter() {
     
     link = window.location.href + "?scores=true";
     
-    window.open("https://twitter.com/intent/tweet?url=" + link);  
+    window.open("https://twitter.com/intent/tweet?url=" + link);
 }
 
 // reset user score
@@ -2248,7 +2248,7 @@ function formEnter() {
 function start() {
     "use strict";
     
-    var i, removeShare, removeMenu;
+    var i, removeMute, removeMenu;
     
     formEnter();
     document.addEventListener("click", getPos, false);
@@ -2271,9 +2271,9 @@ function start() {
         hideElement("hide");
         hideElement("disclaimer");
         removeMenu = document.getElementById("menuBtn");
-        removeShare = document.getElementById("shareBtn");
+        removeMute = document.getElementById("audioIcon");
         removeMenu.parentNode.removeChild(removeMenu);
-        removeShare.parentNode.removeChild(removeShare);
+        removeMute.parentNode.removeChild(removeMute);
         showScores();
         
     // normal startup (no parameters given)
