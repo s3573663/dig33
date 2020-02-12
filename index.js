@@ -974,9 +974,11 @@ function getPos(e) {
     // determine which board square was selected 
     cell = getCell(boardXvmin, boardYvmin);
     
-    // if a valid cell was chosen, display cell in console
+    // DEBUG: if a valid cell was chosen, display cell in console
     if (cell[0] > 0 && cell[0] < 20 && cell[1] > 0 && cell[1] < 40) {
-        console.log("selected cell: x" + cell[0] + ", y" + cell[1]);
+        if (getParameter("debug") === "true") {
+            console.log("selected cell: x" + cell[0] + ", y" + cell[1]);
+        }
     }
 }
 
