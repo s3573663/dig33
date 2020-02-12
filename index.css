@@ -142,6 +142,11 @@ footer p {
         0.3vmin 0 black, 0 -0.3vmin black;
 }
 
+.logo {
+    max-height: 30vmin;
+    max-width: 30vmin;
+}
+
 #login-email, #login-password, #register-email,
 #register-password, #register-username {
     display: inline-block;
@@ -154,7 +159,19 @@ footer p {
     outline: none;
 }
 
-#disclaimer-text, #quit-text, #exit-text {
+#disclaimer-text {
+    display: inline-block;
+    width: 50vmin;
+    padding: 1vmin;
+    margin-top: 1vmin;
+    margin-bottom: 1vmin;
+    font-size: 4vmin;
+    font-family: 'Share Tech Mono', monospace;
+    text-align: justify;
+    user-select: none;
+}
+
+#quit-text, #exit-text {
     display: inline-block;
     width: 50vmin;
     padding: 1vmin;
@@ -165,6 +182,7 @@ footer p {
     text-align: justify;
     user-select: none;
 }
+
 
 #login-text, #register-text {
     display: inline-block;
