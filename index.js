@@ -1671,7 +1671,7 @@ function showScores() {
 }
 
 // copy link for the game scoreboard to clipboard
-function shareScores() {
+function shareLink() {
     "use strict";
     var link, textArea;
     
@@ -1686,6 +1686,15 @@ function shareScores() {
     document.body.removeChild(textArea);
     
     alert("URL copied to clipboard");
+}
+
+function shareFacebook() {
+    "use strict";
+    var link;
+    
+    link = window.location.href + "?scores=true";
+    
+    window.open("https://www.facebook.com/sharer.php?u=" + link);
 }
 
 // reset user score
@@ -1805,6 +1814,7 @@ function finishGame() {
         showScores();
     // post score to and display score board
     } else {
+        playIntro();
         saveScore();
         showUserScore();
     }
@@ -1827,8 +1837,8 @@ function resetTimer() {
         minutes = 5;
         seconds = 0;
     } else {
-        minutes = 5;
-        seconds = 0;
+        minutes = 0;
+        seconds = 10;
     }
 }
 

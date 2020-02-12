@@ -160,12 +160,14 @@
                 <p id="pos9">#9</p>
                 <p id="pos10">#10</p>
             </div>
-            <button class="menu-button" id="shareBtn" onclick="shareScores()">
-                SHARE
-            </button>
             <button class="menu-button" id="menuBtn" onclick="showMenu()">
                 MENU
             </button>
+            <div id="links">
+                <input type="image" class="icons" id="link" src="images/icon-link.png" onclick="shareLink()">
+                <input type="image" class="icons" id="facebook" src="images/icon-facebook.png" onclick="shareFacebook()">
+                <input type="image" class="icons" id="twitter" src="images/icon-twitter.png" onclick="shareScores()">
+            </div>
         </div>
         
         <!-- user's final game score -->
