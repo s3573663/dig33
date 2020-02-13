@@ -31,6 +31,7 @@ var gameMusic = document.getElementById("gameMusic");
 var introMusic = document.getElementById("introMusic");
 var beerSound = document.getElementById("serveSound");
 var negSound = document.getElementById("bouncedSound");
+var screamSound = document.getElementById("wilhelmScream");
 
 // help text
 var tip;
@@ -2087,7 +2088,7 @@ function getMove(elementID) {
         elementID = spriteSelected;
         removeSprite(elementID);
         hideElement("bubble-large");
-        playSound(negSound);
+        playSound(screamSound);
         
     // close speech window
     } else if (elementID === "bubble-large-ok") {
