@@ -1317,7 +1317,7 @@ function playMusic() {
     if (getParameter("debug") === undefined) {
         gameMusic.currentTime = 0;
         gameMusic.play();
-        gameMusic.volume = 0.1;
+        gameMusic.volume = 0.3;
     }
 }
 
