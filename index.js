@@ -1323,11 +1323,9 @@ function walkPath(elementID, area, startCell, cell) {
 function playMusic() {
     "use strict";
     
-    if (getParameter("debug") === undefined) {
-        gameMusic.currentTime = 0;
-        gameMusic.play();
-        gameMusic.volume = 0.3;
-    }
+    gameMusic.currentTime = 0;
+    gameMusic.play();
+    gameMusic.volume = 0.3;
 }
 
 // pause game music
@@ -1487,8 +1485,8 @@ function register() {
         document.getElementById("register-password").value = "";
         document.getElementById("register-email").focus();
         return;
-    } else if (password.length < 8) {
-        alert('Please enter a password at least 8 characters in length.');
+    } else if (password.length < 6) {
+        alert('Please enter a password at least 6 characters in length.');
         document.getElementById("register-password").value = "";
         document.getElementById("register-password").focus();
         return;
@@ -1537,8 +1535,8 @@ function login() {
         document.getElementById("login-password").value = "";
         document.getElementById("login-email").focus();
         return;
-    } else if (password.length < 8) {
-        alert('Please enter a password at least 8 characters in length.');
+    } else if (password.length < 6) {
+        alert('Please enter a password at least 6 characters in length.');
         document.getElementById("login-password").value = "";
         document.getElementById("login-password").focus();
         return;
